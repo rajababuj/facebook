@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
-
+use App\Models\Post;
 
 class RegisterController extends Controller
 {
@@ -18,8 +18,9 @@ class RegisterController extends Controller
     }
 
     public function dashboard(){
-        $users = User::all();
-        return view('dashboard',compact('users'));
+        $users = User::withCount(["followings", "followers"])->get();
+        $posts = Post::all();
+        return view('dashboard',compact('users', 'posts'));
     }
 
     public function store(RegisterRequest $request)

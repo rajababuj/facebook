@@ -9,23 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function index()
-    {
-        $posts = Post::all();
-        return view('post.index', compact('posts'));
-    }
 
     public function store(Request $request)
     {
         dd($request->all());
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'description' => 'required',
             'image_url' => 'required',
         ]);
 
         $post = new Post;
-        $post->description = $validatedData['description'];
-        $post->image_url = $validatedData['image_url'];
+        $post->description = $validated['description'];
+        $post->image_url = $validated['image_url'];
         $post->user_id = Auth::id();
       
         $post->video_url = null;

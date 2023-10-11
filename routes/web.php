@@ -25,7 +25,6 @@ Route::group([ 'prefix' => 'user', 'middleware' => 'web'],function (){
     Route::get('/dashboard', [RegisterController::class, 'dashboard'])->name('dashboard');
     Route::get('user/{following_id}/follow',[RegisterController::class,'follow'])->name('follow');
 
-    Route::get('/posts', [PostController::class, 'index'])->name('post.index');
     Route::post('/posts', [PostController::class, 'store'])->name('post.store');
    
    

@@ -1333,6 +1333,8 @@
                         <div id="compose-card" class="card is-new-content">
                             <!-- Top tabs -->
                             <div class="tabs-wrapper">
+                             <form action="{{route('post.store')}}" method="POST" id="formdata" enctype="multipart/form-data">
+                                    @csrf
                                 <div class="tabs is-boxed is-fullwidth">
                                     <ul>
                                         <li class="is-active">
@@ -1361,8 +1363,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <form action="{{route('post.store')}}" type="POST" id="formdata" enctype="multipart/form-data">
-                                    @csrf
+                               
                                     <!-- Tab content -->
                                     <div class="tab-content">
                                         <!-- Compose form -->
@@ -1382,7 +1383,7 @@
                                                 <!-- Tag friends suboption -->
                                                 <div id="tag-list" class="tag-list"></div>
                                                 <div class="control">
-                                                    <input id="users-autocpl" type="text" class="input" placeholder="Who are you with?" name="tag_user"/>
+                                                    <input id="users-autocpl" type="text" class="input" placeholder="Who are you with?" name="tag_user" />
                                                     <div class="icon">
                                                         <i data-feather="search"></i>
                                                     </div>
@@ -1396,7 +1397,7 @@
                                             <!-- Activities suboption -->
                                             <div id="activities-suboption" class="is-autocomplete is-suboption is-hidden">
                                                 <div id="activities-autocpl-wrapper" class="control has-margin">
-                                                    <input id="activities-autocpl" type="text" class="input" placeholder="What are you doing right now?" name="activity"/>
+                                                    <input id="activities-autocpl" type="text" class="input" placeholder="What are you doing right now?" name="activity" />
                                                     <div class="icon">
                                                         <i data-feather="search"></i>
                                                     </div>
@@ -1489,7 +1490,7 @@
                                             <!-- Link suboption -->
                                             <div id="link-suboption" class="is-autocomplete is-suboption is-hidden">
                                                 <div id="link-autocpl-wrapper" class="control is-location-wrapper has-margin">
-                                                    <input id="link-autocpl" type="text" class="input" placeholder="Enter the link URL"  name="link"/>
+                                                    <input id="link-autocpl" type="text" class="input" placeholder="Enter the link URL" name="link" />
                                                     <div class="icon">
                                                         <i data-feather="link-2"></i>
                                                     </div>
@@ -1544,7 +1545,7 @@
                                                     <div class="compose-option is-centered">
                                                         <i data-feather="camera"></i>
                                                         <span>Photo/Video</span>
-                                                        <input id="feed-upload-input-1" type="file" accept=".png, .jpg, .jpeg" onchange="readURL(this)" name="media"/>
+                                                        <input id="feed-upload-input-1" type="file" accept=".png, .jpg, .jpeg" onchange="readURL(this)" name="media" />
                                                     </div>
                                                 </div>
                                                 <!-- Mood action -->
@@ -1838,6 +1839,7 @@
                                 <!-- Post header -->
                                 <div class="card-heading">
                                     <!-- User meta -->
+                                    @foreach($posts as $item)
                                     <div class="user-block">
                                         <div class="image">
                                             <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" data-user-popover="1" alt="" />
@@ -1847,6 +1849,7 @@
                                             <span class="time">July 26 2018, 01:03pm</span>
                                         </div>
                                     </div>
+                                    @endforeach
                                     <!-- Right side dropdown -->
                                     <!-- /partials/pages/feed/dropdowns/feed-post-dropdown.html -->
                                     <div class="dropdown is-spaced is-right is-neutral dropdown-trigger">
@@ -4721,10 +4724,10 @@
                                     </div>
                                     <div class="my-2">
                                         <span class="badge rounde-pill bg-light text-dark">
-                                            Following: {{$user->followings()->count()}}
+                                            Following: {{$user->followings_count}}
                                         </span>
                                         <span class="badge rounde-pill bg-light text-dark">
-                                            Followers: {{$user->followers()->count()}}
+                                            Followers: {{$user->followers_count}}
                                         </span>
                                     </div>
                                 </div>
