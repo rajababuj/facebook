@@ -17,13 +17,11 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->text('description');
-            $table->string('image_url', 255);
-            $table->string('video_url', 255)->nullable();
-            $table->string('mood_activity', 50)->nullable();
-            $table->string('tag_friends', 255)->nullable();
-            $table->string('post_location', 100)->nullable();
-            $table->string('share_link', 255)->nullable();
-            $table->string('post_gif', 255)->nullable();
+            $table->string('media', 255);
+            $table->string('activity', 50)->nullable();
+            $table->string('tag_user', 255)->nullable();
+            $table->string('location', 100)->nullable();
+            $table->string('link', 255)->nullable();
             $table->timestamps();
 
         });

@@ -43,6 +43,7 @@ class RegisterController extends Controller
 
     public function follow($following_id)
     {
+        dd($following_id);
         $following = User::find($following_id);
         if (auth()->user()->followings->contains($following_id)){
             auth()->user()->followings()->detach($following);
@@ -53,14 +54,5 @@ class RegisterController extends Controller
         return redirect()->back();
     }
 
-    // public function follow($following_id)
-    // {
-    //     $following = User::find($following_id);
-    //     if (auth()->user()->followings->contains($following_id)) {
-    //         auth()->user()->followings()->detach($following);
-    //     }
-    //     auth()->user()->followings()->attach($following); // Change detach to attach if you want to add a follow.
-    //     return redirect()->back();
-    // }
     
 }
