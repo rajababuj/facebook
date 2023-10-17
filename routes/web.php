@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\PostController;
+use App\Http\Controllers\User\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,15 +30,13 @@ Route::group(['prefix' => 'user', 'middleware' => 'web'], function () {
     Route::post('posts/like', [PostController::class, 'like'])->name('like');
     Route::post('posts/dislike', [PostController::class, 'dislike'])->name('dislike');
 
-
-   
+    Route::post('store', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('comments/reply/{comment}', [CommentController::class, 'reply'])->name('comments.reply'); 
 });
-
-
-
 
 Route::get('user/register', [RegisterController::class, 'Register'])->name('user.register');
 Route::post('user/register', [RegisterController::class, 'store'])->name('user.register.submit');
 
 Route::get('user/login', [LoginController::class, 'index'])->name('user.login ');
 Route::post('user/login', [LoginController::class, 'login'])->name('login.submit');
+

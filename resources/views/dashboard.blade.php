@@ -13,7 +13,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
     <title>Friendkit | Feed</title>
-    <script src="cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js"></script>
+    <script src="{{asset ('assets/cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js') }}"></script>
+  
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <!-- Google Tag Manager -->
@@ -30,7 +31,7 @@
                 dl = l != 'dataLayer' ? '&l=' + l : ''
             j.async = true
             j.src = '../www.googletagmanager.com/gtm5445.html?id=' + i + dl
-            f.parentNode.insertBefore(j, f)
+            f.parentNode.insertBefore(j,f)
         })(window, document, 'script', 'dataLayer', 'GTM-KQHJPZP')
     </script>
     <!-- End Google Tag Manager -->
@@ -576,7 +577,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <a class="account-item">
+                                    <a  class="account-item">
                                         <div class="media">
                                             <div class="icon-wrap">
                                                 <i data-feather="power"></i>
@@ -1654,8 +1655,8 @@
                                                                     <div class="media">
                                                                         <i data-feather="users"></i>
                                                                         <div class="media-content">
-                                                                            <h3>Friends</h3>
-                                                                            <small>only friends can see this publication.</small>
+                                                                            <h3>private</h3>
+                                                                            <small>only Private can see this publication.</small>
                                                                         </div>
                                                                     </div>
                                                                 </a>
@@ -1954,6 +1955,7 @@
                                 <!-- /Header -->
 
                                 <!-- Comments body -->
+                                @foreach($comments as $comment)
                                 <div class="comments-body has-slimscroll">
                                     <!-- Comment -->
                                     <div class="media is-comment">
@@ -1965,22 +1967,18 @@
                                         </div>
                                         <!-- Content -->
                                         <div class="media-content">
-                                            <a href="#">Dan Walker</a>
+                                            <a href="#">{{ $comment->user->name }}</a>
                                             <span class="time">28 minutes ago</span>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                eiusmod tempo incididunt ut labore et dolore magna aliqua. Ut enim
-                                                ad minim veniam, quis nostrud exercitation ullamco laboris
-                                                consequat.
-                                            </p>
+                                            <p>{{ $comment->comment }}</p>
+
                                             <!-- Actions -->
                                             <div class="controls">
                                                 <div class="like-count">
                                                     <i data-feather="thumbs-up"></i>
                                                     <span>4</span>
                                                 </div>
-                                                <div class="reply">
-                                                    <a href="#">Reply</a>
+                                                <div class="edit">
+                                                    <a href="javascript:void(0);" onclick="showReplyForm({{$comment->id}})">Reply</a>
                                                 </div>
                                                 <div class="edit">
                                                     <a href="#">Edit</a>
@@ -2032,37 +2030,85 @@
                                 <!-- /Comments body -->
 
                                 <!-- Comments footer -->
-                                <div class="card-footer">
-                                    <div class="media post-comment has-emojis">
-                                        <!-- Comment Textarea -->
-                                        <div class="media-content">
-                                            <div class="field">
-                                                <p class="control">
-                                                    <textarea class="textarea comment-textarea" rows="5" placeholder="Write a comment..."></textarea>
-                                                </p>
-                                            </div>
-                                            <!-- Additional actions -->
-                                            <div class="actions">
-                                                <div class="image is-32x32">
-                                                    <img class="is-rounded" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" data-user-popover="0" alt="" />
+                                <form method="post" style="display: none;" class="comment-reply-form" id="reply-form-{{$comment->id}}" action="{{ route('comments.reply', ['comment' => $comment]) }}">
+
+                                    @csrf
+                                    <div class="card-footer">
+                                        <div class="media post-comment has-emojis">
+                                            <!-- Comment Textarea -->
+                                            <div class="media-content">
+                                                <div class="field">
+                                                    <p class="control">
+
+                                                        <textarea name="comment" class="textarea comment-textarea" rows="5" placeholder="Write a comment..."></textarea>
+
+                                                        <input type="hidden" name="post_id" value="{{ $post->id }}" />
+                                                        <input type="hidden" name="comment_id" value="{{ $comment->id }}" />
+
+                                                    </p>
                                                 </div>
-                                                <div class="toolbar">
-                                                    <div class="action is-auto">
-                                                        <i data-feather="at-sign"></i>
+                                                <!-- Additional actions -->
+                                                <div class="actions">
+                                                    <div class="image is-32x32">
+                                                        <img class="is-rounded" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" data-user-popover="0" alt="" />
                                                     </div>
-                                                    <div class="action is-emoji">
-                                                        <i data-feather="smile"></i>
+                                                    <div class="toolbar">
+                                                        <div class="action is-auto">
+                                                            <i data-feather="at-sign"></i>
+                                                        </div>
+                                                        <div class="action is-emoji">
+                                                            <i data-feather="smile"></i>
+                                                        </div>
+                                                        <div class="action is-upload">
+                                                            <i data-feather="camera"></i>
+                                                            <input type="file" />
+                                                        </div>
+                                                        <input type="submit" class="btn btn-success" value="Reply" />
+
                                                     </div>
-                                                    <div class="action is-upload">
-                                                        <i data-feather="camera"></i>
-                                                        <input type="file" />
-                                                    </div>
-                                                    <a class="button is-solid primary-button raised">Post Comment</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
+
+
+                                @endforeach
+                                <form method="post" class="comment-form">
+                                    @csrf
+                                    <div class="card-footer">
+                                        <div class="media post-comment has-emojis">
+                                            <div class="media-content">
+                                                <div class="field">
+                                                    <p class="control">
+                                                        <textarea name="comment" id="" class="textarea comment-here-{{$post->id}} comment-textarea" rows="5" placeholder=" comment..."></textarea>
+                                                        <input type="hidden" name="post_id" value="{{ $post->id }}" />
+                                                    </p>
+                                                </div>
+                                                <div class="actions">
+                                                    <div class="image is-32x32">
+                                                        <img class="is-rounded" src="https://via.placeholder.com/300x300" data-demo-src="{{ asset('img/jenna.png') }}" data-user-popover="0" alt="" />
+                                                    </div>
+                                                    <div class="toolbar">
+                                                        <div class="action is-auto">
+                                                            <i data-feather="at-sign"></i>
+                                                        </div>
+                                                        <div class="action is-emoji">
+                                                            <i data-feather="smile"></i>
+                                                        </div>
+                                                        <div class="action is-upload">
+                                                            <i data-feather="camera"></i>
+                                                            <input type="file" />
+                                                        </div>
+                                                        <input type="submit" class="btn btn-success" value="Add Comment" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+
                                 <!-- Comments footer -->
                             </div>
                             <!-- /Post #1 Comments -->
@@ -2261,30 +2307,6 @@
                         </div>
                         <!-- /POST #2 -->
 
-                        <!-- Post 3 -->
-                        <!-- /partials/pages/feed/posts/feed-post3.html -->
-                        <!-- POST #3 -->
-
-                        <!-- /POST #3 -->
-
-                        <!-- Post 4 -->
-                        <!-- /partials/pages/feed/posts/feed-post4.html -->
-                        <!-- POST #4 -->
-
-                        <!-- /POST #4 -->
-
-                        <!-- Post 5 -->
-                        <!-- /partials/pages/feed/posts/feed-post5.html -->
-                        <!-- POST #5 -->
-
-                        <!-- /POST #5 -->
-
-                        <!-- Post 6 -->
-                        <!-- /partials/pages/feed/posts/feed-post6.html -->
-                        <!-- POST #6 -->
-
-                        <!-- /POST #6 -->
-
                         <!-- Load more posts -->
                         <div class="load-more-wrap has-text-centered">
                             <a href="#" class="load-more-button">Load More</a>
@@ -2366,23 +2388,27 @@
                                         <span>1 hour ago</span>
                                         @if (auth()->user()->id !== $user->id)
                                         @if ($user->followers->contains(auth()->user()->id))
-                                        <a href="#" class="btn btn-danger unfollow-button" data-user-id="{{ $user->id }}">Unfollow</a>
+                                        <a href="{{route('follow', $user->id)}}" class="btn btn-danger">Unfollow</a>
                                         @else
-                                        <a href="#" class="btn btn-primary follow-button" data-user-id="{{ $user->id }}">Follow</a>
+                                        <a href="{{route('follow', $user->id)}}" class="btn btn-primary">
+                                            Follow
+                                        </a>
                                         @endif
+
                                         @endif
 
                                     </div>
                                     <div class="my-2">
-                                        <span class="badge rounde-pill bg-light text-dark" id="following-count-{{ $user->id }}">
-                                            Following: {{ $user->followings_count }}
+                                        <span class="badge rounde-pill bg-light text-dark">
+                                            Following: {{$user->followings_count}}
                                         </span>
                                         <span class="badge rounde-pill bg-light text-dark">
-                                            Followers: {{ $user->followers_count }}
+                                            Followers: {{$user->followers_count}}
                                         </span>
                                     </div>
                                 </div>
                                 @endforeach
+
 
                             </div>
                         </div>
@@ -5617,7 +5643,7 @@
                         toastr.success('Like post successfully', 'Success');
                     }
 
-                    
+
                     var likeCount = parseInt($('#like-count').text());
                     $('#like-count').text(likeCount + 1);
                 },
@@ -5628,6 +5654,38 @@
             });
         }
 
+
+        function showReplyForm(commentId) {
+            console.log($('#reply-form-' + commentId));
+            $('#reply-form-' + commentId).css('display', 'block');
+
+            $(document).ready(function() {
+                // Event delegation for replying
+                $(document).on('click', '.btn-reply', function() {
+                    var commentId = $(this).data('comment-id');
+                    showReplyForm(commentId);
+                });
+
+                // Submit reply form without page reload
+                $('.comment-reply-form').submit(function(event) {
+                    event.preventDefault();
+                    var form = $(this);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: form.attr('action'),
+                        data: form.serialize(),
+                        success: function(data) {
+                            $('#comment-text').val('');
+                            form.css('display', 'none');
+                            // Handle any updates to the comments here
+                        }
+                    });
+                });
+            });
+
+
+        }
         //Add dislike_post
         function dislike_post($id) {
             var url = "{{ route('dislike') }}";
@@ -5647,7 +5705,7 @@
                         toastr.success('Dislike post successfully', 'Success');
                     }
 
-                   
+
                     var dislikeCount = parseInt($('#dislike-count').text());
                     $('#dislike-count').text(dislikeCount + 1);
                 },
@@ -5658,39 +5716,71 @@
             });
         }
     </script>
+   <script>
+    $(document).ready(function() {
+        $('.follow-button').click(function(e) {
+            e.preventDefault(); // Prevent the default anchor tag behavior
+            var $button = $(this);
+            var userId = $button.data('user-id');
+            var action = $button.hasClass('btn-danger') ? 'unfollow' : 'follow';
+
+            $.ajax({
+                type: 'POST',
+                url: '/user/' + userId + '/' + action,
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (action === 'unfollow') {
+                        $button.removeClass('btn-danger').addClass('btn-primary').text('Follow');
+                    } else {
+                        $button.removeClass('btn-primary').addClass('btn-danger').text('Unfollow');
+                    }
+                    $('#following-count-' + userId).text('Following: ' + response.followingsCount);
+                },
+                error: function(xhr, status, error) {}
+            });
+        });
+    });
+</script>
     <script>
+        //Comment
         $(document).ready(function() {
-            $('.follow-button, .unfollow-button').click(function(e) {
-                e.preventDefault();
-                var $button = $(this);
-                var userId = $button.data('user-id');
-                var action = $button.hasClass('follow-button') ? 'follow' : 'unfollow';
+            $('.comment-form').submit(function(event) {
+                event.preventDefault();
+
+
+                let formData = new FormData(this);
+                console.log({
+                    formData
+                });
+
+                var postId = $('input[name="post_id"]').val();
+                var commentText = $('.comment-here-' + postId).val();
 
                 $.ajax({
                     type: 'POST',
-                    url: '/user/' + userId + '/' + action,
+                    url: "{{ route('comments.store') }}",
                     data: {
-                        _token: '{{ csrf_token() }}'
+                        '_token': '{{ csrf_token() }}',
+                        'comment': commentText,
+                        'post_id': postId
                     },
-                    success: function(response) {
-                        if (response.status === 'followed') {
-                            $button.removeClass('follow-button').addClass('unfollow-button').text('Unfollow');
-                        } else if (response.status === 'unfollowed') {
-                            $button.removeClass('unfollow-button').addClass('follow-button').text('Follow');
-                        }
-                        $('#following-count-' + userId).text('Following: ' + response.followingsCount);
-                    },
-                    error: function(xhr, status, error) {}
+                    success: function(data) {
+                        console.log(data);
+                        $('#comments-container').html(data);
+                        $('#comment-text').val('');
+                    }
                 });
             });
         });
     </script>
 
 
-
     <!-- Concatenated js plugins and jQuery -->
     <script src="{{asset ('assets/js/app.js') }}"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{{asset ('assets/https://js.stripe.com/v3') }}"></script>
+    <!-- <script src="https://js.stripe.com/v3/"></script> -->
     <script src="{{asset ('assets/data/tipuedrop_content.js') }}"></script>
 
     <!-- Core js -->
@@ -5718,7 +5808,6 @@
     <!-- Landing page js -->
 
     <!-- Signup page js -->
-    <script src="{{asset ('assets/js/app.js') }}"></script>
 
     <!-- Feed pages js -->
     <script src="{{asset ('assets/js/feed.js') }}"></script>

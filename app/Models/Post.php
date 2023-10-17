@@ -32,4 +32,9 @@ class Post extends Model
         }
         return $arr;
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->whereNull('parent_id');
+    }
 }
