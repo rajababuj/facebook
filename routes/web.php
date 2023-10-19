@@ -21,7 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'user', 'middleware' => 'web'], function () {
+Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 
     Route::get('/dashboard', [RegisterController::class, 'dashboard'])->name('dashboard');
     Route::get('user/{following_id}/follow', [RegisterController::class, 'follow'])->name('follow');
@@ -37,6 +37,8 @@ Route::group(['prefix' => 'user', 'middleware' => 'web'], function () {
 Route::get('user/register', [RegisterController::class, 'Register'])->name('user.register');
 Route::post('user/register', [RegisterController::class, 'store'])->name('user.register.submit');
 
-Route::get('user/login', [LoginController::class, 'index'])->name('user.login ');
+Route::get('user/login', [LoginController::class, 'index'])->name('user.login');
 Route::post('user/login', [LoginController::class, 'login'])->name('login.submit');
+
+Route::get('user/logout', [LoginController::class, 'logout'])->name('user.logout');
 

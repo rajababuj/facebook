@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+/*
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +21,14 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//auth
+Route::post('register',[RegisterController::class, 'register']);
+Route::post('login',[LoginController::class, 'login']);
+
+
+
+
+    Route::get('/chat/get-chats',[ChatController::class, 'getChats']);
+    Route::post('/chat/create-chat',[ChatController::class, 'createChat']);
+    

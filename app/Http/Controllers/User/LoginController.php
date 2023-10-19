@@ -21,7 +21,6 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required|min:6',
         ]);
-
         $credential = [
             'email' => $request->email,
             'password' => $request->password
@@ -34,4 +33,11 @@ class LoginController extends Controller
         }
     }
     
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('user.login')->with('success', 'You have been successfully logged out');
+
+    }
+
 }

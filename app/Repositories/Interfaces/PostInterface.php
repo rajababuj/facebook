@@ -6,7 +6,7 @@ interface PostInterface
 {
 
 
-    public function storePost($post);
+    public function storePost($data);
 
     public function like($post);
     public function dislike($post);

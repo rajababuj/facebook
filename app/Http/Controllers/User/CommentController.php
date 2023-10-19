@@ -8,6 +8,10 @@ use App\Models\Comment;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('Auth:web')->except('home');
+    }
 
     public function store(Request $request)
     {

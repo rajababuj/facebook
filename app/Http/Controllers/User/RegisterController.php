@@ -11,6 +11,8 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use LDAP\Result;
+
 
 class RegisterController extends Controller
 {
@@ -29,9 +31,35 @@ class RegisterController extends Controller
 
         $comments = Comment::all();
 
-        $users = User::withCount(["followings", "followers"])->get();
+        // pending_requests
+        $p_follower_id = DB::table('followings')->where('follower_id', auth()->id())
+            ->where('status', 'pending')
+            ->get()
+            ->pluck('following_id');
+
+        $pending_users = User::whereIn('id', $p_follower_id)->withCount(["followings", "followers"])->get();
+
+        $a_follower_id = DB::table('followings')->where('follower_id', auth()->id())
+            ->where('status', 'accept')
+            ->get()
+            ->pluck('following_id');
+
+        $not_allowed = $p_follower_id->toArray()+$a_follower_id->toArray()+[Auth::id()];
+        $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
+
+        // $p_follower_id = DB::table('followers')->where('followings_id', auth()->id())
+        // ->where('status', 'pending')
+        // ->get()
+        // ->pluck('follower_id');
+
         
-        return view('dashboard', compact('users', 'posts', 'comments'));
+        // $a_follower_id = DB::table('followers')->where('followings_id', auth()->id())
+        //     ->where('status', 'accept')
+        //     ->get()
+        //     ->pluck('followers_id');
+
+
+        return view('dashboard', compact('posts', 'comments','pending_users','users'));
     }
 
     public function store(RegisterRequest $request)
@@ -59,6 +87,8 @@ class RegisterController extends Controller
     {
         // dd($following_id);
         $following = User::find($following_id);
+        $response = [];
+
         if (auth()->user()->followings->contains($following_id)) {
             auth()->user()->followings()->detach($following);
         } else {

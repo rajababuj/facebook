@@ -14,7 +14,7 @@
 
     <title>Friendkit | Feed</title>
     <script src="{{asset ('assets/cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js') }}"></script>
-  
+
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <!-- Google Tag Manager -->
@@ -31,7 +31,7 @@
                 dl = l != 'dataLayer' ? '&l=' + l : ''
             j.async = true
             j.src = '../www.googletagmanager.com/gtm5445.html?id=' + i + dl
-            f.parentNode.insertBefore(j,f)
+            f.parentNode.insertBefore(j, f)
         })(window, document, 'script', 'dataLayer', 'GTM-KQHJPZP')
     </script>
     <!-- End Google Tag Manager -->
@@ -577,7 +577,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <a  class="account-item">
+                                    <a href="{{route('user.logout')}}" class="account-item">
                                         <div class="media">
                                             <div class="icon-wrap">
                                                 <i data-feather="power"></i>
@@ -2408,6 +2408,38 @@
                                     </div>
                                 </div>
                                 @endforeach
+                                @foreach($pending_users as $user)
+                                <div class="story-block">
+                                    <div class="img-wrapper">
+                                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" data-user-popover="1" alt="" />
+                                    </div>
+                                    <div class="story-meta">
+                                        <span>{{$user->name}}</span>
+                                        <span>1 hour ago</span>
+                                        @if (auth()->user()->id !== $user->id)
+                                        @if ($user->followers->contains(auth()->user()->id))
+                                        <a href="{{route('follow', $user->id)}}" class="btn btn-danger">Accept</a>
+                                        @else
+                                        <a href="{{route('follow', $user->id)}}" class="btn btn-primary">
+                                            Regect
+                                        </a>
+                                        @endif
+
+                                        @endif
+
+                                    </div>
+                                    <div class="my-2">
+                                        <span class="badge rounde-pill bg-light text-dark">
+                                            Following: {{$user->followings_count}}
+                                        </span>
+                                        <span class="badge rounde-pill bg-light text-dark">
+                                            Followers: {{$user->followers_count}}
+                                        </span>
+                                    </div>
+                                </div>
+                                @endforeach
+                                
+
 
 
                             </div>
@@ -5660,13 +5692,13 @@
             $('#reply-form-' + commentId).css('display', 'block');
 
             $(document).ready(function() {
-                // Event delegation for replying
+
                 $(document).on('click', '.btn-reply', function() {
                     var commentId = $(this).data('comment-id');
                     showReplyForm(commentId);
                 });
 
-                // Submit reply form without page reload
+
                 $('.comment-reply-form').submit(function(event) {
                     event.preventDefault();
                     var form = $(this);
@@ -5678,7 +5710,7 @@
                         success: function(data) {
                             $('#comment-text').val('');
                             form.css('display', 'none');
-                            // Handle any updates to the comments here
+
                         }
                     });
                 });
@@ -5716,33 +5748,33 @@
             });
         }
     </script>
-   <script>
-    $(document).ready(function() {
-        $('.follow-button').click(function(e) {
-            e.preventDefault(); // Prevent the default anchor tag behavior
-            var $button = $(this);
-            var userId = $button.data('user-id');
-            var action = $button.hasClass('btn-danger') ? 'unfollow' : 'follow';
+    <script>
+        $(document).ready(function() {
+            $('.follow-button').click(function(e) {
+                e.preventDefault();
+                var $button = $(this);
+                var userId = $button.data('user-id');
+                var action = $button.hasClass('btn-danger') ? 'unfollow' : 'follow';
 
-            $.ajax({
-                type: 'POST',
-                url: '/user/' + userId + '/' + action,
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (action === 'unfollow') {
-                        $button.removeClass('btn-danger').addClass('btn-primary').text('Follow');
-                    } else {
-                        $button.removeClass('btn-primary').addClass('btn-danger').text('Unfollow');
-                    }
-                    $('#following-count-' + userId).text('Following: ' + response.followingsCount);
-                },
-                error: function(xhr, status, error) {}
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/' + userId + '/' + action,
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (action === 'unfollow') {
+                            $button.removeClass('btn-danger').addClass('btn-primary').text('Follow');
+                        } else {
+                            $button.removeClass('btn-primary').addClass('btn-danger').text('Unfollow');
+                        }
+                        $('#following-count-' + userId).text('Following: ' + response.followingsCount);
+                    },
+                    error: function(xhr, status, error) {}
+                });
             });
         });
-    });
-</script>
+    </script>
     <script>
         //Comment
         $(document).ready(function() {
@@ -5779,8 +5811,8 @@
 
     <!-- Concatenated js plugins and jQuery -->
     <script src="{{asset ('assets/js/app.js') }}"></script>
-    <script src="{{asset ('assets/https://js.stripe.com/v3') }}"></script>
-    <!-- <script src="https://js.stripe.com/v3/"></script> -->
+    
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="{{asset ('assets/data/tipuedrop_content.js') }}"></script>
 
     <!-- Core js -->
@@ -5801,7 +5833,7 @@
     <script src="{{asset ('assets/js/explorer.js') }}"></script>
     <script src="{{asset ('assets/js/widgets.js') }}"></script>
     <script src="{{asset ('assets/js/modal-uploader.js') }}"></script>
-    <script src="{{asset ('assets/js/popovers-users.js') }}"></script>
+    <!-- <script src="{{asset ('assets/js/popovers-users.js') }}"></script> -->
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 

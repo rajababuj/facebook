@@ -155,7 +155,7 @@
     <script src="{{asset ('assets/js/explorer.js') }}"></script>
     <script src="{{asset ('assets/js/widgets.js') }}"></script>
     <script src="{{asset ('assets/js/modal-uploader.js') }}"></script>
-    <script src="{{asset ('assets/js/popovers-users.js') }}"></script>
+    <!-- <script src="{{asset ('assets/js/popovers-users.js') }}"></script> -->
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 

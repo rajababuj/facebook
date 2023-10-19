@@ -9,8 +9,10 @@ use App\Models\PostLikesDislike;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\PostInterface;
 
+
 class PostController extends Controller
 {
+    
     protected $postRepository;
 
     public function __construct(PostInterface $postRepository)
@@ -21,35 +23,20 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $data = $request->all();
-
-        $post = new Post;
-        $post->description = $data['description'];
-
-        if ($request->has('media')) {
-            $media = $request->media;
-            $name = time() . '.' . $media->extension();
-            $path = public_path() . '/assets/images/media';
-            $media->move($path, $name);
-            $post->media = $name;
+        $data = $this->postRepository->storePost($data); 
+        if($data['status']){
+            return response()->json([
+                'message' => 'Post added successfully!'
+            ]);
+        }else{
+            return response()->json([
+                'message' => 'Something wrong!'
+            ]);
         }
 
-        $post->activity = $data['activity'];
-        $post->tag_user = $data['tag_user'];
-        $post->location = $data['location'];
-        $post->link = $data['link'];
-        $post->user_id = Auth::id();
-
-        $this->postRepository->storePost($post);
-
-        $post->save();
-
-        return response()->json([
-            'message' => 'Post added successfully!'
-        ]);
     }
-
-
     // Save Like Or dislike
     public function like(Request $request)
     {
