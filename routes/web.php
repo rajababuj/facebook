@@ -42,3 +42,6 @@ Route::post('user/login', [LoginController::class, 'login'])->name('login.submit
 
 Route::get('user/logout', [LoginController::class, 'logout'])->name('user.logout');
 
+Route::get('/', 'ChatsController@index');
+Route::get('messages', 'ChatsController@fetchMessages');
+

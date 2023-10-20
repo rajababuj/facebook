@@ -2438,6 +2438,36 @@
                                     </div>
                                 </div>
                                 @endforeach
+                                @foreach($pending_auth_users as $user)
+                                <div class="story-block">
+                                    <div class="img-wrapper">
+                                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" data-user-popover="1" alt="" />
+                                    </div>
+                                    <div class="story-meta">
+                                        <span>{{$user->name}}</span>
+                                        <span>1 hour ago</span>
+                                        <!-- @if (auth()->user()->id !== $user->id)
+                                        @if ($user->followers->contains(auth()->user()->id))
+                                        <a href="{{route('follow', $user->id)}}" class="btn btn-danger">Accept</a>
+                                        @else
+                                        <a href="{{route('follow', $user->id)}}" class="btn btn-primary">
+                                            Regect
+                                        </a>
+                                        @endif
+
+                                        @endif -->
+
+                                    </div>
+                                    <div class="my-2">
+                                        <span class="badge rounde-pill bg-light text-dark">
+                                            Following: {{$user->followings_count}}
+                                        </span>
+                                        <span class="badge rounde-pill bg-light text-dark">
+                                            Followers: {{$user->followers_count}}
+                                        </span>
+                                    </div>
+                                </div>
+                                @endforeach
                                 
 
 
@@ -4016,7 +4046,7 @@
                         <div class="message-block">
                             <span>8:03am</span>
                             <div class="message-text">
-                                Hi Jenna! I made a new design, and i wanted to show it to you.
+                             
                             </div>
                         </div>
                     </div>

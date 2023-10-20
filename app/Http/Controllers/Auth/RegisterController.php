@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\RegistrationRequest;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -20,6 +21,7 @@ class RegisterController extends Controller
         $success['token'] = $user->createToken('user')->accessToken;
         $success['name'] = $user->name;
         $success['success'] = true;
+        dd(Auth::guard());
         return response()->json($success, 200);
 
     }

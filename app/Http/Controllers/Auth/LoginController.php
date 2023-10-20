@@ -9,27 +9,36 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login (LoginRequest $request){
+  public function __construct()
+{
+    $this->middleware('auth:api');
+}
 
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password,
-        ];
+  public function login(LoginRequest $request)
+  {
+    dd(Auth::guard());
+    if (Auth::guard('api')->attempt([
+      'email' => $request->email,
+      'password' => $request->password,
+    ])) {
+      $user = Auth::guard('api')->user();
 
-        if(auth()->attempt($credentials )){
-          $user = Auth::user();
+      
+      $user->tokens->each(function ($token) {
+        $token->delete();
+      });
 
-          $user->tokens()->delete();
-          $success['id'] = $user->id;
-          $success['token'] = $user->createToken(request()->userAgent())->accessToken;
-          $success['name'] = $user->name;
-          $success['success'] = true;
-          
-          return response()->json( $success,200);
-          
-        }else{
-          return response()->json(['error'=> __('auth.Unauthorised')],401);
-        }
-   }
+      $token = $user->createToken(request()->hello());
 
+      return response()->json([
+        'id' => $user->id,
+        'token' => $token->plainTextToken,
+        'name' => $user->name,
+        'success' => true,
+        dd(Auth::guard())
+      ], 200);
+    } else {
+      return response()->json(['error' => __('auth.Unauthorised')], 401);
+    }
+  }
 }

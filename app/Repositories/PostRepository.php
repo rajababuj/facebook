@@ -7,6 +7,7 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\MediaHelper;
 use Illuminate\Support\Facades\DB;
+use App\Models\PostLikesDislike; 
 
 
 
@@ -36,21 +37,30 @@ class PostRepository implements PostInterface
         } catch (\Exception $e) {
             DB::rollback();
 
-            // You can log the error or handle it as needed.
-            // For example, return an error message:
             return ['status' => false, 'error' => $e->getMessage()];
         }
     }
 
-
-
     public function like($post)
     {
-        return $post->save();
-    }
+        $post_like = new PostLikesDislike();
+        $post_like->post_id = $post['post_id'];
+        $post_like->user_id = Auth::user()->id;
+        $post_like->is_like = '1';
+        $post_like->save();
 
+        return ['status' => true];
+
+    }
     public function dislike($post)
     {
-        return $post->save();
+        $post_dislike = new PostLikesDislike();
+        $post_dislike->post_id = $post['post_id'];
+        $post_dislike->user_id = Auth::user()->id;
+        $post_dislike->is_like = '0';
+        $post_dislike->save();
+        return ['status' => true];
+
     }
+   
 }

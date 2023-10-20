@@ -4,15 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Post;
-use App\Models\PostLikesDislike;
-use Illuminate\Support\Facades\Auth;
 use App\Repositories\Interfaces\PostInterface;
 
 
 class PostController extends Controller
 {
-    
+
     protected $postRepository;
 
     public function __construct(PostInterface $postRepository)
@@ -25,52 +22,43 @@ class PostController extends Controller
     {
         // dd($request->all());
         $data = $request->all();
-        $data = $this->postRepository->storePost($data); 
-        if($data['status']){
+        $data = $this->postRepository->storePost($data);
+        if ($data['status']) {
             return response()->json([
                 'message' => 'Post added successfully!'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'message' => 'Something wrong!'
             ]);
         }
-
     }
-    // Save Like Or dislike
+    // Save Like 
     public function like(Request $request)
     {
         $post = $request->all();
+        $post = $this->postRepository->like($post);
 
-        if ($post['type'] == 'like') {
-            $post_like = new PostLikesDislike();
-            $post_like->post_id = $post['post_id'];
-            $post_like->user_id = Auth::user()->id;
-            $post_like->is_like = '1';
-            $result = $this->postRepository->like($post_like);
-
-            if ($result) {
-                return response()->json(['message' => 'Liked']);
-            }
+        if ($post['status']) {
+            return response()->json(['message' => 'Liked']);
+        } else {
+            return response()->json(['message' => 'Something went wrong']);
         }
-
-        return response()->json(['message' => 'Failed to like the post']);
     }
+
 
     public function dislike(Request $request)
     {
-        $post = $request->all();
+        $post_dislike = $request->all();
+        $post_dislike = $this->postRepository->like($post_dislike);
 
-        $post_dislike = new PostLikesDislike();
-        $post_dislike->post_id = $post['post_id'];
-        $post_dislike->user_id = Auth::user()->id;
-        $post_dislike->is_like = '0';
-
-        $result = $this->postRepository->like($post_dislike);
-        if ($result) {
-            return response()->json(['message' => 'Disliked']);
+        if ($post_dislike['status']){
+            return response()->json(['message' => 'DisLiked']);
+        } else {
+            return response()->json(['message'=> 'Failed to Dislike the post']);
         }
+        
 
-        return response()->json(['message' => 'Failed to Dislike the post']);
+        
     }
 }

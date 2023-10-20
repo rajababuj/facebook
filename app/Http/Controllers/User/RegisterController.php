@@ -44,22 +44,23 @@ class RegisterController extends Controller
             ->get()
             ->pluck('following_id');
 
-        $not_allowed = $p_follower_id->toArray()+$a_follower_id->toArray()+[Auth::id()];
-        $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
 
-        // $p_follower_id = DB::table('followers')->where('followings_id', auth()->id())
-        // ->where('status', 'pending')
-        // ->get()
-        // ->pluck('follower_id');
+        $ap_follower_id = DB::table('followings')->where('following_id', auth()->id())
+        ->where('status', 'pending')
+        ->get()
+        ->pluck('follower_id');
+        $pending_auth_users = User::whereIn('id', $ap_follower_id)->withCount(["followings", "followers"])->get();
 
         
-        // $a_follower_id = DB::table('followers')->where('followings_id', auth()->id())
-        //     ->where('status', 'accept')
-        //     ->get()
-        //     ->pluck('followers_id');
+        $aa_follower_id = DB::table('followings')->where('following_id', auth()->id())
+            ->where('status', 'accept')
+            ->get()
+            ->pluck('follower_id');
 
 
-        return view('dashboard', compact('posts', 'comments','pending_users','users'));
+            $not_allowed = $p_follower_id->toArray()+$a_follower_id->toArray()+[Auth::id()]+$aa_follower_id->toArray();
+            $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
+        return view('dashboard', compact('posts', 'comments','pending_users','users', 'pending_auth_users'));
     }
 
     public function store(RegisterRequest $request)
@@ -79,10 +80,7 @@ class RegisterController extends Controller
 
         return redirect()->route('dashboard');
     }
-
-
-
-
+    
     public function follow($following_id)
     {
         // dd($following_id);

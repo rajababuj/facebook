@@ -16,7 +16,9 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
+     * 
      */
+    // protected $guard = 'api';
     protected $fillable = [
         'name',
         'email',
@@ -42,16 +44,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function followings(){
-        return $this->belongsToMany(User::class,'followings','follower_id', 'following_id');
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followings', 'follower_id', 'following_id');
     }
-    public function followers(){
-        return $this->belongsToMany(User::class,'followings', 'following_id','follower_id');
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followings', 'following_id', 'follower_id');
     }
 
     public function chats()
     {
         return $this->belongsToMany(Chat::class);
     }
-  
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

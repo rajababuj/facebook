@@ -26,7 +26,7 @@ class CreateChatRequest extends FormRequest
         return [
             'users' => ['required','array'],
             'users.*' => ['sometimes','exists:users,id'],
-            'isPrivate' => ['required','boolean'],
+            'isprivate' => ['required', 'boolean'],
         ];
     }
 }

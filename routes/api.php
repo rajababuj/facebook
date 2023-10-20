@@ -29,6 +29,10 @@ Route::post('login',[LoginController::class, 'login']);
 
 
 
-    Route::get('/chat/get-chats',[ChatController::class, 'getChats']);
+ 
     Route::post('/chat/create-chat',[ChatController::class, 'createChat']);
+    Route::get('/chat/get-chats',[ChatController::class, 'getChats']);
+
+
+    
     
