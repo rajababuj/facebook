@@ -5,6 +5,7 @@ use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\PostController;
 use App\Http\Controllers\User\CommentController;
+use App\Http\Controllers\ChatsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,9 +40,11 @@ Route::post('user/register', [RegisterController::class, 'store'])->name('user.r
 
 Route::get('user/login', [LoginController::class, 'index'])->name('user.login');
 Route::post('user/login', [LoginController::class, 'login'])->name('login.submit');
-
 Route::get('user/logout', [LoginController::class, 'logout'])->name('user.logout');
 
-Route::get('/', 'ChatsController@index');
-Route::get('messages', 'ChatsController@fetchMessages');
 
+// Route::get('chat', [PostController::class, 'index'])->name('chat');
+
+Route::get('chat', [ChatsController::class, 'index'])->name('chat');
+Route::get('messages', [ChatsController::class, 'fetchMessages'])->name('fetchMessages');
+Route::post('messages', [ChatsController::class, 'sendMessage'])->name('sendMessage');

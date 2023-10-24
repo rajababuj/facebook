@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Message;
 use LDAP\Result;
 
 
@@ -30,6 +31,11 @@ class RegisterController extends Controller
         $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments.replies')->get();
 
         $comments = Comment::all();
+        $messages = Message::all();
+        $followings = Auth::user()->followings;
+        $followers = Auth::user()->followers;
+    
+        // dd($followersUsers);
 
         // pending_requests
         $p_follower_id = DB::table('followings')->where('follower_id', auth()->id())
@@ -60,7 +66,7 @@ class RegisterController extends Controller
 
             $not_allowed = $p_follower_id->toArray()+$a_follower_id->toArray()+[Auth::id()]+$aa_follower_id->toArray();
             $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
-        return view('dashboard', compact('posts', 'comments','pending_users','users', 'pending_auth_users'));
+        return view('dashboard', compact('posts', 'comments','pending_users','users', 'pending_auth_users', 'messages', 'followers', 'followings'));
     }
 
     public function store(RegisterRequest $request)

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Interfaces\PostInterface;
 
 
+
 class PostController extends Controller
 {
 
@@ -61,4 +62,5 @@ class PostController extends Controller
 
         
     }
+   
 }

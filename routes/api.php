@@ -22,17 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//auth
-Route::post('register',[RegisterController::class, 'register']);
-Route::post('login',[LoginController::class, 'login']);
+
 
 
 
 
  
-    Route::post('/chat/create-chat',[ChatController::class, 'createChat']);
-    Route::get('/chat/get-chats',[ChatController::class, 'getChats']);
-
-
     
     

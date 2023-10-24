@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChatsTable extends Migration
+class AddFileToMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateChatsTable extends Migration
      */
     public function up()
     {
-        Schema::create('chats', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('private')->default(true);
-            $table->boolean('direct_message')->default(false);
-            $table->timestamps();
+        Schema::table('messages', function (Blueprint $table) {
+            $table->string('file')->nullable();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateChatsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chats');
+        Schema::table('messages', function (Blueprint $table) {
+            $table->dropColumn('file');
+        });
     }
 }

@@ -497,7 +497,7 @@
                                                 </div>
                                             </div>
                                             <div class="media-content">
-                                                <h3>Jenna Davis</h3>
+                                                <h3>{{Auth()->user()->name}}</h3>
                                                 <small>Main account</small>
                                             </div>
                                             <div class="media-right">
@@ -1855,7 +1855,7 @@
                                             <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" data-user-popover="1" alt="" />
                                         </div>
                                         <div class="user-info">
-                                            <a href="#">Dan Walker</a>
+                                            <h3>{{Auth()->user()->name}}</h3>
                                             <span class="time">July 26 2018, 01:03pm</span>
                                         </div>
                                     </div>
@@ -2468,7 +2468,7 @@
                                     </div>
                                 </div>
                                 @endforeach
-                                
+
 
 
 
@@ -3967,6 +3967,8 @@
                 </div>
                 <!-- User list -->
                 <div class="conversations-list has-slimscroll-xs">
+                    @foreach($followings as $following)
+                    <li>{{ $following->name }}</li>
                     <!-- User -->
                     <div class="user-item is-active" data-chat-user="dan" data-full-name="Dan Walker" data-status="Online">
                         <div class="avatar-container">
@@ -3974,55 +3976,9 @@
                             <div class="user-status is-online"></div>
                         </div>
                     </div>
-                    <!-- User -->
-                    <div class="user-item" data-chat-user="stella" data-full-name="Stella Bergmann" data-status="Busy">
-                        <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/stella.jpg')}}" alt="" />
-                            <div class="user-status is-busy"></div>
-                        </div>
-                    </div>
-                    <!-- User -->
-                    <div class="user-item" data-chat-user="daniel" data-full-name="Daniel Wellington" data-status="Away">
-                        <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" alt="" />
-                            <div class="user-status is-away"></div>
-                        </div>
-                    </div>
-                    <!-- User -->
-                    <div class="user-item" data-chat-user="david" data-full-name="David Kim" data-status="Busy">
-                        <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/david.jpg')}}" alt="" />
-                            <div class="user-status is-busy"></div>
-                        </div>
-                    </div>
-                    <!-- User -->
-                    <div class="user-item" data-chat-user="edward" data-full-name="Edward Mayers" data-status="Online">
-                        <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/edward.jpg')}}" alt="" />
-                            <div class="user-status is-online"></div>
-                        </div>
-                    </div>
-                    <!-- User -->
-                    <div class="user-item" data-chat-user="elise" data-full-name="Elise Walker" data-status="Away">
-                        <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/elise.jpg')}}" alt="" />
-                            <div class="user-status is-away"></div>
-                        </div>
-                    </div>
-                    <!-- User -->
-                    <div class="user-item" data-chat-user="nelly" data-full-name="Nelly Schwartz" data-status="Busy">
-                        <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/nelly.png')}}" alt="" />
-                            <div class="user-status is-busy"></div>
-                        </div>
-                    </div>
-                    <!-- User -->
-                    <div class="user-item" data-chat-user="milly" data-full-name="Milly Augustine" data-status="Busy">
-                        <div class="avatar-container">
-                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/milly.jpg')}}" alt="" />
-                            <div class="user-status is-busy"></div>
-                        </div>
-                    </div>
+                    @endforeach
+
+
                 </div>
                 <!-- Add Conversation -->
                 <div class="footer-item">
@@ -4035,478 +3991,41 @@
             <!-- Chat body -->
             <div id="chat-body" class="chat-body is-opened">
                 <!-- Conversation with Dan -->
-                <div id="dan-conversation" class="chat-body-inner has-slimscroll">
+                <div id="dan-conversation" class="chat-body-inner has-slimscroll" style="height: 500px; background-color: white">
+
                     <div class="date-divider">
                         <hr class="date-divider-line" />
                         <span class="date-divider-text">Today</span>
                     </div>
+                    @foreach($messages as $message)
+                    @if($message->user_id == Auth::id())
+                    <div class="chat-message is-sent">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
+                        <div class="message-block">
+                            <span>{{ $message->created_at->format('h:ia') }}</span>
+                            <div class="message-text">{{ $message->message }}</div>
+                        </div>
+                    </div>
+                    @else
 
                     <div class="chat-message is-received">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
                         <div class="message-block">
-                            <span>8:03am</span>
-                            <div class="message-text">
-                             
-                            </div>
+                            <span>{{ $message->created_at->format('h:ia') }}</span>
+                            <div class="message-text">{{ $message->message }}</div>
                         </div>
                     </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>8:03am</span>
-                            <div class="message-text">
-                                It's quite clean and it's inspired from Bulkit.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>8:12am</span>
-                            <div class="message-text">Oh really??! I want to see that.</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>8:13am</span>
-                            <div class="message-text">FYI it was done in less than a day.</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>8:17am</span>
-                            <div class="message-text">
-                                Great to hear it. Just send me the PSD files so i can have a look at it.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>8:18am</span>
-                            <div class="message-text">
-                                And if you have a prototype, you can also send me the link to it.
-                            </div>
-                        </div>
-                    </div>
+                    @endif
+                    @endforeach
                 </div>
+            </div>
 
-                <!-- Conversation with Stella -->
-                <div id="stella-conversation" class="chat-body-inner has-slimscroll is-hidden">
-                    <div class="date-divider">
-                        <hr class="date-divider-line" />
-                        <span class="date-divider-text">Today</span>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>10:34am</span>
-                            <div class="message-text">
-                                Hey Stella! Aren't we supposed to go the theatre after work?.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>10:37am</span>
-                            <div class="message-text">Just remembered it.</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/stella.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>11:22am</span>
-                            <div class="message-text">
-                                Yeah you always do that, forget about everything.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Conversation with Daniel -->
-                <div id="daniel-conversation" class="chat-body-inner has-slimscroll is-hidden">
-                    <div class="date-divider">
-                        <hr class="date-divider-line" />
-                        <span class="date-divider-text">Yesterday</span>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>3:24pm</span>
-                            <div class="message-text">
-                                Daniel, Amanda told me about your issue, how can I help?
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>3:42pm</span>
-                            <div class="message-text">
-                                Hey Jenna, thanks for answering so quickly. Iam stuck, i need a car.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>3:43pm</span>
-                            <div class="message-text">
-                                Can i borrow your car for a quick ride to San Fransisco? Iam running
-                                behind and there' no train in sight.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Conversation with David -->
-                <div id="david-conversation" class="chat-body-inner has-slimscroll is-hidden">
-                    <div class="date-divider">
-                        <hr class="date-divider-line" />
-                        <span class="date-divider-text">Today</span>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>12:34pm</span>
-                            <div class="message-text">
-                                Damn you! Why would you even implement this in the game?.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>12:32pm</span>
-                            <div class="message-text">I just HATE aliens.</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/david.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>13:09pm</span>
-                            <div class="message-text">
-                                C'mon, you just gotta learn the tricks. You can't expect aliens to
-                                behave like humans. I mean that's how the mechanics are.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/david.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>13:11pm</span>
-                            <div class="message-text">
-                                I checked the replay and for example, you always get supply blocked.
-                                That's not the right thing to do.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>13:12pm</span>
-                            <div class="message-text">
-                                I know but i struggle when i have to decide what to make from larvas.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/david.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>13:17pm</span>
-                            <div class="message-text">Join me in game, i'll show you.</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Conversation with Edward -->
-                <div id="edward-conversation" class="chat-body-inner has-slimscroll">
-                    <div class="date-divider">
-                        <hr class="date-divider-line" />
-                        <span class="date-divider-text">Monday</span>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/edward.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>4:55pm</span>
-                            <div class="message-text">Hey Jenna, what's up?</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/edward.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>4:56pm</span>
-                            <div class="message-text">
-                                Iam coming to LA tomorrow. Interested in having lunch?
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>5:21pm</span>
-                            <div class="message-text">
-                                Hey mate, it's been a while. Sure I would love to.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/edward.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>5:27pm</span>
-                            <div class="message-text">
-                                Ok. Let's say i pick you up at 12:30 at work, works?
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>5:43pm</span>
-                            <div class="message-text">Yup, that works great.</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>5:44pm</span>
-                            <div class="message-text">
-                                And yeah, don't forget to bring some of my favourite cheese cake.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/edward.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>5:27pm</span>
-                            <div class="message-text">No worries</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Conversation with Edward -->
-                <div id="elise-conversation" class="chat-body-inner has-slimscroll is-hidden">
-                    <div class="date-divider">
-                        <hr class="date-divider-line" />
-                        <span class="date-divider-text">September 28</span>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>11:53am</span>
-                            <div class="message-text">
-                                Elise, i forgot my folder at your place yesterday.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>11:53am</span>
-                            <div class="message-text">I need it badly, it's work stuff.</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/elise.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>12:19pm</span>
-                            <div class="message-text">
-                                Yeah i noticed. I'll drop it in half an hour at your office.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Conversation with Nelly -->
-                <div id="nelly-conversation" class="chat-body-inner has-slimscroll is-hidden">
-                    <div class="date-divider">
-                        <hr class="date-divider-line" />
-                        <span class="date-divider-text">September 17</span>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>8:22pm</span>
-                            <div class="message-text">So you watched the movie?</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>8:22pm</span>
-                            <div class="message-text">Was it scary?</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/nelly.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>9:03pm</span>
-                            <div class="message-text">
-                                It was so frightening, i felt my heart was about to blow inside my
-                                chest.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Conversation with Milly -->
-                <div id="milly-conversation" class="chat-body-inner has-slimscroll">
-                    <div class="date-divider">
-                        <hr class="date-divider-line" />
-                        <span class="date-divider-text">Today</span>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/milly.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>2:01pm</span>
-                            <div class="message-text">Hello Jenna, did you read my proposal?</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/milly.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>2:01pm</span>
-                            <div class="message-text">Didn't hear from you since i sent it.</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>2:02pm</span>
-                            <div class="message-text">
-                                Hello Milly, Iam really sorry, Iam so busy recently, but i had the time
-                                to read it.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/milly.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>2:04pm</span>
-                            <div class="message-text">And what did you think about it?</div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>2:05pm</span>
-                            <div class="message-text">
-                                Actually it's quite good, there might be some small changes but overall
-                                it's great.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-sent">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                        <div class="message-block">
-                            <span>2:07pm</span>
-                            <div class="message-text">
-                                I think that i can give it to my boss at this stage.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-message is-received">
-                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/milly.jpg')}}" alt="" />
-                        <div class="message-block">
-                            <span>2:09pm</span>
-                            <div class="message-text">Crossing fingers then</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Compose message area -->
-                <div class="chat-action">
-                    <div class="chat-action-inner">
-                        <div class="control">
-                            <textarea class="textarea comment-textarea" rows="1"></textarea>
-                            <div class="dropdown compose-dropdown is-spaced is-accent is-up dropdown-trigger">
-                                <div>
-                                    <div class="add-button">
-                                        <div class="button-inner">
-                                            <i data-feather="plus"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dropdown-menu" role="menu">
-                                    <div class="dropdown-content">
-                                        <a href="#" class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="code"></i>
-                                                <div class="media-content">
-                                                    <h3>Code snippet</h3>
-                                                    <small>Add and paste a code snippet.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="file-text"></i>
-                                                <div class="media-content">
-                                                    <h3>Note</h3>
-                                                    <small>Add and paste a note.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <hr class="dropdown-divider" />
-                                        <a class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="server"></i>
-                                                <div class="media-content">
-                                                    <h3>Remote file</h3>
-                                                    <small>Add a file from a remote drive.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <a class="dropdown-item">
-                                            <div class="media">
-                                                <i data-feather="monitor"></i>
-                                                <div class="media-content">
-                                                    <h3>Local file</h3>
-                                                    <small>Add a file from your computer.</small>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Compose message area -->
+            <div class="chat-action">
+                <div class="chat-action-inner">
+                    <div class="control" style="display: flex;">
+                        <textarea class="textarea comment-textarea" id="message" rows="1" style="margin-top: 350px;"></textarea>
+                        <button id="sendMessageButton" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
                     </div>
                 </div>
             </div>
@@ -4521,7 +4040,7 @@
                     </div>
 
                     <!-- Dan details -->
-                    <div id="dan-details" class="panel-body is-user-details">
+                    <!-- <div id="dan-details" class="panel-body is-user-details">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -4590,11 +4109,6 @@
                                 </div>
                             </div>
 
-                            <div class="user-meta has-text-centered">
-                                <h3>Dan Walker</h3>
-                                <h4>IOS Developer</h4>
-                            </div>
-
                             <div class="user-badges">
                                 <div class="hexagon is-red">
                                     <div>
@@ -4636,10 +4150,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Stella details -->
-                    <div id="stella-details" class="panel-body is-user-details is-hidden">
+                    <!-- <div id="stella-details" class="panel-body is-user-details is-hidden">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -4749,10 +4263,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Daniel details -->
-                    <div id="daniel-details" class="panel-body is-user-details is-hidden">
+                    <!-- <div id="daniel-details" class="panel-body is-user-details is-hidden">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -4867,10 +4381,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- David details -->
-                    <div id="david-details" class="panel-body is-user-details is-hidden">
+                    <!-- <div id="david-details" class="panel-body is-user-details is-hidden">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -4985,10 +4499,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Edward details -->
-                    <div id="edward-details" class="panel-body is-user-details is-hidden">
+                    <!-- <div id="edward-details" class="panel-body is-user-details is-hidden">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -5098,10 +4612,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Elise details -->
-                    <div id="elise-details" class="panel-body is-user-details is-hidden">
+                    <!-- <div id="elise-details" class="panel-body is-user-details is-hidden">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -5206,10 +4720,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Nelly details -->
-                    <div id="nelly-details" class="panel-body is-user-details is-hidden">
+                    <!-- <div id="nelly-details" class="panel-body is-user-details is-hidden">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -5324,10 +4838,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Milly details -->
-                    <div id="milly-details" class="panel-body is-user-details is-hidden">
+                    <!-- <div id="milly-details" class="panel-body is-user-details is-hidden">
                         <div class="panel-body-inner">
                             <div class="subheader">
                                 <div class="action-icon">
@@ -5442,7 +4956,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -5689,7 +5203,10 @@
 
         function like_post($id) {
             var url = "{{ route('like') }}";
-
+            if ($('.like-button').hasClass('active')) {
+                toastr.warning('You have already liked this post.', 'Warning');
+                return;
+            }
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -5704,10 +5221,42 @@
                     } else {
                         toastr.success('Like post successfully', 'Success');
                     }
-
-
                     var likeCount = parseInt($('#like-count').text());
                     $('#like-count').text(likeCount + 1);
+                    $('.like-button').addClass('active');
+                    $('.dislike-button').removeClass('active');
+                },
+                error: function(xhr) {
+                    toastr.error(xhr.responseJSON.message, 'Error');
+                    console.log(xhr.responseJSON.message);
+                }
+            });
+        }
+        //Add dislike_post
+        function dislike_post($id) {
+            var url = "{{ route('dislike') }}";
+            if ($('.dislike-button').hasClass('active')) {
+                toastr.warning('You have already disliked this post.', 'Warning');
+                return;
+            }
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    post_id: $id,
+                    type: 'dislike'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.message) {
+                        toastr.success(response.message, 'Success');
+                    } else {
+                        toastr.success('Dislike post successfully', 'Success');
+                    }
+                    var dislikeCount = parseInt($('#dislike-count').text());
+                    $('#dislike-count').text(dislikeCount + 1);
+                    $('.dislike-button').addClass('active');
+                    $('.like-button').removeClass('active');
                 },
                 error: function(xhr) {
                     toastr.error(xhr.responseJSON.message, 'Error');
@@ -5716,19 +5265,14 @@
             });
         }
 
-
         function showReplyForm(commentId) {
             console.log($('#reply-form-' + commentId));
             $('#reply-form-' + commentId).css('display', 'block');
-
             $(document).ready(function() {
-
                 $(document).on('click', '.btn-reply', function() {
                     var commentId = $(this).data('comment-id');
                     showReplyForm(commentId);
                 });
-
-
                 $('.comment-reply-form').submit(function(event) {
                     event.preventDefault();
                     var form = $(this);
@@ -5747,35 +5291,6 @@
             });
 
 
-        }
-        //Add dislike_post
-        function dislike_post($id) {
-            var url = "{{ route('dislike') }}";
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    post_id: $id,
-                    type: 'dislike'
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.message) {
-                        toastr.success(response.message, 'Success');
-                    } else {
-                        toastr.success('Dislike post successfully', 'Success');
-                    }
-
-
-                    var dislikeCount = parseInt($('#dislike-count').text());
-                    $('#dislike-count').text(dislikeCount + 1);
-                },
-                error: function(xhr) {
-                    toastr.error(xhr.responseJSON.message, 'Error');
-                    console.log(xhr.responseJSON.message);
-                }
-            });
         }
     </script>
     <script>
@@ -5837,11 +5352,50 @@
             });
         });
     </script>
+    <script>
+        //Chat
+        $(document).ready(function() {
+            $("#sendMessageButton").click(function() {
+                var message = $("#message").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('sendMessage') }}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "message": message
+                    },
+                    success: function(response) {
+                        if (response.message === 'chat added successfully!') {
+                            $("#message").val('');
 
 
+                            var currentTime = new Date();
+                            var hours = currentTime.getHours();
+                            var minutes = currentTime.getMinutes();
+                            var time = hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+
+                            var newMessage = '<div class="chat-message is-sent">' +
+                                '<img src="https://via.placeholder.com/300x300" data-demo-src="{{ asset("img/jenna.png") }}" alt=""/>' +
+                                '<div class="message-block">' +
+                                '<span>' + time + '</span>' +
+                                '<div class="message-text">' + message + '</div>' +
+                                '</div>' +
+                                '</div>';
+
+                            $("#dan-conversation").append(newMessage);
+                        }
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
     <!-- Concatenated js plugins and jQuery -->
     <script src="{{asset ('assets/js/app.js') }}"></script>
-    
+
     <script src="https://js.stripe.com/v3/"></script>
     <script src="{{asset ('assets/data/tipuedrop_content.js') }}"></script>
 
@@ -5878,33 +5432,7 @@
     <script src="{{asset ('assets/js/compose.js') }}"></script>
     <script src="{{asset ('assets/js/autocompletes.js') }}"></script>
 
-    <!-- profile js -->
-
-    <!-- stories js -->
-
-    <!-- friends js -->
-
-    <!-- questions js -->
-
-    <!-- video js -->
-
-    <!-- events js -->
-
-    <!-- news js -->
-
-    <!-- shop js -->
-
-    <!-- inbox js -->
-
-    <!-- settings js -->
-
-    <!-- map page js -->
-
-    <!-- elements page js -->
 
 </body>
-
-
-<!-- Mirrored from friendkit.cssninja.io/navbar-v1-feed-sidebar.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 02 Oct 2023 10:44:08 GMT -->
 
 </html>
