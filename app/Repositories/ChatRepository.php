@@ -20,10 +20,11 @@ class ChatRepository implements ChatInterface
         $message = new Message();
 
         $message->message = $data['message'];
-        $message->user_id = Auth::id();
+        $message->to_user_id = $data['to_user_id']; 
+        $message->from_user_id = Auth::id(); 
         $message->save();
         return ['status' => true];
 
-        // MediaHelper::imageUpload($message, $data['media']);
+        
     }
 }

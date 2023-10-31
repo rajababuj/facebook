@@ -9,15 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'description',
-        'media',
-        'activity',
-        'tag_user',
-        'location',
-        'link',
-    ];
+    protected $fillable = ['description', 'activity', 'tag_user', 'location', 'link', 'user_id', 'media'];
+
+    
     public function user()
     {
         return $this->belongsTo(User::class);
