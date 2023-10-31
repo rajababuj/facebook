@@ -19,6 +19,7 @@ class ChatsController extends Controller
     {
         
         $data = $request->all();
+        // dd($data);
         $data = $this->chatRepository->storePost($data);
         if ($data['status']) {
             return response()->json([

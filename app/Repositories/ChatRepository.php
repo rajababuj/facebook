@@ -16,8 +16,9 @@ class ChatRepository implements ChatInterface
     public function storePost($data)
     {
 
+    //    dd($data);
 
-        $message = new Message();
+        $message = new Message;
 
         $message->message = $data['message'];
         $message->to_user_id = $data['to_user_id']; 

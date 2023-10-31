@@ -48,3 +48,6 @@ Route::get('user/logout', [LoginController::class, 'logout'])->name('user.logout
 Route::get('chat', [ChatsController::class, 'index'])->name('chat');
 Route::get('messages', [ChatsController::class, 'fetchMessages'])->name('fetchMessages');
 Route::post('messages', [ChatsController::class, 'sendMessage'])->name('sendMessage');
+
+Route::post('like', [PostController::class, 'pressLike'])->name('pressLike');
+

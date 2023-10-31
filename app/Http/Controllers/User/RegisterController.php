@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
@@ -34,8 +35,12 @@ class RegisterController extends Controller
         $messages = Message::all();
         $followings = Auth::user()->followings;
         $followers = Auth::user()->followers;
-    
-        // dd($followersUsers);
+
+       
+        $like_posts = Like::where('user_id', Auth()->user()->id)->pluck('post_id')->toArray();
+
+
+        // dd($post_likes);
 
         // pending_requests
         $p_follower_id = DB::table('followings')->where('follower_id', auth()->id())
@@ -52,21 +57,21 @@ class RegisterController extends Controller
 
 
         $ap_follower_id = DB::table('followings')->where('following_id', auth()->id())
-        ->where('status', 'pending')
-        ->get()
-        ->pluck('follower_id');
+            ->where('status', 'pending')
+            ->get()
+            ->pluck('follower_id');
         $pending_auth_users = User::whereIn('id', $ap_follower_id)->withCount(["followings", "followers"])->get();
 
-        
+
         $aa_follower_id = DB::table('followings')->where('following_id', auth()->id())
             ->where('status', 'accept')
             ->get()
             ->pluck('follower_id');
 
 
-            $not_allowed = $p_follower_id->toArray()+$a_follower_id->toArray()+[Auth::id()]+$aa_follower_id->toArray();
-            $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
-        return view('dashboard', compact('posts', 'comments','pending_users','users', 'pending_auth_users', 'messages', 'followers', 'followings'));
+        $not_allowed = $p_follower_id->toArray() + $a_follower_id->toArray() + [Auth::id()] + $aa_follower_id->toArray();
+        $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
+        return view('dashboard', compact('posts', 'comments', 'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts'));
     }
 
     public function store(RegisterRequest $request)
@@ -86,7 +91,7 @@ class RegisterController extends Controller
 
         return redirect()->route('dashboard');
     }
-    
+
     public function follow($following_id)
     {
         // dd($following_id);
@@ -101,6 +106,4 @@ class RegisterController extends Controller
 
         return redirect()->back();
     }
-    
 }
-

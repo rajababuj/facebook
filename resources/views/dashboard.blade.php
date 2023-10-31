@@ -19,7 +19,6 @@
 
     <!-- Google Tag Manager -->
     <script>
-        ;
         (function(w, d, s, l, i) {
             w[l] = w[l] || []
             w[l].push({
@@ -40,11 +39,19 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" />
     <link href="../cdn.jsdelivr.net/npm/fontisto%40v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="meta_data" data-token="{{csrf_token()}}" data-user="{{auth()->check() ? auth()->id() : 0}}">
+
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{asset ('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <style>
+        .redHeart {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -1923,11 +1930,11 @@
 
 
                                     <div class="social-count">
-                                        <button type="button" class="like-button" onclick="like_post({{ $post->id }})">Like</button>
-                                        <button type="button" class="dislike-button" onclick="dislike_post({{ $post->id }})">Dislike</button>
-                                        <p>Likes: <span id="like-count">0</span></p>
-                                        <p>Dislikes: <span id="dislike-count">0</span></p>
-
+                                        @if(in_array($post->id, $like_posts))
+                                        <button onclick="like_post({{$post->id}})" type="submit" style="color: red"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
+                                        @else
+                                        <button onclick="dislike_post({{$post->id}})" type="submit"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
+                                        @endif
                                         <!-- <div class="shares-count">
                                             <i data-feather="link-2"></i>
                                             <span>9</span>
@@ -3790,7 +3797,7 @@
         <script src="https://maps.google.com/maps/api/js?key=AIzaSyAGLO_M5VT7BsVdjMjciKoH1fFJWWdhDPU&amp;libraries=places"></script>
 
     </div>
-    
+
     <div class="chat-wrapper">
         <div class="chat-inner">
             <!-- Chat top navigation -->
@@ -3801,7 +3808,7 @@
                         <div class="avatar-container">
                             <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
                         </div>
-                        <div class="username" > 
+                        <div class="username">
                             <span>{{$following->name}}</span>
                             <span><i data-feather="star"></i> <span>| Online</span></span>
                         </div>
@@ -3957,7 +3964,7 @@
                     </a>
                 </div>
             </div>
-            @endforeach      
+            @endforeach
             <!-- Chat sidebar -->
             <div id="chat-sidebar" class="users-sidebar">
                 <!-- Header -->
@@ -3968,7 +3975,7 @@
                 </div>
                 <!-- User list -->
                 @foreach($followings as $following)
-                <div class= "has-slimscroll-xs " onclick="open_user_chat({{$following->id}})">
+                <div class="has-slimscroll-xs " onclick="open_user_chat({{$following->id}})">
                     <li>{{ $following->name }}</li>
                     <!-- User -->
                     <div class="user-item is-active" data-chat-user="dan" data-full-name="Dan Walker" data-status="Online">
@@ -3977,23 +3984,28 @@
                             <div class="user-status is-online"></div>
                         </div>
                     </div>
-                    
-                    
+
+
                 </div>
                 @endforeach
             </div>
 
             <!-- Chat body -->
-            @foreach($followings as $following)        
+            @foreach($followings as $following)
             <div class="chat-body is-opened" style="display: none" id="chat_body_{{$following->id}}">
-               
-                <div id="dan-conversation" class="chat-body-inner has-slimscroll" style="height: 500px; background-color: white">
+
+                <div id="dan-conversation_{{$following->id}}" class="chat-body-inner has-slimscroll" style="height: 500px; background-color: white">
 
                     <div class="date-divider">
                         <hr class="date-divider-line" />
                         <span class="date-divider-text">Today</span>
                     </div>
-                    @foreach($messages as $message)
+                    @php
+                    $chat_messages = $messages->where('from_user_id', auth()->id())->where('to_user_id', $following->id);
+                    $second_chat_messages = $messages->where('from_user_id', $following->id)->where('to_user_id', auth()->id());
+                    $chat_messages->merge($second_chat_messages);
+                    @endphp
+                    @foreach($chat_messages as $message)
                     @if($following->id == $message->to_user_id)
                     <div class="chat-message is-sent">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
@@ -4007,23 +4019,23 @@
                     <div class="chat-message is-received">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
                         <div class="message-block">
-                            <span>{{ $message->created_at->format('h:ia') }}</span>
-                            <div class="message-text">{{ $message->message }}</div>
+                            <span>{{ $message->created_at->format('h:ia') }}</smessagepan>
+                                <div class="message-text">{{ $message->message }}</div>
                         </div>
                     </div>
                     @endif
                     @endforeach
                 </div>
                 <!-- Compose message area -->
-                <div class="chat-action" >
+                <div class="chat-action">
                     <div class="chat-action-inner">
                         <div class="control" style="display: flex;">
-                          <textarea class="textarea comment-textarea" id="message" rows="1" style="margin-top: 350px;"></textarea>
-                          <button onclick="sendMessageButton({{ $following->id }})"  type="submit" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
+                            <textarea class="textarea comment-textarea message_{{$following->id}}" id="message" rows="1" style="margin-top: 350px;"></textarea>
+                            <button onclick="sendMessageButton({{ $following->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
                         </div>
                     </div>
                 </div>
-               
+
             </div>
             @endforeach
             <div id="chat-panel" class="chat-panel is-opened" style="display: none">
@@ -4036,7 +4048,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 
@@ -4073,112 +4085,157 @@
         </div>
     </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- Concatenated js plugins and jQuery -->
+    <script src="{{asset ('assets/js/app.js') }}"></script>
 
-    function open_user_chat(user_id) {
-        console.log({user_id});
-        $('#user_chat_'+user_id).show();
-        $('.chat-body').hide();
-        $('#chat_body_'+user_id).show();
-    }
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="{{asset ('assets/data/tipuedrop_content.js') }}"></script>
 
-    //Add Post
-    $(function() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $('#formdata').submit(function() {
+    <!-- Core js -->
+    <script src="{{asset ('assets/js/global.js') }}"></script>
 
-            event.preventDefault();
-            $url = "{{route('post.store')}}";
-            var formData = new FormData(this);
+    <!-- Navigation options js -->
+    <script src="{{asset ('assets/js/navbar-v1.js') }}"></script>
+    <script src="{{asset ('assets/js/navbar-v2.js') }}"></script>
+    <script src="{{asset ('assets/js/navbar-mobile.js') }}"></script>
+    <script src="{{asset ('assets/js/navbar-options.js') }}"></script>
+    <script src="{{asset ('assets/js/sidebar-v1.js') }}"></script>
+    <!-- Core instance js -->
+    <script src="{{asset ('assets/js/main.js') }}"></script>
+    <script src="{{asset ('assets/js/chat.js') }}"></script>
+    <script src="{{asset ('assets/js/touch.js') }}"></script>
+    <script src="{{asset ('assets/js/tour.js') }}"></script>
+    <!-- Components js -->
+    <script src="{{asset ('assets/js/explorer.js') }}"></script>
+    <script src="{{asset ('assets/js/widgets.js') }}"></script>
+    <script src="{{asset ('assets/js/modal-uploader.js') }}"></script>
+    <!-- <script src="{{asset ('assets/js/popovers-users.js') }}"></script> -->
+    <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
+    <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 
-            $.ajax({
-                url: $url,
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.message) {
+    <!-- Landing page js -->
 
-                        toastr.success(response.message, 'Success');
-                    } else {
+    <!-- Signup page js -->
 
-                        toastr.success('Post added successfully', 'Success');
-                    }
+    <!-- Feed pages js -->
+    <script src="{{asset ('assets/js/feed.js') }}"></script>
 
-                    window.location.reload();
-                },
-                error: function(xhr) {
-                    toastr.error(xhr.responseJSON.message, 'Error');
-                    console.log(xhr.responseJSON.message);
-                },
-            });
-        });
-    });
-</script>
+    <script src="{{asset ('assets/js/webcam.js') }}"></script>
+    <script src="{{asset ('assets/js/compose.js') }}"></script>
+    <script src="{{asset ('assets/js/autocompletes.js') }}"></script>
 
     <script>
-        //Add like_post
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         function like_post($id) {
-            var url = "{{ route('like') }}";
-            if ($('.like-button').hasClass('active')) {
-                toastr.warning('You have already liked this post.', 'Warning');
-                return;
-            }
+            event.preventDefault();
+
+            var url = "{{route('pressLike')}}";
+
             $.ajax({
                 url: url,
-                type: 'POST',
+                type: "POST",
                 data: {
-                    post_id: $id,
-                    type: 'like'
+                    post_id: $id
                 },
-                dataType: 'json',
+                dataType: 'JSON',
                 success: function(response) {
-                    if (response.message) {
-                        toastr.success(response.message, 'Success');
-                    } else {
-                        toastr.success('Like post successfully', 'Success');
-                    }
-                    var likeCount = parseInt($('#like-count').text());
-                    $('#like-count').text(likeCount + 1);
-                    $('.like-button').addClass('active');
-                    $('.dislike-button').removeClass('active');
-                },
-                error: function(xhr) {
-                    toastr.error(xhr.responseJSON.message, 'Error');
-                    console.log(xhr.responseJSON.message);
+                    alert("Success!");
+
                 }
             });
         }
+
+
+
+
+
+        function open_user_chat(user_id) {
+            console.log({
+                user_id
+            });
+            $('#user_chat_' + user_id).show();
+            $('.chat-body').hide();
+            $('#chat_body_' + user_id).show();
+            $('.chat-body-inner').addClass('is-hidden');
+            $('#dan-conversation_' + user_id).removeClass('is-hidden');
+        }
+
+        //Add Post
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $('#formdata').submit(function() {
+
+                event.preventDefault();
+                $url = "{{route('post.store')}}";
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: $url,
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.message) {
+
+                            toastr.success(response.message, 'Success');
+                        } else {
+
+                            toastr.success('Post added successfully', 'Success');
+                        }
+
+                        window.location.reload();
+                    },
+                    error: function(xhr) {
+                        toastr.error(xhr.responseJSON.message, 'Error');
+                        console.log(xhr.responseJSON.message);
+                    },
+                });
+            });
+        });
+
+        // var meta_data = $('meta[name="meta-data"]');
+        // $('.pressLove').click(function() {
+        //     if (meta_data.data('user') == 0) {
+        //         toastr.error('Login First');
+        //         return;
+        //     }
+        //     var elem = $(this).parents('.card');
+        //     var data = {};
+        //     data.post_id = elem.data('post');
+        //     $.ajax({
+        //         url: '{{ route("pressLike") }}',
+        //         data,
+        //         success: function(data) {
+        //             elem.find('.pressLove').text(data.likes);
+        //             if (elem.find('.pressLove').hasClass('redHeart')) {
+        //                 elem.find('.pressLove').removeClass('redHeart');
+        //             } else {
+        //                 elem.find('.pressLove').addClass('redHeart');
+        //             }
+        //         }
+        //     });
+
+        // });
         //Add dislike_post
         function dislike_post($id) {
             var url = "{{ route('dislike') }}";
-            if ($('.dislike-button').hasClass('active')) {
-                toastr.warning('You have already disliked this post.', 'Warning');
-                return;
-            }
+
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: {
                     post_id: $id,
-                    type: 'dislike'
+
                 },
                 dataType: 'json',
                 success: function(response) {
@@ -4226,8 +4283,6 @@
 
 
         }
-    </script>
-    <script>
         //Follow & Unfollow
         $(document).ready(function() {
             $('.follow-button').click(function(e) {
@@ -4254,9 +4309,7 @@
                 });
             });
         });
-       
-    </script>
-    <script>
+
         //Comment
         $(document).ready(function() {
             $('.comment-form').submit(function(event) {
@@ -4287,89 +4340,45 @@
                 });
             });
         });
-    </script>
-    <script>
+
         //Chat
         function sendMessageButton($id) {
-    var message = $("#message").val();
+            var message = $(".message_" + $id).val();
+            $.ajax({
+                type: "POST",
+                url: "{{ route('sendMessage') }}",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "message": message,
+                    "to_user_id": $id
+                },
+                success: function(response) {
+                    if (response.message === 'chat added successfully!') {
+                        $("#message").val('');
 
-    $.ajax({
-        type: "POST",
-        url: "{{ route('sendMessage') }}",
-        data: {
-            "_token": "{{ csrf_token() }}",
-            "message": message,
-            "to user_id": $id
-        },
-        success: function(response) {
-            if (response.message === 'chat added successfully!') {
-                $("#message").val('');
+                        var currentTime = new Date();
+                        var hours = currentTime.getHours();
+                        var minutes = currentTime.getMinutes();
+                        var time = hours + ":" + (minutes < 10 ? "0" : "") + minutes;
 
-                var currentTime = new Date();
-                var hours = currentTime.getHours();
-                var minutes = currentTime.getMinutes();
-                var time = hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+                        var newMessage = '<div class="chat-message is-sent">' +
+                            '<img src="https://via.placeholder.com/300x300" data-demo-src="{{ asset("img/jenna.png") }}" alt=""/>' +
+                            '<div class="message-block">' +
+                            '<span>' + time + '</span>' +
+                            '<div class="message-text">' + message + '</div>' +
+                            '</div>' +
+                            '</div>';
 
-                var newMessage = '<div class="chat-message is-sent">' +
-                    '<img src="https://via.placeholder.com/300x300" data-demo-src="{{ asset("img/jenna.png") }}" alt=""/>' +
-                    '<div class="message-block">' +
-                    '<span>' + time + '</span>' +
-                    '<div class="message-text">' + message + '</div>' +
-                    '</div>' +
-                    '</div>';
-
-                $("#dan-conversation").append(newMessage);
-            }
-        },
-        error: function(error) {
-            console.error(error);
+                        $("#dan-conversation_" + $id).append(newMessage);
+                        $(".message_" + $id).val('');
+                    }
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
         }
-    });
-}
-
-
-       
     </script>
-    <!-- Concatenated js plugins and jQuery -->
-    <script src="{{asset ('assets/js/app.js') }}"></script>
-
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="{{asset ('assets/data/tipuedrop_content.js') }}"></script>
-
-    <!-- Core js -->
-    <script src="{{asset ('assets/js/global.js') }}"></script>
-
-    <!-- Navigation options js -->
-    <script src="{{asset ('assets/js/navbar-v1.js') }}"></script>
-    <script src="{{asset ('assets/js/navbar-v2.js') }}"></script>
-    <script src="{{asset ('assets/js/navbar-mobile.js') }}"></script>
-    <script src="{{asset ('assets/js/navbar-options.js') }}"></script>
-    <script src="{{asset ('assets/js/sidebar-v1.js') }}"></script>
-    <!-- Core instance js -->
-    <script src="{{asset ('assets/js/main.js') }}"></script>
-    <script src="{{asset ('assets/js/chat.js') }}"></script>
-    <script src="{{asset ('assets/js/touch.js') }}"></script>
-    <script src="{{asset ('assets/js/tour.js') }}"></script>
-    <!-- Components js -->
-    <script src="{{asset ('assets/js/explorer.js') }}"></script>
-    <script src="{{asset ('assets/js/widgets.js') }}"></script>
-    <script src="{{asset ('assets/js/modal-uploader.js') }}"></script>
-    <!-- <script src="{{asset ('assets/js/popovers-users.js') }}"></script> -->
-    <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
-    <script src="{{asset ('assets/js/lightbox.js') }}"></script>
-
-    <!-- Landing page js -->
-
-    <!-- Signup page js -->
-
-    <!-- Feed pages js -->
-    <script src="{{asset ('assets/js/feed.js') }}"></script>
-
-    <script src="{{asset ('assets/js/webcam.js') }}"></script>
-    <script src="{{asset ('assets/js/compose.js') }}"></script>
-    <script src="{{asset ('assets/js/autocompletes.js') }}"></script>
-
-
 </body>
 
 </html>
