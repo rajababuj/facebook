@@ -36,49 +36,35 @@ class PostController extends Controller
         }
     }
     // Save Like 
-    public function like(Request $request)
-    {
-        $post = $request->all();
-        $post = $this->postRepository->like($post);
-
-        if ($post['status']) {
-            return response()->json(['message' => 'Liked']);
-        } else {
-            return response()->json(['message' => 'Something went wrong']);
-        }
-    }
-
-
     public function dislike(Request $request)
     {
         $data = $request->all();
 
         $like_post = Like::where('post_id', $data['post_id'])->where('user_id', Auth()->user()->id)->first();
 
-        if($like_post){
+        if ($like_post) {
             $like_post->delete();
             return response()->json([
-               'message' => 'post dislike successfully!'
+                'message' => 'You post dislike successfully!'
             ]);
-        }else{
+        } else {
             return response()->json([
                 'message' => 'something went wrong!'
-             ]);
+            ]);
         }
-       
     }
     public function pressLike(Request $request)
     {
-       
-       
-       $data = $request->all();
-      $likes = new Like();
-      $likes->user_id = Auth()->user()->id;
-      $likes->post_id = $data['post_id'];
-      $likes->save();
 
-      return response()->json([
-        'message' => 'success'
-      ]);
+
+        $data = $request->all();
+        $likes = new Like();
+        $likes->user_id = Auth()->user()->id;
+        $likes->post_id = $data['post_id'];
+        $likes->save();
+
+        return response()->json([
+            'message' => 'You post like successfully!'
+        ]);
     }
 }

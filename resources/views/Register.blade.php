@@ -42,6 +42,7 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{asset ('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
+   
 </head>
 
 <body>
@@ -108,9 +109,19 @@
                                             <div class="control">
                                                 <input type="password" name="password" class="input" placeholder="Enter your password" />
                                                 @error('password')
-                                                <span class="text-danger" style="color: red;" >{{ $message }}</span>
+                                                <span class="text-danger" style="color: red;">{{ $message }}</span>
                                                 @enderror
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="column is-10">
+                                        <div class="dropdown">
+                                            <label>Choose a account:</label>
+                                            <select name="profile" id="profile">
+                                                <option value="Public">Public</option>
+                                                <option value="Private">Private</option>
+                                            </select>
+                                            <input type="hidden" name="profiletype" id="profiletype" value="">
                                         </div>
                                     </div>
                                     <div class="column is-12">
@@ -143,6 +154,13 @@
         </div>
 
     </div>
+    <script>
+       
+        const profileTypeField = document.getElementById("profiletype");
+        profileDropdown.addEventListener("change", function() {
+            profileTypeField.value = profileDropdown.value;
+        });
+    </script>
 
     <!-- Concatenated js plugins and jQuery -->
     <script src="{{asset ('assets/js/app.js') }}"></script>
@@ -172,6 +190,7 @@
     <!-- <script src="{{asset ('assets/js/popovers-users.js') }}"></script> -->
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
+
 
     <!-- Landing page js -->
 

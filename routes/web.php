@@ -28,12 +28,12 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('user/{following_id}/follow', [RegisterController::class, 'follow'])->name('follow');
 
     Route::post('/posts', [PostController::class, 'store'])->name('post.store');
-    Route::post('posts/like', [PostController::class, 'like'])->name('like');
     Route::post('posts/dislike', [PostController::class, 'dislike'])->name('dislike');
 
-    Route::post('store', [CommentController::class, 'store'])->name('comments.store');
-    Route::post('comments/reply/{comment}', [CommentController::class, 'reply'])->name('comments.reply'); 
+   
 });
+Route::post('store', [CommentController::class, 'store'])->name('comments.store');
+Route::post('comments/reply/{comment}', [CommentController::class, 'reply'])->name('comments.reply'); 
 
 Route::get('user/register', [RegisterController::class, 'Register'])->name('user.register');
 Route::post('user/register', [RegisterController::class, 'store'])->name('user.register.submit');

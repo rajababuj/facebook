@@ -1919,22 +1919,25 @@
 
                                     </div>
                                     <!-- Followers text -->
+
                                     <div class="likers-text">
                                         <p>
-                                            <a href="#">Milly</a>,
-                                            <a href="#">David</a>
+                                            {{Auth::user()->name}}
+
                                         </p>
                                         <p>and 5 more liked this</p>
                                     </div>
+
                                     <!-- Post statistics -->
 
 
                                     <div class="social-count">
                                         @if(in_array($post->id, $like_posts))
-                                        <button onclick="like_post({{$post->id}})" type="submit" style="color: red"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
+                                        <button onclick="dislike_post({{$post->id}})" type="submit" style="color:red" id="dislikebtn{{$post->id}}"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
                                         @else
-                                        <button onclick="dislike_post({{$post->id}})" type="submit"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
+                                        <button onclick="like_post({{$post->id}})" type="submit" id="likepostbtn{{$post->id}}"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
                                         @endif
+
                                         <!-- <div class="shares-count">
                                             <i data-feather="link-2"></i>
                                             <span>9</span>
@@ -1947,10 +1950,6 @@
                                 </div>
                                 <!-- /Post footer -->
                             </div>
-
-                            <!-- /Main wrap -->
-
-                            <!-- Post #1 Comments -->
                             <div class="comments-wrap is-hidden">
                                 <!-- Header -->
                                 <div class="comments-heading">
@@ -1959,7 +1958,6 @@
                                         <i data-feather="x"></i>
                                     </div>
                                 </div>
-                                <!-- /Header -->
 
                                 <!-- Comments body -->
                                 @foreach($comments as $comment)
@@ -1991,54 +1989,12 @@
                                                     <a href="#">Edit</a>
                                                 </div>
                                             </div>
-
-                                            <!-- Nested Comment -->
-
-                                            <!-- /Nested Comment -->
                                         </div>
-                                        <!-- Right side dropdown -->
-                                        <div class="media-right">
-                                            <!-- /partials/pages/feed/dropdowns/comment-dropdown.html -->
-                                            <div class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-                                                <div>
-                                                    <div class="button">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <div class="dropdown-content">
-                                                        <a class="dropdown-item">
-                                                            <div class="media">
-                                                                <i data-feather="x"></i>
-                                                                <div class="media-content">
-                                                                    <h3>Hide</h3>
-                                                                    <small>Hide this comment.</small>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a href="#" class="dropdown-item">
-                                                            <div class="media">
-                                                                <i data-feather="flag"></i>
-                                                                <div class="media-content">
-                                                                    <h3>Report</h3>
-                                                                    <small>Report this comment.</small>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
+
                                     </div>
-                                    <!-- /Comment -->
-
                                 </div>
-                                <!-- /Comments body -->
-
-                                <!-- Comments footer -->
                                 <form method="post" style="display: none;" class="comment-reply-form" id="reply-form-{{$comment->id}}" action="{{ route('comments.reply', ['comment' => $comment]) }}">
-
                                     @csrf
                                     <div class="card-footer">
                                         <div class="media post-comment has-emojis">
@@ -2078,8 +2034,6 @@
                                         </div>
                                     </div>
                                 </form>
-
-
                                 @endforeach
                                 <form method="post" class="comment-form">
                                     @csrf
@@ -2114,204 +2068,11 @@
                                         </div>
                                     </div>
                                 </form>
-
-
-                                <!-- Comments footer -->
                             </div>
-                            <!-- /Post #1 Comments -->
                         </div>
                         @endforeach
-                        <!-- POST #1 -->
 
-                        <!-- Post 2 -->
-                        <!-- /partials/pages/feed/posts/feed-post2.html -->
-                        <!-- POST #2 -->
-                        <div class="card is-post">
-                            <!-- Main wrap -->
 
-                            <!-- /Main wrap -->
-
-                            <!-- Post #2 comments -->
-                            <div class="comments-wrap is-hidden">
-                                <!-- Header -->
-                                <div class="comments-heading">
-                                    <h4>Comments <small>(2)</small></h4>
-                                    <div class="close-comments">
-                                        <i data-feather="x"></i>
-                                    </div>
-                                </div>
-                                <!-- /Header -->
-
-                                <!-- Comments body -->
-                                <div class="comments-body has-slimscroll">
-                                    <!-- Comment -->
-                                    <div class="media is-comment">
-                                        <!-- User image -->
-                                        <div class="media-left">
-                                            <div class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/elise.jpg')}}" data-user-popover="6" alt="" />
-                                            </div>
-                                        </div>
-                                        <!-- Content -->
-                                        <div class="media-content">
-                                            <a href="#">Elise Walker</a>
-                                            <span class="time">2 days ago</span>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                eiusmod tempo incididunt ut labore et dolore magna aliqua. Ut enim
-                                                ad minim veniam, quis nostrud exercitation ullamco laboris
-                                                consequat.
-                                            </p>
-                                            <!-- Comment actions -->
-                                            <div class="controls">
-                                                <div class="like-count">
-                                                    <i data-feather="thumbs-up"></i>
-                                                    <span>1</span>
-                                                </div>
-                                                <div class="reply">
-                                                    <a href="#">Reply</a>
-                                                </div>
-                                            </div>
-
-                                            <!-- Nested Comment -->
-                                            <div class="media is-comment">
-                                                <!-- User image -->
-                                                <div class="media-left">
-                                                    <div class="image">
-                                                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" data-user-popover="3" alt="" />
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-                                                <div class="media-content">
-                                                    <a href="#">Daniel Wellington</a>
-                                                    <span class="time">2 days ago</span>
-                                                    <p>
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                                        eiusmod tempo incididunt ut labore et dolore magna aliqua.
-                                                    </p>
-                                                    <!-- Comment actions -->
-                                                    <div class="controls">
-                                                        <div class="like-count">
-                                                            <i data-feather="thumbs-up"></i>
-                                                            <span>0</span>
-                                                        </div>
-                                                        <div class="reply">
-                                                            <a href="#">Reply</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Right side dropdown -->
-                                                <div class="media-right">
-                                                    <div class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-                                                        <div>
-                                                            <div class="button">
-                                                                <i data-feather="more-vertical"></i>
-                                                            </div>
-                                                        </div>
-                                                        <div class="dropdown-menu" role="menu">
-                                                            <div class="dropdown-content">
-                                                                <a class="dropdown-item">
-                                                                    <div class="media">
-                                                                        <i data-feather="x"></i>
-                                                                        <div class="media-content">
-                                                                            <h3>Hide</h3>
-                                                                            <small>Hide this comment.</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <a href="#" class="dropdown-item">
-                                                                    <div class="media">
-                                                                        <i data-feather="flag"></i>
-                                                                        <div class="media-content">
-                                                                            <h3>Report</h3>
-                                                                            <small>Report this comment.</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Nested Comment -->
-                                        </div>
-                                        <!-- Right side dropdown -->
-                                        <div class="media-right">
-                                            <!-- /partials/pages/feed/dropdowns/comment-dropdown.html -->
-                                            <div class="dropdown is-spaced is-right is-neutral dropdown-trigger">
-                                                <div>
-                                                    <div class="button">
-                                                        <i data-feather="more-vertical"></i>
-                                                    </div>
-                                                </div>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <div class="dropdown-content">
-                                                        <a class="dropdown-item">
-                                                            <div class="media">
-                                                                <i data-feather="x"></i>
-                                                                <div class="media-content">
-                                                                    <h3>Hide</h3>
-                                                                    <small>Hide this comment.</small>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                        <div class="dropdown-divider"></div>
-                                                        <a href="#" class="dropdown-item">
-                                                            <div class="media">
-                                                                <i data-feather="flag"></i>
-                                                                <div class="media-content">
-                                                                    <h3>Report</h3>
-                                                                    <small>Report this comment.</small>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /Comment -->
-                                </div>
-                                <!-- /Comments body -->
-
-                                <!-- Comments footer -->
-                                <div class="card-footer">
-                                    <!-- User image -->
-                                    <div class="media post-comment has-emojis">
-                                        <!-- Textarea -->
-                                        <div class="media-content">
-                                            <div class="field">
-                                                <p class="control">
-                                                    <textarea class="textarea comment-textarea" rows="5" placeholder="Write a comment..."></textarea>
-                                                </p>
-                                            </div>
-                                            <!-- Additional actions -->
-                                            <div class="actions">
-                                                <div class="image is-32x32">
-                                                    <img class="is-rounded" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" data-user-popover="0" alt="" />
-                                                </div>
-                                                <div class="toolbar">
-                                                    <div class="action is-auto">
-                                                        <i data-feather="at-sign"></i>
-                                                    </div>
-                                                    <div class="action is-emoji">
-                                                        <i data-feather="smile"></i>
-                                                    </div>
-                                                    <div class="action is-upload">
-                                                        <i data-feather="camera"></i>
-                                                        <input type="file" />
-                                                    </div>
-                                                    <a class="button is-solid primary-button raised">Post Comment</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /Comments footer -->
-                            </div>
-                            <!-- /Post #2 comments -->
-                        </div>
                         <!-- /POST #2 -->
 
                         <!-- Load more posts -->
@@ -3792,10 +3553,8 @@
                 </div>
             </div>
         </div>
-
         <!-- Google places Lib -->
         <script src="https://maps.google.com/maps/api/js?key=AIzaSyAGLO_M5VT7BsVdjMjciKoH1fFJWWdhDPU&amp;libraries=places"></script>
-
     </div>
 
     <div class="chat-wrapper">
@@ -4003,7 +3762,12 @@
                     @php
                     $chat_messages = $messages->where('from_user_id', auth()->id())->where('to_user_id', $following->id);
                     $second_chat_messages = $messages->where('from_user_id', $following->id)->where('to_user_id', auth()->id());
-                    $chat_messages->merge($second_chat_messages);
+                    dd($chat_messages, $second_chat_messages);
+                    if($chat_messages->count() > 0){
+                        $chat_messages->merge($second_chat_messages);
+                    }else{
+                        $chat_messages = $second_chat_messages;
+                    }
                     @endphp
                     @foreach($chat_messages as $message)
                     @if($following->id == $message->to_user_id)
@@ -4129,33 +3893,7 @@
     <script src="{{asset ('assets/js/autocompletes.js') }}"></script>
 
     <script>
-        function like_post($id) {
-            event.preventDefault();
-
-            var url = "{{route('pressLike')}}";
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    post_id: $id
-                },
-                dataType: 'JSON',
-                success: function(response) {
-                    alert("Success!");
-
-                }
-            });
-        }
-
-
-
-
-
         function open_user_chat(user_id) {
-            console.log({
-                user_id
-            });
             $('#user_chat_' + user_id).show();
             $('.chat-body').hide();
             $('#chat_body_' + user_id).show();
@@ -4202,30 +3940,6 @@
                 });
             });
         });
-
-        // var meta_data = $('meta[name="meta-data"]');
-        // $('.pressLove').click(function() {
-        //     if (meta_data.data('user') == 0) {
-        //         toastr.error('Login First');
-        //         return;
-        //     }
-        //     var elem = $(this).parents('.card');
-        //     var data = {};
-        //     data.post_id = elem.data('post');
-        //     $.ajax({
-        //         url: '{{ route("pressLike") }}',
-        //         data,
-        //         success: function(data) {
-        //             elem.find('.pressLove').text(data.likes);
-        //             if (elem.find('.pressLove').hasClass('redHeart')) {
-        //                 elem.find('.pressLove').removeClass('redHeart');
-        //             } else {
-        //                 elem.find('.pressLove').addClass('redHeart');
-        //             }
-        //         }
-        //     });
-
-        // });
         //Add dislike_post
         function dislike_post($id) {
             var url = "{{ route('dislike') }}";
@@ -4239,15 +3953,14 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+
                     if (response.message) {
-                        toastr.success(response.message, 'Success');
+                        $("#dislikebtn").html('<button onclick="like_post({{$post->id}})" type="submit" id="likepostbtn{{$post->id}}"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>');
+                        toastr.success(response.message, 'You like this post');
                     } else {
                         toastr.success('Dislike post successfully', 'Success');
                     }
-                    var dislikeCount = parseInt($('#dislike-count').text());
-                    $('#dislike-count').text(dislikeCount + 1);
-                    $('.dislike-button').addClass('active');
-                    $('.like-button').removeClass('active');
+
                 },
                 error: function(xhr) {
                     toastr.error(xhr.responseJSON.message, 'Error');
@@ -4255,6 +3968,60 @@
                 }
             });
         }
+        //Add Like
+        function like_post($id) {
+            event.preventDefault();
+
+            var url = "{{route('pressLike')}}";
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    post_id: $id
+                },
+                dataType: 'JSON',
+                success: function(response) {
+
+                    if (response.message) {
+
+
+                        $("#likepostbtn" + $id).html('<button onclick="dislike_post({{$post->id}})" type="submit" style="color:red"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>');
+
+                        toastr.success(response.message, 'Success');
+                    } else {
+                        toastr.success('Dislike post successfully', 'Success');
+                    }
+
+                }
+            });
+        }
+        //Follow & Unfollow
+        $(document).ready(function() {
+            $('.follow-button').click(function(e) {
+                e.preventDefault();
+                var $button = $(this);
+                var userId = $button.data('user-id');
+                var action = $button.hasClass('btn-danger') ? 'unfollow' : 'follow';
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/' + userId + '/' + action,
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (action === 'unfollow') {
+                            $button.removeClass('btn-danger').addClass('btn-primary').text('Follow');
+                        } else {
+                            $button.removeClass('btn-primary').addClass('btn-danger').text('Unfollow');
+                        }
+                        $('#following-count-' + userId).text('Following: ' + response.followingsCount);
+                    },
+                    error: function(xhr, status, error) {}
+                });
+            });
+        });
         //Replyform
         function showReplyForm(commentId) {
             console.log($('#reply-form-' + commentId));
@@ -4283,33 +4050,6 @@
 
 
         }
-        //Follow & Unfollow
-        $(document).ready(function() {
-            $('.follow-button').click(function(e) {
-                e.preventDefault();
-                var $button = $(this);
-                var userId = $button.data('user-id');
-                var action = $button.hasClass('btn-danger') ? 'unfollow' : 'follow';
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/user/' + userId + '/' + action,
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (action === 'unfollow') {
-                            $button.removeClass('btn-danger').addClass('btn-primary').text('Follow');
-                        } else {
-                            $button.removeClass('btn-primary').addClass('btn-danger').text('Unfollow');
-                        }
-                        $('#following-count-' + userId).text('Following: ' + response.followingsCount);
-                    },
-                    error: function(xhr, status, error) {}
-                });
-            });
-        });
-
         //Comment
         $(document).ready(function() {
             $('.comment-form').submit(function(event) {
@@ -4333,9 +4073,11 @@
                         'post_id': postId
                     },
                     success: function(data) {
-                        console.log(data);
+                        // console.log(data);
                         $('#comments-container').html(data);
                         $('#comment-text').val('');
+
+                        $(this).append(message);
                     }
                 });
             });

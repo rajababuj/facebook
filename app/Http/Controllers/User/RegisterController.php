@@ -36,7 +36,7 @@ class RegisterController extends Controller
         $followings = Auth::user()->followings;
         $followers = Auth::user()->followers;
 
-       
+
         $like_posts = Like::where('user_id', Auth()->user()->id)->pluck('post_id')->toArray();
 
 
@@ -76,17 +76,19 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request)
     {
-
+        dd($request->all());
         $existingUser = User::where('email', $request->email)->first();
 
         if ($existingUser) {
             return redirect()->route('user.register')->with('message', 'A user with this email address already exists.');
         }
+
         $password = Hash::make($request->password);
 
-        $data = array_merge($request->only('name', 'email'), [
+        $data = array_merge($request->only('name', 'email', 'profiletype'), [
             'password' => $password
         ]);
+
         User::create($data);
 
         return redirect()->route('dashboard');
