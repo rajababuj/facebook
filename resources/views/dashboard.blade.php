@@ -562,14 +562,17 @@
                                         </div>
                                     </a>
                                     <hr class="account-divider" />
-                                    <a href="options-settings.html" class="account-item">
+                                    <a href="#" class="account-item">
                                         <div class="media">
                                             <div class="icon-wrap">
                                                 <i data-feather="settings"></i>
                                             </div>
-                                            <div class="media-content">
-                                                <h3>Settings</h3>
-                                                <small>Access widget settings.</small>
+                                            <div class="field">
+                                                <label>Choose an account:</label>
+                                                <select name="profiletype" id="profiletype">
+                                                    <option value="public">Public</option>
+                                                    <option value="private">Private</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </a>
@@ -2325,15 +2328,25 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                            <a class="dropdown-item">
-                                                <div class="media">
-                                                    <i data-feather="settings"></i>
-                                                    <div class="media-content">
-                                                        <h3>Settings</h3>
-                                                        <small>Access widget settings.</small>
+                                            <form id="profile-type" method="POST" action="{{ route('updateProfileType') }}">
+                                                @csrf
+                                                <a class="account-item">
+                                                    <div class="media">
+                                                        <div class="icon-wrap">
+                                                            <i data-feather="settings"></i>
+                                                        </div>
+                                                        <div class="field">
+                                                            <label>Choose an account:</label>
+                                                            <select name="profiletype" id="profiletype">
+                                                                <option value="public">Private</option>
+                                                                <option value="private">Public</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </a>
+                                                </a>
+                                            </form>
+
+
                                             <hr class="dropdown-divider" />
                                             <a href="#" class="dropdown-item">
                                                 <div class="media">
@@ -2409,7 +2422,7 @@
 
                         <!-- New job widget -->
                         <!-- /partials/widgets/new-job-widget.html -->
-                        <div class="card is-new-job-card has-background-image" data-background="{{asset('assets/img/illustrations/cards/job-bg.svg')}}">>
+                        <div class="card is-new-job-card has-background-image" data-background="{{asset('assets/img/illustrations/cards/job-bg.svg')}}">
                             <div class="card-heading">
                                 <i data-feather="briefcase"></i>
                                 <div class="dropdown is-spaced is-right dropdown-trigger is-light">
@@ -3748,7 +3761,6 @@
                 </div>
                 @endforeach
             </div>
-
             <!-- Chat body -->
             @foreach($followings as $following)
             <div class="chat-body is-opened" style="display: none" id="chat_body_{{$following->id}}">
@@ -3760,14 +3772,14 @@
                         <span class="date-divider-text">Today</span>
                     </div>
                     @php
-                    $chat_messages = $messages->where('from_user_id', auth()->id())->where('to_user_id', $following->id);
+                    $first_chat_messages = $messages->where('from_user_id', auth()->id())->where('to_user_id', $following->id);
                     $second_chat_messages = $messages->where('from_user_id', $following->id)->where('to_user_id', auth()->id());
-                    dd($chat_messages, $second_chat_messages);
-                    if($chat_messages->count() > 0){
-                        $chat_messages->merge($second_chat_messages);
+                    if($first_chat_messages->count() > 0){
+                    $chat_messages = $first_chat_messages->merge($second_chat_messages)->sortBy('created_at');
                     }else{
-                        $chat_messages = $second_chat_messages;
+                    $chat_messages = $second_chat_messages->sortBy('created_at');
                     }
+
                     @endphp
                     @foreach($chat_messages as $message)
                     @if($following->id == $message->to_user_id)
@@ -4120,7 +4132,15 @@
                 }
             });
         }
+        //Addprofiletype
+        $(document).ready(function() {
+            $('#profiletype').on('change', function() {
+                $('#profile-type').submit();
+                 
+            });
+        });
     </script>
+
 </body>
 
 </html>

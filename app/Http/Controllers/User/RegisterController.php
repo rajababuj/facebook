@@ -76,7 +76,7 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $existingUser = User::where('email', $request->email)->first();
 
         if ($existingUser) {
@@ -85,7 +85,7 @@ class RegisterController extends Controller
 
         $password = Hash::make($request->password);
 
-        $data = array_merge($request->only('name', 'email', 'profiletype'), [
+        $data = array_merge($request->only('name', 'email',), [
             'password' => $password
         ]);
 
@@ -108,4 +108,14 @@ class RegisterController extends Controller
 
         return redirect()->back();
     }
+    public function updateProfileType(Request $request)
+    {
+        $profileType = $request->input('profiletype');
+        dd($profileType);
+        auth()->user()->update(['profiletype' => $profileType]);
+
+        return redirect()->route('dashboard')->with('toastr', ['type' => 'success', 'message' => 'Profile type updated successfully']);
+
+    }
+    
 }

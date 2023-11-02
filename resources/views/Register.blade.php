@@ -14,11 +14,11 @@
 
     <title>Friendkit | Signup</title>
 
-    <script src="cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js"></script>
+    <!-- <script src="cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js"></script> -->
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <!-- Google Tag Manager -->
-    <script>
+    <!-- <script>
         ;
         (function(w, d, s, l, i) {
             w[l] = w[l] || []
@@ -33,7 +33,7 @@
             j.src = '../www.googletagmanager.com/gtm5445.html?id=' + i + dl
             f.parentNode.insertBefore(j, f)
         })(window, document, 'script', 'dataLayer', 'GTM-KQHJPZP')
-    </script>
+    </script> -->
     <!-- End Google Tag Manager -->
 
     <!-- Fonts -->
@@ -42,7 +42,7 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{asset ('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
-   
+
 </head>
 
 <body>
@@ -107,21 +107,11 @@
                                         <div class="field">
                                             <label>Password</label>
                                             <div class="control">
-                                                <input type="password" name="password" class="input" placeholder="Enter your password" />
+                                                <input type="password" name="password" class="input" placeholder="Enter your password" autocomplete="on" />
                                                 @error('password')
                                                 <span class="text-danger" style="color: red;">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="column is-10">
-                                        <div class="dropdown">
-                                            <label>Choose a account:</label>
-                                            <select name="profile" id="profile">
-                                                <option value="Public">Public</option>
-                                                <option value="Private">Private</option>
-                                            </select>
-                                            <input type="hidden" name="profiletype" id="profiletype" value="">
                                         </div>
                                     </div>
                                     <div class="column is-12">
@@ -154,13 +144,7 @@
         </div>
 
     </div>
-    <script>
-       
-        const profileTypeField = document.getElementById("profiletype");
-        profileDropdown.addEventListener("change", function() {
-            profileTypeField.value = profileDropdown.value;
-        });
-    </script>
+
 
     <!-- Concatenated js plugins and jQuery -->
     <script src="{{asset ('assets/js/app.js') }}"></script>
