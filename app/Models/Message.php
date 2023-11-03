@@ -11,11 +11,21 @@ class Message extends Model
 
 
     protected $fillable = [
-        'from_user_id','to_user_id','message',
+        'from_user_id','to_user_id','message', 'files'
 
     ];
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    // public function getImageAttribute($image)
+    // {
+    //     $data = explode(',', $image);
+    //     $arr = [];
+    //     foreach ($data as $image) {
+    //         array_push($arr, asset('uploads/images/chat_img' . $image));
+    //     }
+    //     return $arr;
+    // }
 }

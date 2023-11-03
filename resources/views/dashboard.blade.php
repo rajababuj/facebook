@@ -13,12 +13,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
     <title>Friendkit | Feed</title>
-    <script src="{{asset ('assets/cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js') }}"></script>
+    <!-- <script src="{{asset ('assets/cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js') }}"></script> -->
 
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <!-- Google Tag Manager -->
-    <script>
+    <!-- <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || []
             w[l].push({
@@ -32,13 +32,13 @@
             j.src = '../www.googletagmanager.com/gtm5445.html?id=' + i + dl
             f.parentNode.insertBefore(j, f)
         })(window, document, 'script', 'dataLayer', 'GTM-KQHJPZP')
-    </script>
+    </script> -->
     <!-- End Google Tag Manager -->
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" />
-    <link href="../cdn.jsdelivr.net/npm/fontisto%40v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet" />
+    <!-- <link href="../cdn.jsdelivr.net/npm/fontisto%40v3.0.4/css/fontisto/fontisto-brands.min.css" rel="stylesheet" /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="meta_data" data-token="{{csrf_token()}}" data-user="{{auth()->check() ? auth()->id() : 0}}">
 
@@ -47,6 +47,8 @@
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         .redHeart {
             color: red;
@@ -82,303 +84,18 @@
                             <i data-feather="heart"></i>
                             <span class="indicator"></span>
                         </a>
-
-                        <div class="nav-drop">
-                            <div class="inner">
-                                <div class="nav-drop-header">
-                                    <span>Friend requests</span>
-                                    <a href="#">
-                                        <i data-feather="search"></i>
-                                    </a>
-                                </div>
-                                <div class="nav-drop-body is-friend-requests">
-                                    <!-- Friend request -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <a href="#">Bobby Brown</a>
-                                            <span>Najeel verwick is a common friend</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <button class="button icon-button is-solid grey-button raised">
-                                                <i data-feather="user-plus"></i>
-                                            </button>
-                                            <button class="button icon-button is-solid grey-button raised">
-                                                <i data-feather="user-minus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- Friend request -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/edward.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <a href="#">Dan Walker</a>
-                                            <span>You have 4 common friends</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <button class="button icon-button is-solid grey-button raised">
-                                                <i data-feather="user-plus"></i>
-                                            </button>
-                                            <button class="button icon-button is-solid grey-button raised">
-                                                <i data-feather="user-minus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- Friend request -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/nelly.png')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <span>You are now friends with <a href="#">Nelly Schwartz</a>. Check
-                                                her <a href="#">profile</a>.</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="added-icon">
-                                                <i data-feather="tag"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Friend request -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/milly.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <a href="#">Milly Augustine</a>
-                                            <span>You have 8 common friends</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <button class="button icon-button is-solid grey-button raised">
-                                                <i data-feather="user-plus"></i>
-                                            </button>
-                                            <button class="button icon-button is-solid grey-button raised">
-                                                <i data-feather="user-minus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- Friend request -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/elise.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <span>You are now friends with <a href="#">Elise Walker</a>. Check her
-                                                <a href="#">profile</a>.</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="added-icon">
-                                                <i data-feather="tag"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Friend request -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/edward.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <span>You are now friends with <a href="#">Edward Mayers</a>. Check his
-                                                <a href="#">profile</a>.</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="added-icon">
-                                                <i data-feather="tag"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="nav-drop-footer">
-                                    <a href="#">View All</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="navbar-item is-icon drop-trigger">
                         <a class="icon-link" href="javascript:void(0);">
                             <i data-feather="bell"></i>
                             <span class="indicator"></span>
                         </a>
-
-                        <div class="nav-drop">
-                            <div class="inner">
-                                <div class="nav-drop-header">
-                                    <span>Notifications</span>
-                                    <a href="#">
-                                        <i data-feather="bell"></i>
-                                    </a>
-                                </div>
-                                <div class="nav-drop-body is-notifications">
-                                    <!-- Notification -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/david.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <span><a href="#">David Kim</a> commented on
-                                                <a href="#">your post</a>.</span>
-                                            <span class="time">30 minutes ago</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="added-icon">
-                                                <i data-feather="message-square"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Notification -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <span><a href="#">Daniel Wellington</a> liked your
-                                                <a href="#">profile.</a></span>
-                                            <span class="time">43 minutes ago</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="added-icon">
-                                                <i data-feather="heart"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Notification -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/stella.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <span><a href="#">Stella Bergmann</a> shared a
-                                                <a href="#">New video</a> on your wall.</span>
-                                            <span class="time">Yesterday</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="added-icon">
-                                                <i data-feather="youtube"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Notification -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/elise.jpg')}}" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <span><a href="#">Elise Walker</a> shared an <a href="#">Image</a> with
-                                                you an 2 other people.</span>
-                                            <span class="time">2 days ago</span>
-                                        </div>
-                                        <div class="media-right">
-                                            <div class="added-icon">
-                                                <i data-feather="image"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="nav-drop-footer">
-                                    <a href="#">View All</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="navbar-item is-icon drop-trigger">
                         <a class="icon-link is-active" href="javascript:void(0);">
                             <i data-feather="mail"></i>
                             <span class="indicator"></span>
                         </a>
-
-                        <div class="nav-drop">
-                            <div class="inner">
-                                <div class="nav-drop-header">
-                                    <span>Messages</span>
-                                    <a href="messages-inbox.html">Inbox</a>
-                                </div>
-                                <div class="nav-drop-body is-friend-requests">
-                                    <!-- Message -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/150x150" data-demo-src="{{asset('img/jenna.png')}}" data-user-popover="9" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <a href="#">Nelly Schwartz</a>
-                                            <span>I think we should meet near the Starbucks so we can get...</span>
-                                            <span class="time">Yesterday</span>
-                                        </div>
-                                        <div class="media-right is-centered">
-                                            <div class="added-icon">
-                                                <i data-feather="message-square"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Message -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/150x150" data-demo-src="{{asset('img/edward.jpg')}}" data-user-popover="5" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <a href="#">Edward Mayers</a>
-                                            <span>That was a real pleasure seeing you last time we really
-                                                should...</span>
-                                            <span class="time">last week</span>
-                                        </div>
-                                        <div class="media-right is-centered">
-                                            <div class="added-icon">
-                                                <i data-feather="message-square"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Message -->
-                                    <div class="media">
-                                        <figure class="media-left">
-                                            <p class="image">
-                                                <img src="https://via.placeholder.com/150x150" data-demo-src="{{asset('img/dan.jpg')}}" data-user-popover="1" alt="" />
-                                            </p>
-                                        </figure>
-                                        <div class="media-content">
-                                            <a href="#">Dan Walker</a>
-                                            <span>Hey there, would it be possible to borrow your bicycle, i really
-                                                need...</span>
-                                            <span class="time">Jun 03 2018</span>
-                                        </div>
-                                        <div class="media-right is-centered">
-                                            <div class="added-icon">
-                                                <i data-feather="message-square"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="nav-drop-footer">
-                                    <a href="#">Clear All</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
 
@@ -414,63 +131,6 @@
                         <div class="cart-button">
                             <i data-feather="shopping-cart"></i>
                             <div class="cart-count"></div>
-                        </div>
-
-                        <!-- Cart dropdown -->
-                        <div class="shopping-cart">
-                            <div class="cart-inner">
-                                <!--Loader-->
-                                <div class="navbar-cart-loader is-active">
-                                    <div class="loader is-loading"></div>
-                                </div>
-
-                                <div class="shopping-cart-header">
-                                    <a href="ecommerce-cart.html" class="cart-link">View Cart</a>
-                                    <div class="shopping-cart-total">
-                                        <span class="lighter-text">Total:</span>
-                                        <span class="main-color-text">$193.00</span>
-                                    </div>
-                                </div>
-                                <!--end shopping-cart-header -->
-
-                                <ul class="shopping-cart-items">
-                                    <li class="cart-row">
-                                        <img src="{{ asset ('assets/img/products/2.svg' ) }}">
-
-                                        <span class="item-meta">
-                                            <span class="item-name">Cool Shirt</span>
-                                            <span class="meta-info">
-                                                <span class="item-price">$29.00</span>
-                                                <span class="item-quantity">Qty: 01</span>
-                                            </span>
-                                        </span>
-                                    </li>
-
-                                    <li class="cart-row">
-                                        <img src="{{ asset ('assets/img/products/3.svg' ) }}">
-                                        <span class="item-meta">
-                                            <span class="item-name">Military Short</span>
-                                            <span class="meta-info">
-                                                <span class="item-price">$39.00</span>
-                                                <span class="item-quantity">Qty: 01</span>
-                                            </span>
-                                        </span>
-                                    </li>
-
-                                    <li class="cart-row">
-                                        <img src="{{ asset ('assets/img/products/4.svg' ) }}">
-                                        <span class="item-meta">
-                                            <span class="item-name">Cool Backpack</span>
-                                            <span class="meta-info">
-                                                <span class="item-price">$125.00</span>
-                                                <span class="item-quantity">Qty: 01</span>
-                                            </span>
-                                        </span>
-                                    </li>
-                                </ul>
-
-                                <a href="#" class="button primary-button is-raised">Checkout</a>
-                            </div>
                         </div>
                     </div>
                     <div id="account-dropdown" class="navbar-item is-account drop-trigger has-caret">
@@ -562,20 +222,23 @@
                                         </div>
                                     </a>
                                     <hr class="account-divider" />
-                                    <a href="#" class="account-item">
-                                        <div class="media">
-                                            <div class="icon-wrap">
-                                                <i data-feather="settings"></i>
+                                    <form id="profile-type" method="POST" action="{{ route('updateProfileType') }}">
+                                        @csrf
+                                        <a class="account-item">
+                                            <div class="media">
+                                                <div class="icon-wrap">
+                                                    <i data-feather="settings"></i>
+                                                </div>
+                                                <div class="field">
+                                                    <label>Choose an account:</label>
+                                                    <select name="profiletype" id="profiletype">
+                                                        <option value="public">Private</option>
+                                                        <option value="private">Public</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                            <div class="field">
-                                                <label>Choose an account:</label>
-                                                <select name="profiletype" id="profiletype">
-                                                    <option value="public">Public</option>
-                                                    <option value="private">Private</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </a>
+                                        </a>
+                                    </form>
                                     <a class="account-item">
                                         <div class="media">
                                             <div class="icon-wrap">
@@ -1525,28 +1188,6 @@
                                                     <div class="close-icon is-main">
                                                         <i data-feather="x"></i>
                                                     </div>
-                                                    <!-- <div class="gif-dropdown">
-                                                        <div class="inner">
-                                                            <div class="gif-block">
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/1.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/2.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/3.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/4.gif" alt="" />
-                                                            </div>
-                                                            <div class="gif-block">
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/5.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/6.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/7.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/8.gif" alt="" />
-                                                            </div>
-                                                            <div class="gif-block">
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/9.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/10.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/11.gif" alt="" />
-                                                                <img src="https://via.placeholder.com/478x344" data-demo-src="assets/img/demo/gif/12.gif" alt="" />
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -1751,85 +1392,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!-- Friends list -->
-                                            <div class="friends-list is-hidden">
-                                                <!-- Header -->
-                                                <div class="list-header">
-                                                    <span>Send in a message</span>
-                                                    <div class="actions">
-                                                        <a id="open-compose-search" href="javascript:void(0);" class="search-trigger">
-                                                            <i data-feather="search"></i>
-                                                        </a>
-                                                        <!-- Hidden filter input -->
-                                                        <div id="compose-search" class="control is-hidden">
-                                                            <input type="text" class="input" placeholder="Search People" />
-                                                            <span>
-                                                                <i data-feather="search"></i>
-                                                            </span>
-                                                        </div>
-                                                        <a href="javascript:void(0);" class="is-inverted modal-trigger" data-modal="create-group-modal">Create group</a>
-                                                    </div>
-                                                </div>
-                                                <!-- List body -->
-                                                <div class="list-body">
-                                                    <!-- Friend -->
-                                                    <div class="friend-block">
-                                                        <div class="round-checkbox is-small">
-                                                            <div>
-                                                                <input type="checkbox" id="checkbox-3" />
-                                                                <label for="checkbox-3"></label>
-                                                            </div>
-                                                        </div>
-                                                        <img class="friend-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
-                                                        <div class="friend-name">Dan Walker</div>
-                                                    </div>
-                                                    <!-- Friend -->
-                                                    <div class="friend-block">
-                                                        <div class="round-checkbox is-small">
-                                                            <div>
-                                                                <input type="checkbox" id="checkbox-4" />
-                                                                <label for="checkbox-4"></label>
-                                                            </div>
-                                                        </div>
-                                                        <img class="friend-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" alt="" />
-                                                        <div class="friend-name">Daniel Wellington</div>
-                                                    </div>
-                                                    <!-- Friend -->
-                                                    <div class="friend-block">
-                                                        <div class="round-checkbox is-small">
-                                                            <div>
-                                                                <input type="checkbox" id="checkbox-5" />
-                                                                <label for="checkbox-5"></label>
-                                                            </div>
-                                                        </div>
-                                                        <img class="friend-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/stella.jpg')}}" alt="" />
-                                                        <div class="friend-name">Stella Bergmann</div>
-                                                    </div>
-                                                    <!-- Friend -->
-                                                    <div class="friend-block">
-                                                        <div class="round-checkbox is-small">
-                                                            <div>
-                                                                <input type="checkbox" id="checkbox-6" />
-                                                                <label for="checkbox-6"></label>
-                                                            </div>
-                                                        </div>
-                                                        <img class="friend-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/david.jpg')}}" alt="" />
-                                                        <div class="friend-name">David Kim</div>
-                                                    </div>
-                                                    <!-- Friend -->
-                                                    <div class="friend-block">
-                                                        <div class="round-checkbox is-small">
-                                                            <div>
-                                                                <input type="checkbox" id="checkbox-7" />
-                                                                <label for="checkbox-7"></label>
-                                                            </div>
-                                                        </div>
-                                                        <img class="friend-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/nelly.png')}}" alt="" />
-                                                        <div class="friend-name">Nelly Schwartz</div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <!-- Footer buttons -->
                                         <div class="more-wrap">
@@ -1936,12 +1498,21 @@
 
                                     <div class="social-count">
                                         @if(in_array($post->id, $like_posts))
-                                        <button onclick="dislike_post({{$post->id}})" type="submit" style="color:red" id="dislikebtn{{$post->id}}"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
+                                        <button type="submit" onclick="dislike_post({{$post->id}})" id="dislikepostbtn{{$post->id}}"><i class="fa-sharp fa-solid fa-heart" style="color: red;"></i></button>
                                         @else
-                                        <button onclick="like_post({{$post->id}})" type="submit" id="likepostbtn{{$post->id}}"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>
+                                        <button onclick="like_post({{$post->id}})" type="submit" id="likepostbtn{{$post->id}}"><i data-feather="heart"></i></button>
                                         @endif
 
-                                        <!-- <div class="shares-count">
+
+
+                                        @php
+                                        $like_post_count = App\Models\Like::where('post_id', $post->id)->count();
+                                        @endphp
+
+                                        <span id="post_like_count{{$post->id}}">{{$like_post_count}}<span>
+
+
+                                                <!-- <div class="shares-count">
                                             <i data-feather="link-2"></i>
                                             <span>9</span>
                                         </div>
@@ -2328,25 +1899,6 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                            <form id="profile-type" method="POST" action="{{ route('updateProfileType') }}">
-                                                @csrf
-                                                <a class="account-item">
-                                                    <div class="media">
-                                                        <div class="icon-wrap">
-                                                            <i data-feather="settings"></i>
-                                                        </div>
-                                                        <div class="field">
-                                                            <label>Choose an account:</label>
-                                                            <select name="profiletype" id="profiletype">
-                                                                <option value="public">Private</option>
-                                                                <option value="private">Public</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </form>
-
-
                                             <hr class="dropdown-divider" />
                                             <a href="#" class="dropdown-item">
                                                 <div class="media">
@@ -3594,66 +3146,6 @@
                                 <i data-feather="settings"></i>
                             </a>
                         </div>
-                        <div class="dropdown-menu" role="menu">
-                            <div class="dropdown-content">
-                                <a href="#" class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="message-square"></i>
-                                        <div class="media-content">
-                                            <h3>Details</h3>
-                                            <small>View this conversation's details.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="settings"></i>
-                                        <div class="media-content">
-                                            <h3>Preferences</h3>
-                                            <small>Define your preferences.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <hr class="dropdown-divider" />
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="bell"></i>
-                                        <div class="media-content">
-                                            <h3>Notifications</h3>
-                                            <small>Set notifications settings.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="bell-off"></i>
-                                        <div class="media-content">
-                                            <h3>Silence</h3>
-                                            <small>Disable notifications.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <hr class="dropdown-divider" />
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="box"></i>
-                                        <div class="media-content">
-                                            <h3>Archive</h3>
-                                            <small>Archive this conversation.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="trash-2"></i>
-                                        <div class="media-content">
-                                            <h3>Delete</h3>
-                                            <small>Delete this conversation.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="chat-search">
@@ -3677,57 +3169,6 @@
                             <a class="chat-nav-item is-icon no-margin">
                                 <i data-feather="more-vertical"></i>
                             </a>
-                        </div>
-                        <div class="dropdown-menu" role="menu">
-                            <div class="dropdown-content">
-                                <a href="#" class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="file-text"></i>
-                                        <div class="media-content">
-                                            <h3>Files</h3>
-                                            <small>View all your files.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="users"></i>
-                                        <div class="media-content">
-                                            <h3>Users</h3>
-                                            <small>View all users you're talking to.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <hr class="dropdown-divider" />
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="gift"></i>
-                                        <div class="media-content">
-                                            <h3>Daily bonus</h3>
-                                            <small>Get your daily bonus.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="download-cloud"></i>
-                                        <div class="media-content">
-                                            <h3>Downloads</h3>
-                                            <small>See all your downloads.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <hr class="dropdown-divider" />
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="life-buoy"></i>
-                                        <div class="media-content">
-                                            <h3>Support</h3>
-                                            <small>Reach our support team.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
                         </div>
                     </div>
 
@@ -3788,6 +3229,8 @@
                         <div class="message-block">
                             <span>{{ $message->created_at->format('h:ia') }}</span>
                             <div class="message-text">{{ $message->message }}</div>
+                            <img src="{{ asset('uploads/images/chat_img/' . $message->files) }}" height="30px" width="30px" alt="">
+
                         </div>
                     </div>
                     @else
@@ -3795,8 +3238,10 @@
                     <div class="chat-message is-received">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
                         <div class="message-block">
-                            <span>{{ $message->created_at->format('h:ia') }}</smessagepan>
-                                <div class="message-text">{{ $message->message }}</div>
+                            <span>{{ $message->created_at->format('h:ia') }}</span>
+                            <div class="message-text">{{ $message->message }}</div>
+                            <img src="{{ asset('uploads/images/chat_img/' . $message->files) }}" height="300px" width="300px" alt="">
+                                
                         </div>
                     </div>
                     @endif
@@ -3806,12 +3251,16 @@
                 <div class="chat-action">
                     <div class="chat-action-inner">
                         <div class="control" style="display: flex;">
+
                             <textarea class="textarea comment-textarea message_{{$following->id}}" id="message" rows="1" style="margin-top: 350px;"></textarea>
+                            <label for="image" class="custom-file-upload" style="margin-top: 150px;">
+                                <i class="fa fa-image fa-2x" aria-hidden="true"></i>
+                            </label>
+                            <input type="file" id="image" name="image" class="photo" style="display: none;">
                             <button onclick="sendMessageButton({{ $following->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
                         </div>
                     </div>
                 </div>
-
             </div>
             @endforeach
             <div id="chat-panel" class="chat-panel is-opened" style="display: none">
@@ -3825,39 +3274,6 @@
                 </div>
             </div>
 
-        </div>
-    </div>
-
-    <div id="end-tour-modal" class="modal end-tour-modal is-xsmall has-light-bg">
-        <div class="modal-background"></div>
-        <div class="modal-content">
-            <div class="card">
-                <div class="card-heading">
-                    <h3></h3>
-                    <!-- Close X button -->
-                    <div class="close-wrap">
-                        <span class="close-modal">
-                            <i data-feather="x"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="card-body has-text-centered">
-                    <div class="image-wrap">
-                        <img src="{{ asset ('assets/img/vector/logo/friendkit.svg' ) }}">
-
-                    </div>
-
-                    <h3>That's all folks!</h3>
-                    <p>
-                        Thanks for taking the friendkit tour. There are still tons of other
-                        features for you to discover!
-                    </p>
-
-                    <div class="action">
-                        <a href="index.html#demos-section" class="button is-solid accent-button raised is-fullwidth">Explore</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -3952,60 +3368,73 @@
                 });
             });
         });
-        //Add dislike_post
+
+        //dislike post
         function dislike_post($id) {
-            var url = "{{ route('dislike') }}";
+            event.preventDefault();
+            event.stopPropagation();
+            var url = "{{route('dislike')}}";
 
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: {
-                    post_id: $id,
+                    post_id: $id
+
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.message) {
+                        $("#post_like_count" + $id).html(response.Post_like_count);
+                        $("#likepostbtn" + $id).html('<button onclick="like_post(' + $id + ')"><i class="fa fa-heart" style="color:white"></i></button>');
+                        toastr.success(response.message, 'Success');
+                    } else {
+
+                        toastr.success('Post dislike successfully', 'Success');
+                    }
+                },
+                error: function(xhr) {
+                    toastr.error(xhr.responseJSON.message, 'Error');
+                    console.log(xhr.responseJSON.message);
+                },
+
+            });
+        }
+
+        //Like Post
+        function like_post($id) {
+            event.preventDefault();
+            event.stopPropagation();
+            var url = "{{route('pressLike')}}";
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    post_id: $id
 
                 },
                 dataType: 'json',
                 success: function(response) {
 
                     if (response.message) {
-                        $("#dislikebtn").html('<button onclick="like_post({{$post->id}})" type="submit" id="likepostbtn{{$post->id}}"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>');
-                        toastr.success(response.message, 'You like this post');
-                    } else {
-                        toastr.success('Dislike post successfully', 'Success');
-                    }
+                        if (response.Post_like_count) {
+                            $("#post_like_count" + $id).html(response.Post_like_count);
+                        }
+                        $("#likepostbtn" + $id).html(' <button onclick="dislike_post(' + $id + ')"><i class="fa-sharp fa-solid fa-heart" style="color: red;"></i></button>');
 
+                        toastr.success(response.message, 'Success');
+
+                    } else {
+                        toastr.success('Like added successfully', 'Success');
+                    }
+                    // window.location.reload();
                 },
                 error: function(xhr) {
                     toastr.error(xhr.responseJSON.message, 'Error');
                     console.log(xhr.responseJSON.message);
-                }
-            });
-        }
-        //Add Like
-        function like_post($id) {
-            event.preventDefault();
-
-            var url = "{{route('pressLike')}}";
-
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    post_id: $id
                 },
-                dataType: 'JSON',
-                success: function(response) {
 
-                    if (response.message) {
-
-
-                        $("#likepostbtn" + $id).html('<button onclick="dislike_post({{$post->id}})" type="submit" style="color:red"> <i class="fa fa-heart">{{$post->likes->count()}}</i></button>');
-
-                        toastr.success(response.message, 'Success');
-                    } else {
-                        toastr.success('Dislike post successfully', 'Success');
-                    }
-
-                }
             });
         }
         //Follow & Unfollow
@@ -4085,7 +3514,6 @@
                         'post_id': postId
                     },
                     success: function(data) {
-                        // console.log(data);
                         $('#comments-container').html(data);
                         $('#comment-text').val('');
 
@@ -4098,14 +3526,21 @@
         //Chat
         function sendMessageButton($id) {
             var message = $(".message_" + $id).val();
+            var imageFile = $("#image")[0].files[0];
+
+
+            var formData = new FormData();
+            formData.append("message", message);
+            formData.append("to_user_id", $id);
+            formData.append("image", imageFile);
+
             $.ajax({
                 type: "POST",
                 url: "{{ route('sendMessage') }}",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "message": message,
-                    "to_user_id": $id
-                },
+                data: formData,
+                processData: false,
+                contentType: false,
+
                 success: function(response) {
                     if (response.message === 'chat added successfully!') {
                         $("#message").val('');
@@ -4132,11 +3567,12 @@
                 }
             });
         }
+
         //Addprofiletype
         $(document).ready(function() {
             $('#profiletype').on('change', function() {
                 $('#profile-type').submit();
-                 
+
             });
         });
     </script>

@@ -111,7 +111,6 @@ class RegisterController extends Controller
     public function updateProfileType(Request $request)
     {
         $profileType = $request->input('profiletype');
-        dd($profileType);
         auth()->user()->update(['profiletype' => $profileType]);
 
         return redirect()->route('dashboard')->with('toastr', ['type' => 'success', 'message' => 'Profile type updated successfully']);

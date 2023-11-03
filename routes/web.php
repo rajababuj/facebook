@@ -50,6 +50,5 @@ Route::get('messages', [ChatsController::class, 'fetchMessages'])->name('fetchMe
 Route::post('messages', [ChatsController::class, 'sendMessage'])->name('sendMessage');
 
 Route::post('like', [PostController::class, 'pressLike'])->name('pressLike');
-
 Route::post('/update-profile-type', [RegisterController::class,'updateProfileType'])->name('updateProfileType');
 

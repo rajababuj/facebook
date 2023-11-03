@@ -39,12 +39,14 @@ class PostController extends Controller
     public function dislike(Request $request)
     {
         $data = $request->all();
-
         $like_post = Like::where('post_id', $data['post_id'])->where('user_id', Auth()->user()->id)->first();
-
-        if ($like_post) {
-            $like_post->delete();
+        if ($like_post != null) {
+             $like_post->delete();
+            $user_id = Auth::user()->id;
+            $post_count = Like::where('user_id', $user_id)->where('post_id', $data['post_id'])->count();
             return response()->json([
+                'Post_like_count' => $post_count,
+                'Post_like_count' => $post_count,
                 'message' => 'You post dislike successfully!'
             ]);
         } else {
@@ -55,15 +57,15 @@ class PostController extends Controller
     }
     public function pressLike(Request $request)
     {
-
-
         $data = $request->all();
         $likes = new Like();
         $likes->user_id = Auth()->user()->id;
         $likes->post_id = $data['post_id'];
         $likes->save();
 
+        $post_count = Like::where('post_id', $data['post_id'])->count();
         return response()->json([
+            'Post_like_count' => $post_count,
             'message' => 'You post like successfully!'
         ]);
     }
