@@ -33,6 +33,7 @@ class RegisterController extends Controller
 
         $comments = Comment::all();
         $messages = Message::all();
+        // dd($messages);
         $followings = Auth::user()->followings;
         $followers = Auth::user()->followers;
 

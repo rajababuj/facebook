@@ -15,24 +15,33 @@ class ChatRepository implements ChatInterface
     public function storePost($data)
     {
 
-     
-        // dd($data);
-        $message = new Message;
 
+        // dd($data['image']);
+        $message = new Message;
         $message->message = $data['message'];
-        $message->to_user_id = $data['to_user_id']; 
+        $message->to_user_id = $data['to_user_id'];
         $message->from_user_id = Auth::id();
-        if($data['image']){
-           $image = $data['image'];
-           $name = time() . '.' . $image->extension();
-           $path = public_path(). '/uploads/images/chat_img';
-           $image->move($path, $name);
+        
+
+        if (isset($data['image'] )) {
+            $img = $data['image'];
+            $name = time() . '.' . $img->extension();
+            $path = public_path(). "/uploads/images/chat_img";
+            $img->move($path, $name); 
+            $message->files = $name;  
         }
 
-        $message->files = $name;
-        $message->save();
-        return ['status' => true];
-
+        if (isset($data['video'])) {
+            $video = $data['video'];
+            $name = time() . '.' . $video->extension();
+            $path = public_path(). "/uploads/images/chat_img/video";
+            $video->move($path, $name); 
+            $message->video = $name;  
+        }
         
+        $message->save();
+        
+        
+        return ['status' => true];
     }
 }

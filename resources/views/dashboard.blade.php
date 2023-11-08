@@ -3223,13 +3223,25 @@
 
                     @endphp
                     @foreach($chat_messages as $message)
+
                     @if($following->id == $message->to_user_id)
                     <div class="chat-message is-sent">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
                         <div class="message-block">
                             <span>{{ $message->created_at->format('h:ia') }}</span>
+                            @isset($message->message)
                             <div class="message-text">{{ $message->message }}</div>
-                            <img src="{{ asset('uploads/images/chat_img/' . $message->files) }}" height="30px" width="30px" alt="">
+                            @endisset
+                            @isset($message->files)
+                            <img src="{{asset('uploads/images/chat_img/' . $message->files)}}" height="300px" width="300px" style="visibility: visible">
+                            @endif
+
+                            @if($message->video != null)
+                            <video width="320" height="240" controls>
+                                <source src="{{asset('uploads/images/chat_img/video' . $message->video)}}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            @endif
 
                         </div>
                     </div>
@@ -3241,7 +3253,8 @@
                             <span>{{ $message->created_at->format('h:ia') }}</span>
                             <div class="message-text">{{ $message->message }}</div>
                             <img src="{{ asset('uploads/images/chat_img/' . $message->files) }}" height="300px" width="300px" alt="">
-                                
+                            <img src="{{ asset('uploads/videos/chat_video/' . $message->video) }}" height="300px" width="300px" alt="">
+
                         </div>
                     </div>
                     @endif
@@ -3257,6 +3270,12 @@
                                 <i class="fa fa-image fa-2x" aria-hidden="true"></i>
                             </label>
                             <input type="file" id="image" name="image" class="photo" style="display: none;">
+
+                            <label for="video" class="custom-file-upload" style="margin-top: 150px;">
+                                <i class="fa fa-video fa-2x" aria-hidden="true"></i>
+                            </label>
+                            <input type="file" id="video" name="video" class="video w-100">
+
                             <button onclick="sendMessageButton({{ $following->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
                         </div>
                     </div>
@@ -3527,12 +3546,16 @@
         function sendMessageButton($id) {
             var message = $(".message_" + $id).val();
             var imageFile = $("#image")[0].files[0];
+            // var videoFile = $("#video")[0].video[0];
 
 
             var formData = new FormData();
             formData.append("message", message);
             formData.append("to_user_id", $id);
-            formData.append("image", imageFile);
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+            // formData.append("video", videofile);
 
             $.ajax({
                 type: "POST",
