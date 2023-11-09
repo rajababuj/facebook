@@ -3204,7 +3204,7 @@
             </div>
             <!-- Chat body -->
             @foreach($followings as $following)
-            <div class="chat-body is-opened" style="display: none" id="chat_body_{{$following->id}}">
+            <div class="chat-body is-opened" style="display: none;width: 100%;" id="chat_body_{{$following->id}}">
 
                 <div id="dan-conversation_{{$following->id}}" class="chat-body-inner has-slimscroll" style="height: 500px; background-color: white">
 
@@ -3232,17 +3232,20 @@
                             @isset($message->message)
                             <div class="message-text">{{ $message->message }}</div>
                             @endisset
+
                             @isset($message->files)
-                            <img src="{{asset('uploads/images/chat_img/' . $message->files)}}" height="300px" width="300px" style="visibility: visible">
+                            <img src="{{asset('uploads/images/chat_img/' . $message->files)}}" style="visibility: visible; height: 300px; width: 250px">
                             @endif
 
-                            @if($message->video != null)
+                            @if($message->videos)
                             <video width="320" height="240" controls>
-                                <source src="{{asset('uploads/images/chat_img/video' . $message->video)}}" type="video/mp4">
-                                Your browser does not support the video tag.
+                                <source src="{{asset('/uploads/videos/chat_video/video/' . $message->videos)}}" type="video/mp4">
                             </video>
                             @endif
 
+                            @if($message->doc_file)
+                            <iframe src="{{asset('uploads/doc_file/chat_doc_file/doc_file/' . $message->doc_file)}}" frameborder="0" style="width:100%;min-height:640px;"></iframe>
+                            @endif
                         </div>
                     </div>
                     @else
@@ -3251,9 +3254,25 @@
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
                         <div class="message-block">
                             <span>{{ $message->created_at->format('h:ia') }}</span>
+                            @isset($message->message)
                             <div class="message-text">{{ $message->message }}</div>
-                            <img src="{{ asset('uploads/images/chat_img/' . $message->files) }}" height="300px" width="300px" alt="">
-                            <img src="{{ asset('uploads/videos/chat_video/' . $message->video) }}" height="300px" width="300px" alt="">
+                            @endisset
+
+                            @isset($message->files)
+                            <img src="{{asset('uploads/images/chat_img/' . $message->files)}}" style="visibility: visible; height: 300px; width: 250px">
+                            @endif
+
+                            @if($message->videos != null)
+                            <video  width="320" height="240" controls>
+                                <source src="{{asset('uploads/videos/chat_video/video/' . $message->videos)}}" type="video/mp4">
+                                Your browser does not support the video tag. 
+                            </video>
+                            @endif
+
+                            @if($message->doc_file != null)
+                            <iframe src="{{asset('uploads/doc_file/chat_doc_file/doc_file/' . $message->doc_file)}}" frameborder="0" style="width:100%;min-height:640px;"></iframe>
+                            @endif
+
 
                         </div>
                     </div>
@@ -3266,16 +3285,21 @@
                         <div class="control" style="display: flex;">
 
                             <textarea class="textarea comment-textarea message_{{$following->id}}" id="message" rows="1" style="margin-top: 350px;"></textarea>
+
                             <label for="image" class="custom-file-upload" style="margin-top: 150px;">
                                 <i class="fa fa-image fa-2x" aria-hidden="true"></i>
                             </label>
                             <input type="file" id="image" name="image" class="photo" style="display: none;">
 
-                            <label for="video" class="custom-file-upload" style="margin-top: 150px;">
+                            <label for="videos" class="custom-file-upload" style="margin-top: 150px;">
                                 <i class="fa fa-video fa-2x" aria-hidden="true"></i>
                             </label>
-                            <input type="file" id="video" name="video" class="video w-100">
+                            <input type="file" id="videos" name="videos" class="video" style="display: none;">
 
+                            <label for="doc_file" class="custom-file-upload" style="margin-top: 150px;">
+                                <i class="fa-solid fa-folder"></i>
+                            </label>
+                            <input type="file" id="doc_file" name="doc_file" class="photo" style="display: none;">
                             <button onclick="sendMessageButton({{ $following->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
                         </div>
                     </div>
@@ -3546,17 +3570,20 @@
         function sendMessageButton($id) {
             var message = $(".message_" + $id).val();
             var imageFile = $("#image")[0].files[0];
-            // var videoFile = $("#video")[0].video[0];
-
-
+            var videoFile = $("#videos")[0].files[0];
+            var doc_file = $("#doc_file")[0].files[0];
             var formData = new FormData();
             formData.append("message", message);
             formData.append("to_user_id", $id);
             if (imageFile) {
                 formData.append("image", imageFile);
             }
-            // formData.append("video", videofile);
-
+            if (videoFile) {
+                formData.append("videos", videoFile);
+            }
+            if (doc_file) {
+                formData.append("doc_file", doc_file);
+            }
             $.ajax({
                 type: "POST",
                 url: "{{ route('sendMessage') }}",
@@ -3583,6 +3610,7 @@
 
                         $("#dan-conversation_" + $id).append(newMessage);
                         $(".message_" + $id).val('');
+                       
                     }
                 },
                 error: function(error) {

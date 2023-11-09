@@ -30,13 +30,20 @@ class ChatRepository implements ChatInterface
             $img->move($path, $name); 
             $message->files = $name;  
         }
-
-        if (isset($data['video'])) {
-            $video = $data['video'];
+     
+        if (isset($data['videos'])) {
+            $video = $data['videos'];
             $name = time() . '.' . $video->extension();
-            $path = public_path(). "/uploads/images/chat_img/video";
+            $path = public_path(). "/uploads/videos/chat_video/video/";
             $video->move($path, $name); 
-            $message->video = $name;  
+            $message->videos = $name;  
+        }
+        if (isset($data['doc_file'])) {
+            $doc_file = $data['doc_file'];
+            $name = time() . '.' . $doc_file->extension();
+            $path = public_path(). "/uploads/doc_file/chat_doc_file/doc_file";
+            $doc_file->move($path, $name); 
+            $message->doc_file = $name;  
         }
         
         $message->save();

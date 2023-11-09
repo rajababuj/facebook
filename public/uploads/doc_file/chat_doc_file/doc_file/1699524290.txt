@@ -1,0 +1,79 @@
+index.ts:
+
+import coupenroute from "./components/coupon";
+ coupenroute(route);
+
+Event Controller : 
+getEvent() : -
+  let filter : any = {vendor_id: new mongoose.Types.ObjectId(vendor_id),}
+        if(search && search!=""){
+            filter={
+                ...filter,
+                $or: [
+                    { "name": { $regex: `${search}`, $options: "i" } },
+                    { "detail": { $regex: `${search}`, $options: "i" } },
+                    { "city": { $regex: `${search}`, $options: "i" } },
+                ],
+            }
+        }
+
+get event list :
+
+{ "name": { $regex: `${search}`, $options: "i" } },
+                    { "detail": { $regex: `${search}`, $options: "i" } },
+                    { "city": { $regex: `${search}`, $options: "i" } },
+
+
+user route : 
+
+,
+    {
+        path: "/charityDonation",
+        method: "post",
+        controller: UserController.charityDonation
+    },
+
+
+user controller: 
+
+const Ngo = require("../ngo/ngoModel");
+const Payment = require("../ngo/paymentModel");
+
+async function charityDonation(req: Request, res: Response) {
+    try {
+        let payment = await new Payment({
+            donor_user_id: req.headers.userid,
+            charity_item_id: req.body.charity_item_id,
+            amount: req.body.amount,
+            status:0
+        })
+        await payment.save();
+
+        const ngo = await Ngo.findById(req.body.charity_item_id);
+
+        let total_amount = ngo.total_amount;
+        let amount = req.body.amount;
+        let remain_amount = total_amount - amount
+        let fund = ngo.fund + amount;
+        let percentage = (fund*100)/total_amount;
+       
+        ngo.percentage = Math.round(percentage) + "%";
+        ngo.total_amount = remain_amount;
+        ngo.fund = fund;
+
+        await ngo.save();
+
+        return commonUtils.sendAdminSuccess(req, res, {message:"Payment Successfully"}, 200);
+        
+    }
+    catch (err: any) {
+        return commonUtils.sendError(req, res, { message: err.message }, 409);
+    }
+}
+
+,
+    charityDonation
+
+app_constant:
+    "MODEL_PAYMENT":"Payment",
+    "MODEL_COUPON":"Coupen",

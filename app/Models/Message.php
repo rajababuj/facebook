@@ -11,9 +11,10 @@ class Message extends Model
 
 
     protected $fillable = [
-        'from_user_id','to_user_id','message', 'files', 'video'
+        'from_user_id','to_user_id','message', 'files', 'videos'
 
     ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
