@@ -232,13 +232,16 @@
                                                 <div class="field">
                                                     <label>Choose an account:</label>
                                                     <select name="profiletype" id="profiletype">
-                                                        <option value="public">Private</option>
-                                                        <option value="private">Public</option>
+                                                        <option value="Select">Select</option>
+                                                        <option value="private">Private</option>
+                                                        <option value="public">Public</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </a>
                                     </form>
+
+
                                     <a class="account-item">
                                         <div class="media">
                                             <div class="icon-wrap">
@@ -1427,7 +1430,7 @@
                                             <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" data-user-popover="1" alt="" />
                                         </div>
                                         <div class="user-info">
-                                            <h3>{{Auth()->user()->name}}</h3>
+                                            <h3>{{$post->user->name}}</h3>
                                             <span class="time">July 26 2018, 01:03pm</span>
                                         </div>
                                     </div>
@@ -1512,7 +1515,7 @@
                                         <span id="post_like_count{{$post->id}}">{{$like_post_count}}<span>
 
 
-                                                <!-- <div class="shares-count">
+                                        <!-- <div class="shares-count">
                                             <i data-feather="link-2"></i>
                                             <span>9</span>
                                         </div>
@@ -1723,33 +1726,30 @@
                                 @foreach($users as $user)
                                 <div class="story-block">
                                     <div class="img-wrapper">
-                                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/daniel.jpg')}}" data-user-popover="1" alt="" />
+                                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{ asset('img/daniel.jpg') }}" data-user-popover="1" alt="" />
                                     </div>
                                     <div class="story-meta">
-                                        <span>{{$user->name}}</span>
+                                        <span>{{ $user->name }}</span>
                                         <span>1 hour ago</span>
                                         @if (auth()->user()->id !== $user->id)
                                         @if ($user->followers->contains(auth()->user()->id))
-                                        <a href="{{route('follow', $user->id)}}" class="btn btn-danger">Unfollow</a>
+                                        <button class="btn btn-danger follow-button" type="button" data-user-id="{{ $user->id }}">Unfollow</button>
                                         @else
-                                        <a href="{{route('follow', $user->id)}}" class="btn btn-primary">
-                                            Follow
-                                        </a>
+                                        <button class="btn btn-primary follow-button" type="button" data-user-id="{{ $user->id }}">Follow</button>
                                         @endif
-
                                         @endif
-
                                     </div>
                                     <div class="my-2">
                                         <span class="badge rounde-pill bg-light text-dark">
-                                            Following: {{$user->followings_count}}
+                                            Following: {{ $user->followings_count }}
                                         </span>
                                         <span class="badge rounde-pill bg-light text-dark">
-                                            Followers: {{$user->followers_count}}
+                                            Followers: {{ $user->followers_count }}
                                         </span>
                                     </div>
                                 </div>
                                 @endforeach
+
                                 @foreach($pending_users as $user)
                                 <div class="story-block">
                                     <div class="img-wrapper">
@@ -3263,9 +3263,9 @@
                             @endif
 
                             @if($message->videos != null)
-                            <video  width="320" height="240" controls>
+                            <video width="320" height="240" controls>
                                 <source src="{{asset('uploads/videos/chat_video/video/' . $message->videos)}}" type="video/mp4">
-                                Your browser does not support the video tag. 
+                                Your browser does not support the video tag.
                             </video>
                             @endif
 
@@ -3490,7 +3490,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/user/' + userId + '/' + action,
+                    url: '/user/follow/' + userId,
                     data: {
                         _token: '{{ csrf_token() }}'
                     },
@@ -3506,6 +3506,7 @@
                 });
             });
         });
+
         //Replyform
         function showReplyForm(commentId) {
             console.log($('#reply-form-' + commentId));
@@ -3610,7 +3611,7 @@
 
                         $("#dan-conversation_" + $id).append(newMessage);
                         $(".message_" + $id).val('');
-                       
+
                     }
                 },
                 error: function(error) {
@@ -3621,12 +3622,32 @@
 
         //Addprofiletype
         $(document).ready(function() {
-            $('#profiletype').on('change', function() {
-                $('#profile-type').submit();
+            var storedValue = localStorage.getItem('selectedProfileType');
+            if (storedValue) {
+                $('#profiletype').val(storedValue);
+            }
 
+            $('#profiletype').on('change', function() {
+                var selectedValue = $(this).val();
+                localStorage.setItem('selectedProfileType', selectedValue);
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route("updateProfileType") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        profiletype: selectedValue
+                    },
+                    success: function(data) {
+                        console.log('Profile type updated successfully');
+                    },
+                    error: function(error) {
+                        console.error('Error updating profile type:', error);
+                    }
+                });
             });
         });
     </script>
+
 
 </body>
 

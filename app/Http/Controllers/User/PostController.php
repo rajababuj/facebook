@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Like;
 use Illuminate\Http\Request;
+use App\Models\Message;
 use App\Repositories\Interfaces\PostInterface;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
@@ -35,38 +36,94 @@ class PostController extends Controller
             ]);
         }
     }
-    // Save Like 
-    public function dislike(Request $request)
-    {
-        $data = $request->all();
-        $like_post = Like::where('post_id', $data['post_id'])->where('user_id', Auth()->user()->id)->first();
-        if ($like_post != null) {
-             $like_post->delete();
-            $user_id = Auth::user()->id;
-            $post_count = Like::where('user_id', $user_id)->where('post_id', $data['post_id'])->count();
-            return response()->json([
-                'Post_like_count' => $post_count,
-                'Post_like_count' => $post_count,
-                'message' => 'You post dislike successfully!'
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'something went wrong!'
-            ]);
-        }
-    }
     public function pressLike(Request $request)
     {
         $data = $request->all();
-        $likes = new Like();
-        $likes->user_id = Auth()->user()->id;
-        $likes->post_id = $data['post_id'];
-        $likes->save();
+        $result = $this->postRepository->pressLike($data);
 
-        $post_count = Like::where('post_id', $data['post_id'])->count();
-        return response()->json([
-            'Post_like_count' => $post_count,
-            'message' => 'You post like successfully!'
-        ]);
+        if ($result['status']) {
+            return response()->json([
+                'message' => 'Your post like successfully!',
+            ]);
+        }
     }
+
+    public function dislike(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->postRepository->dislike($data);
+
+        if ($result['status']) {
+            return response()->json([
+                'message' => 'Your post dislike successfully!',
+            ]);
+        }
+    }
+
+    public function sendMessage(Request $request)
+    {
+
+        $data = $request->all();
+        // dd($data);
+        $result = $this->postRepository->storeChat($data);
+        if ($result['status']) {
+            return response()->json([
+                'message' => 'chat added successfully!'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Something wrong!'
+            ]);
+        }
+    }
+
+
+    public function commentstore(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->postRepository->commentstore($data);
+        if ($result['status']) {
+            return response()->json([
+                'message' => 'comment added successfully!'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Something wrong!'
+            ]);
+        }
+    }
+
+    public function reply(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->postRepository->reply($data);
+
+        if ($result['status']) {
+            return response()->json([
+                'message' => 'Reply added successfully!'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Something wrong: ' . $result['message']
+            ]);
+        }
+    }
+
+
+    // public function reply(Request $request, Comment $comment)
+    // {
+    //     // dd($request->all());
+    //     $request->validate([
+    //         'comment' => 'required',
+    //     ]);
+
+    //     $input = $request->all();
+    //     $input['user_id'] = auth()->user()->id;
+    //     $input['post_id'] = $comment->post_id;
+    //     $input['parent_id'] = $comment->id;
+
+    //     $comment = Comment::create($input);
+
+    //     return $comment;
+    // }
 }

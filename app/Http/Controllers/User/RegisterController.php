@@ -29,8 +29,8 @@ class RegisterController extends Controller
         $following_ids = DB::table('followings')->where('following_id', $user_id)->get();
         $private_users = User::select('id')->whereIn('id', $following_ids->pluck('follower_id'))->where('profiletype', "private")->get();
         $public_users = User::select('id')->where('profiletype', "public")->get();
-        $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments.replies')->get();
-
+        $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments.replies')->with('user')->get();
+        // $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments.replies')->get();
         $comments = Comment::all();
         $messages = Message::all();
         // dd($messages);
@@ -94,7 +94,6 @@ class RegisterController extends Controller
 
         return redirect()->route('dashboard');
     }
-
     public function follow($following_id)
     {
         // dd($following_id);
@@ -103,19 +102,19 @@ class RegisterController extends Controller
 
         if (auth()->user()->followings->contains($following_id)) {
             auth()->user()->followings()->detach($following);
+            $response = ['action' => 'unfollow'];
         } else {
             auth()->user()->followings()->attach($following);
+            $response = ['action' => 'follow'];
         }
 
-        return redirect()->back();
+        return response()->json(['status' => 'success', 'data' => $response]);
     }
+
     public function updateProfileType(Request $request)
     {
         $profileType = $request->input('profiletype');
         auth()->user()->update(['profiletype' => $profileType]);
-
-        return redirect()->route('dashboard')->with('toastr', ['type' => 'success', 'message' => 'Profile type updated successfully']);
-
+        return response()->json(['success' => true, 'message' => 'Profile type updated successfully']);
     }
-    
 }

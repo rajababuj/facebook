@@ -25,15 +25,16 @@ Route::get('/', function () {
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 
     Route::get('/dashboard', [RegisterController::class, 'dashboard'])->name('dashboard');
-    Route::get('user/{following_id}/follow', [RegisterController::class, 'follow'])->name('follow');
+
+    Route::post('follow/{following_id}', [RegisterController::class, 'follow'])->name('follow');
 
     Route::post('/posts', [PostController::class, 'store'])->name('post.store');
     Route::post('posts/dislike', [PostController::class, 'dislike'])->name('dislike');
-
-   
+    Route::post('like', [PostController::class, 'pressLike'])->name('pressLike');
 });
-Route::post('store', [CommentController::class, 'store'])->name('comments.store');
-Route::post('comments/reply/{comment}', [CommentController::class, 'reply'])->name('comments.reply'); 
+
+Route::post('store', [PostController::class, 'commentstore'])->name('comments.store');
+Route::post('comments/reply/{comment}', [PostController::class, 'reply'])->name('comments.reply');
 
 Route::get('user/register', [RegisterController::class, 'Register'])->name('user.register');
 Route::post('user/register', [RegisterController::class, 'store'])->name('user.register.submit');
@@ -45,10 +46,9 @@ Route::get('user/logout', [LoginController::class, 'logout'])->name('user.logout
 
 // Route::get('chat', [PostController::class, 'index'])->name('chat');
 
-Route::get('chat', [ChatsController::class, 'index'])->name('chat');
-Route::get('messages', [ChatsController::class, 'fetchMessages'])->name('fetchMessages');
-Route::post('messages', [ChatsController::class, 'sendMessage'])->name('sendMessage');
+Route::get('chat', [PostController::class, 'index'])->name('chat');
+Route::get('messages', [PostController::class, 'fetchMessages'])->name('fetchMessages');
+Route::post('messages', [PostController::class, 'sendMessage'])->name('sendMessage');
 
-Route::post('like', [PostController::class, 'pressLike'])->name('pressLike');
-Route::post('/update-profile-type', [RegisterController::class,'updateProfileType'])->name('updateProfileType');
 
+Route::post('/update-profile-type', [RegisterController::class, 'updateProfileType'])->name('updateProfileType');
