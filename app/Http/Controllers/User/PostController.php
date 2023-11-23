@@ -9,6 +9,7 @@ use App\Models\Message;
 use App\Repositories\Interfaces\PostInterface;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -81,10 +82,14 @@ class PostController extends Controller
     public function commentstore(Request $request)
     {
         $data = $request->all();
+       
+        Log::info('data successfully', [$data]);
         $result = $this->postRepository->commentstore($data);
         if ($result['status']) {
             return response()->json([
+                'comment' => $data['comment'],
                 'message' => 'comment added successfully!'
+                
             ]);
         } else {
             return response()->json([
@@ -96,34 +101,18 @@ class PostController extends Controller
     public function reply(Request $request)
     {
         $data = $request->all();
+        // dd($data);
         $result = $this->postRepository->reply($data);
 
-        if ($result['status']) {
+        if ($result && isset($result['status'])) {
             return response()->json([
                 'message' => 'Reply added successfully!'
             ]);
         } else {
             return response()->json([
-                'message' => 'Something wrong: ' . $result['message']
+                'message' => 'Something wrong: ' . ($result['message'] ?? 'Unknown error')
             ]);
         }
+        
     }
-
-
-    // public function reply(Request $request, Comment $comment)
-    // {
-    //     // dd($request->all());
-    //     $request->validate([
-    //         'comment' => 'required',
-    //     ]);
-
-    //     $input = $request->all();
-    //     $input['user_id'] = auth()->user()->id;
-    //     $input['post_id'] = $comment->post_id;
-    //     $input['parent_id'] = $comment->id;
-
-    //     $comment = Comment::create($input);
-
-    //     return $comment;
-    // }
 }

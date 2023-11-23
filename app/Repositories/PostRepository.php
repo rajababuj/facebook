@@ -147,14 +147,15 @@ class PostRepository implements PostInterface
     }
     public function reply($data)
     {
-        dd($data);
-        $input['comment'] = $data['comment'];
-        $input['post_id'] = $data['post_id'];
+        // dd($data);
         $input['user_id'] = auth()->user()->id;
-        $input['parent_id'] = $data['id'];
-
+        $input['comment'] = $data['comment'];
+        $input['post_id'] = $data['post_id']; 
+        $input['parent_id'] = $data['comment_id'];
+        
         $comment = Comment::create($input);
 
-        return $comment;
+        return ['status' => true];
+        
     }
 }

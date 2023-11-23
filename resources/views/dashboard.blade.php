@@ -1505,9 +1505,6 @@
                                         @else
                                         <button onclick="like_post({{$post->id}})" type="submit" id="likepostbtn{{$post->id}}"><i data-feather="heart"></i></button>
                                         @endif
-
-
-
                                         @php
                                         $like_post_count = App\Models\Like::where('post_id', $post->id)->count();
                                         @endphp
@@ -1515,7 +1512,7 @@
                                         <span id="post_like_count{{$post->id}}">{{$like_post_count}}<span>
 
 
-                                        <!-- <div class="shares-count">
+                                                <!-- <div class="shares-count">
                                             <i data-feather="link-2"></i>
                                             <span>9</span>
                                         </div>
@@ -1537,7 +1534,7 @@
                                 </div>
 
                                 <!-- Comments body -->
-                                @foreach($comments as $comment)
+                                @foreach($post->comments as $comment)
                                 <div class="comments-body has-slimscroll">
                                     <!-- Comment -->
                                     <div class="media is-comment">
@@ -1566,52 +1563,94 @@
                                                     <a href="#">Edit</a>
                                                 </div>
                                             </div>
-                                        </div>
 
+
+                                            <form method="post" style="display: none;" class="comment-reply-form" id="reply-form-{{$comment->id}}" action="{{ route('comments.reply', ['comment' => $comment]) }}">
+                                                @csrf
+                                                <div class="card-footer">
+                                                    <div class="media post-comment has-emojis">
+                                                        <!-- Comment Textarea -->
+                                                        <div class="media-content">
+                                                            <div class="field">
+                                                                <p class="control">
+
+                                                                    <textarea name="comment" class="textarea comment-textarea" rows="5" placeholder="Write a comment..."></textarea>
+
+                                                                    <input type="hidden" name="post_id" value="{{ $post->id }}" />
+                                                                    <input type="hidden" name="comment_id" value="{{ $comment->id }}" />
+
+                                                                </p>
+                                                            </div>
+                                                            <!-- Additional actions -->
+                                                            <div class="actions">
+                                                                <div class="image is-32x32">
+                                                                    <img class="is-rounded" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" data-user-popover="0" alt="" />
+                                                                </div>
+                                                                <div class="toolbar">
+                                                                    <div class="action is-auto">
+                                                                        <i data-feather="at-sign"></i>
+                                                                    </div>
+                                                                    <div class="action is-emoji">
+                                                                        <i data-feather="smile"></i>
+                                                                    </div>
+                                                                    <div class="action is-upload">
+                                                                        <i data-feather="camera"></i>
+                                                                        <input type="file" />
+                                                                    </div>
+                                                                    <input type="submit" class="btn btn-success" value="Reply" />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
 
                                     </div>
                                 </div>
-                                <form method="post" style="display: none;" class="comment-reply-form" id="reply-form-{{$comment->id}}" action="{{ route('comments.reply', ['comment' => $comment]) }}">
-                                    @csrf
-                                    <div class="card-footer">
-                                        <div class="media post-comment has-emojis">
-                                            <!-- Comment Textarea -->
-                                            <div class="media-content">
-                                                <div class="field">
-                                                    <p class="control">
-
-                                                        <textarea name="comment" class="textarea comment-textarea" rows="5" placeholder="Write a comment..."></textarea>
-
-                                                        <input type="hidden" name="post_id" value="{{ $post->id }}" />
-                                                        <input type="hidden" name="comment_id" value="{{ $comment->id }}" />
-
-                                                    </p>
-                                                </div>
-                                                <!-- Additional actions -->
-                                                <div class="actions">
-                                                    <div class="image is-32x32">
-                                                        <img class="is-rounded" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" data-user-popover="0" alt="" />
-                                                    </div>
-                                                    <div class="toolbar">
-                                                        <div class="action is-auto">
-                                                            <i data-feather="at-sign"></i>
-                                                        </div>
-                                                        <div class="action is-emoji">
-                                                            <i data-feather="smile"></i>
-                                                        </div>
-                                                        <div class="action is-upload">
-                                                            <i data-feather="camera"></i>
-                                                            <input type="file" />
-                                                        </div>
-                                                        <input type="submit" class="btn btn-success" value="Reply" />
-
-                                                    </div>
+                                <div id="reply-comment-{{$comment->id}}" style="display: none;">
+                                    @foreach($comment->replies as $cr)
+                                    <div class="comments-body has-slimscroll">
+                                        <!-- Comment -->
+                                        <div class="media is-comment">
+                                            <!-- User image -->
+                                            <div class="media-left">
+                                                <div class="image">
+                                                    <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" data-user-popover="1" alt="" />
                                                 </div>
                                             </div>
+                                            <!-- Content -->
+                                            <div class="media-content">
+                                                <a href="#">{{ $cr->user->name }}</a>
+                                                <span class="time">28 minutes ago</span>
+                                                <p>{{ $cr->comment }}</p>
+
+                                                <!-- Actions -->
+                                                <div class="controls">
+                                                    <div class="like-count">
+                                                        <i data-feather="thumbs-up"></i>
+                                                        <span>4</span>
+                                                    </div>
+
+                                                    <div class="edit">
+                                                        <a href="#">Edit</a>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+
                                         </div>
                                     </div>
-                                </form>
+
+                                    @endforeach
+                                </div>
                                 @endforeach
+
                                 <form method="post" class="comment-form">
                                     @csrf
                                     <div class="card-footer">
@@ -1649,20 +1688,12 @@
                         </div>
                         @endforeach
 
-
-                        <!-- /POST #2 -->
-
                         <!-- Load more posts -->
                         <div class="load-more-wrap has-text-centered">
                             <a href="#" class="load-more-button">Load More</a>
                         </div>
                         <!-- /Load more posts -->
                     </div>
-
-
-
-
-                    <!-- /Middle column -->
 
                     <!-- Right side column -->
                     <div class="column is-3">
@@ -3511,6 +3542,7 @@
         function showReplyForm(commentId) {
             console.log($('#reply-form-' + commentId));
             $('#reply-form-' + commentId).css('display', 'block');
+            $('#reply-comment-' + commentId).css('display', 'block');
             $(document).ready(function() {
                 $(document).on('click', '.btn-reply', function() {
                     var commentId = $(this).data('comment-id');
@@ -3540,32 +3572,31 @@
             $('.comment-form').submit(function(event) {
                 event.preventDefault();
 
-
                 let formData = new FormData(this);
-                console.log({
-                    formData
-                });
-
-                var postId = $('input[name="post_id"]').val();
-                var commentText = $('.comment-here-' + postId).val();
+                formData.append('_token', '{{ csrf_token() }}');
 
                 $.ajax({
                     type: 'POST',
                     url: "{{ route('comments.store') }}",
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        'comment': commentText,
-                        'post_id': postId
-                    },
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function(data) {
-                        $('#comments-container').html(data);
+                        if (data.message) {
+                            var message = '<div class="alert alert-success" role="alert">' + data.message + '</div>';
+                            $('.message-container').html(message);
+                        }
+                        $('#comments-container').append('<div class="comment">' + data.newCommentText + '</div>');
                         $('#comment-text').val('');
-
-                        $(this).append(message);
+                    },
+                    error: function(error) {
+                        console.log('Error:', error);
                     }
                 });
             });
         });
+
+
 
         //Chat
         function sendMessageButton($id) {

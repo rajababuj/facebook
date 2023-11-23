@@ -28,10 +28,13 @@ class RegisterController extends Controller
         $user_id = Auth::id();
         $following_ids = DB::table('followings')->where('following_id', $user_id)->get();
         $private_users = User::select('id')->whereIn('id', $following_ids->pluck('follower_id'))->where('profiletype', "private")->get();
+
         $public_users = User::select('id')->where('profiletype', "public")->get();
+
         $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments.replies')->with('user')->get();
-        // $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments.replies')->get();
-        $comments = Comment::all();
+        $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments')->get();
+       
+        // $comments = Comment::all();
         $messages = Message::all();
         // dd($messages);
         $followings = Auth::user()->followings;
@@ -72,7 +75,7 @@ class RegisterController extends Controller
 
         $not_allowed = $p_follower_id->toArray() + $a_follower_id->toArray() + [Auth::id()] + $aa_follower_id->toArray();
         $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
-        return view('dashboard', compact('posts', 'comments', 'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts'));
+        return view('dashboard', compact('posts',  'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts'));
     }
 
     public function store(RegisterRequest $request)
