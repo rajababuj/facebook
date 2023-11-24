@@ -1512,7 +1512,7 @@
                                         <span id="post_like_count{{$post->id}}">{{$like_post_count}}<span>
 
 
-                                                <!-- <div class="shares-count">
+                                        <!-- <div class="shares-count">
                                             <i data-feather="link-2"></i>
                                             <span>9</span>
                                         </div>
@@ -1564,7 +1564,42 @@
                                                 </div>
                                             </div>
 
+                                            <div id="reply-comment-{{$comment->id}}" style="display: none;">
+                                                @foreach($comment->replies as $cr)
+                                                <div class="comments-body has-slimscroll">
+                                                    <!-- Comment -->
+                                                    <div class="media is-comment">
+                                                        <!-- User image -->
+                                                        <div class="media-left">
+                                                            <div class="image">
+                                                                <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" data-user-popover="1" alt="" />
+                                                            </div>
+                                                        </div>
+                                                        <!-- Content -->
+                                                        <div class="media-content">
+                                                            <a href="#">{{ $cr->user->name }}</a>
+                                                            <span class="time">28 minutes ago</span>
+                                                            <p>{{ $cr->comment }}</p>
 
+                                                            <!-- Actions -->
+                                                            <div class="controls">
+                                                                <div class="like-count">
+                                                                    <i data-feather="thumbs-up"></i>
+                                                                    <span>4</span>
+                                                                </div>
+
+                                                                <div class="edit">
+                                                                    <a href="#">Edit</a>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                @endforeach
+                                            </div>
                                             <form method="post" style="display: none;" class="comment-reply-form" id="reply-form-{{$comment->id}}" action="{{ route('comments.reply', ['comment' => $comment]) }}">
                                                 @csrf
                                                 <div class="card-footer">
@@ -1610,45 +1645,7 @@
 
                                     </div>
                                 </div>
-                                <div id="reply-comment-{{$comment->id}}" style="display: none;">
-                                    @foreach($comment->replies as $cr)
-                                    <div class="comments-body has-slimscroll">
-                                        <!-- Comment -->
-                                        <div class="media is-comment">
-                                            <!-- User image -->
-                                            <div class="media-left">
-                                                <div class="image">
-                                                    <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" data-user-popover="1" alt="" />
-                                                </div>
-                                            </div>
-                                            <!-- Content -->
-                                            <div class="media-content">
-                                                <a href="#">{{ $cr->user->name }}</a>
-                                                <span class="time">28 minutes ago</span>
-                                                <p>{{ $cr->comment }}</p>
 
-                                                <!-- Actions -->
-                                                <div class="controls">
-                                                    <div class="like-count">
-                                                        <i data-feather="thumbs-up"></i>
-                                                        <span>4</span>
-                                                    </div>
-
-                                                    <div class="edit">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-                                                </div>
-
-
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    @endforeach
-                                </div>
                                 @endforeach
 
                                 <form method="post" class="comment-form">

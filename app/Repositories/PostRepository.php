@@ -17,8 +17,8 @@ class PostRepository implements PostInterface
     public function storePost($data)
     {
         DB::beginTransaction();
-
         try {
+            // dd(Auth::user()->id);
             $post = new Post();
 
             $post->description = $data['description'];
@@ -35,8 +35,8 @@ class PostRepository implements PostInterface
 
             return ['status' => true];
         } catch (\Exception $e) {
+            // dd($e);
             DB::rollback();
-
             return ['status' => false, 'error' => $e->getMessage()];
         }
     }

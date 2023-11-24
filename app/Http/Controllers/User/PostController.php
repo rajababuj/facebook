@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Like;
 use Illuminate\Http\Request;
-use App\Models\Message;
 use App\Repositories\Interfaces\PostInterface;
-use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller

@@ -5,13 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\PostRepository;
 use App\Repositories\Interfaces\PostInterface;
-
-// use App\Repositories\ChatRepository;
-// use App\Repositories\Interfaces\ChatInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 
-use App\Repositories\Interfaces\CommentInterface;
-use App\Repositories\CommentRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,8 +19,6 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(PostInterface::class, PostRepository::class);
-        // $this->app->bind(ChatInterface::class, ChatRepository::class);
-        $this->app->bind(CommentInterface::class, CommentRepository::class);
     }
 
     /**
@@ -35,6 +29,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        // $guards = empty($guards) ? [null] : $guards;
+        // foreach ($guards as $guard) {
+        //     if (Auth::guard($guard)->check()) {
+        //         return redirect(route('/dashboard'));
+        //     }
+            
+        // }
+        // dd($guard);
     }
 }
 

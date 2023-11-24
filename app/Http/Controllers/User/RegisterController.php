@@ -8,16 +8,19 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use App\Models\Post;
-use App\Models\Comment;
 use App\Models\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
-use LDAP\Result;
+
 
 
 class RegisterController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('guest:web')->except('dashboard', 'register');
+    // }
     public function Register()
     {
         return view('Register');

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\LoginRequest;
 
 class UserController extends Controller
 {
@@ -16,17 +17,41 @@ class UserController extends Controller
      * 
      * @return \Illuminate\Http\Response 
      */
-    public function login()
+    public function login(LoginRequest $request)
     {
-        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
-            $user = Auth::user();
-            $success['token'] =  $user->createToken('MyLaravelApp')->accessToken;
-            $success['userId'] = $user->id;
-            return response()->json(['success' => $success], $this->successStatus);
+       
+        $credentials = $request->only(['email', 'password']);
+
+        $user = User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        if (!Auth::attempt($credentials)) {
+            $token = $user->createToken('company')->accessToken;
+            $user_id = $user->id;
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Logged in successfully!',
+                'token' => $token,
+                'user_id' => $user_id,
+            ], $this->successStatus);
         } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorised',
+            ], 401);
         }
     }
+
+
+
+
 
     /** 
      * Register api 
@@ -57,9 +82,4 @@ class UserController extends Controller
      * 
      * @return \Illuminate\Http\Response 
      */
-    public function userDetails()
-    {
-        $user = Auth::user();
-        return response()->json(['success' => $user], $this->successStatus);
-    }
 }
