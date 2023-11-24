@@ -25,12 +25,13 @@ Route::get('/', function () {
 Route::get('user/register', [RegisterController::class, 'Register'])->name('user.register');
 Route::post('user/register', [RegisterController::class, 'store'])->name('user.register.submit');
 Route::post('user/login', [LoginController::class, 'login'])->name('login.submit');
-Route::get('user/logout', [LoginController::class, 'logout'])->name('user.logout');
+
 Route::get('user/login', [LoginController::class, 'index'])->name('user.login');
 
 
 
-Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'user', 'middleware' => 'auth:web'], function () {
+    Route::get('user/logout', [LoginController::class, 'logout'])->name('user.logout');
 
     Route::get('/dashboard', [RegisterController::class, 'dashboard'])->name('dashboard');
     Route::post('follow/{following_id}', [RegisterController::class, 'follow'])->name('follow');
