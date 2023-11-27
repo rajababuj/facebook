@@ -3380,10 +3380,6 @@
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 
-    <!-- Landing page js -->
-
-    <!-- Signup page js -->
-
     <!-- Feed pages js -->
     <script src="{{asset ('assets/js/feed.js') }}"></script>
 

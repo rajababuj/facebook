@@ -41,6 +41,14 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{asset ('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+        .login-form {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -72,25 +80,21 @@
                         </h3>
 
                         <!--Form-->
-                        <form class="login-form" method="POST" action="{{ route('login.submit') }}">
+                        <form class="login-form" method="POST" action="{{ route('user.login') }}" id="loginForm">
                             @csrf
                             <div class="form-panel">
                                 <div class="field">
                                     <label>Email</label>
                                     <div class="control">
-                                        <input type="text" class="input" name="email" placeholder="Enter your email address" />
-                                        @error('email')
-                                        <span class="text-danger" style="color: red;">{{ $message }}</span>
-                                        @enderror
+                                        <input type="text" class="input" name="email" id="email" placeholder="Enter your email address" />
+                                        <span class="validation-error" id="emailError"></span>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <label>Password</label>
                                     <div class="control">
-                                        <input type="password" class="input" name="password" placeholder="Enter your password" />
-                                        @error('password')
-                                        <span class="text-danger" style="color: red;">{{ $message }}</span>
-                                        @enderror
+                                        <input type="password" class="input" name="password" id="password" placeholder="Enter your password" />
+                                        <span class="validation-error" id="passwordError"></span>
                                     </div>
                                 </div>
                                 <div class="field is-flex">
@@ -108,14 +112,14 @@
                             </div>
 
                             <div class="buttons">
-                                <button type="submit" class="button is-solid primary-button is-fullwidth raised">Login</button>
-
+                                <button type="button" class="button is-solid primary-button is-fullwidth raised" id="loginBtn">Login</button>
                             </div>
 
                             <div class="account-link has-text-centered">
                                 <a href="register">Don't have an account? Sign Up</a>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -124,18 +128,12 @@
     </div>
 
     <!-- Concatenated js plugins and jQuery -->
-
-
     <script src="{{asset ('assets/js/app.js') }}"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="{{asset ('assets/data/tipuedrop_content.js') }}"></script>
     <!-- Core js -->
     <script src="{{asset ('assets/js/global.js') }}"></script>
-
-
     <!-- Navigation options js -->
-
-
     <script src="{{asset ('assets/js/navbar-v1.js') }}"></script>
     <script src="{{asset ('assets/js/navbar-v2.js') }}"></script>
     <script src="{{asset ('assets/js/navbar-mobile.js') }}"></script>
@@ -143,8 +141,6 @@
     <script src="{{asset ('assets/js/sidebar-v1.js') }}"></script>
 
     <!-- Core instance js -->
-
-
     <script src="{{asset ('assets/js/main.js') }}"></script>
     <script src="{{asset ('assets/js/chat.js') }}"></script>
     <script src="{{asset ('assets/js/touch.js') }}"></script>
@@ -159,38 +155,42 @@
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 
-    <!-- Landing page js -->
+    <script>
+        $(document).ready(function() {
+            $('#loginBtn').on('click', function() {
+                $('.validation-error').text('');
+                var formData = $('#loginForm').serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('user.login') }}",
+                    data: formData,
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    error: function(response) {
+                        if (response.status === 422) {
+                            var errors = response.responseJSON.errors;
 
-    <!-- Signup page js -->
+                            $.each(errors, function(field, messages) {
+                                if (field === 'email' && messages[0] === 'The email is not registered. Please sign up.') {
+                                    $('#emailError').text(messages[0]);
+                                } else {
+                                    $('#' + field + 'Error').text(messages[0]);
+                                }
+                            });
+                        } else {
+                            console.error(response);
+                        }
+                    }
 
-    <!-- Feed pages js -->
+                });
+            });
+        });
+    </script>
 
-    <!-- profile js -->
 
-    <!-- stories js -->
 
-    <!-- friends js -->
-
-    <!-- questions js -->
-
-    <!-- video js -->
-
-    <!-- events js -->
-
-    <!-- news js -->
-
-    <!-- shop js -->
-
-    <!-- inbox js -->
-
-    <!-- settings js -->
-
-    <!-- map page js -->
-
-    <!-- elements page js -->
 </body>
 
-
-<!-- Mirrored from friendkit.cssninja.io/login-boxed.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 02 Oct 2023 10:46:15 GMT -->
 
 </html>

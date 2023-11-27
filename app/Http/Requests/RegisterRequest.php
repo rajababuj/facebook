@@ -28,9 +28,6 @@ class RegisterRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:9',
-            // 'profiletype' => 'required|in:public,private',
-            // 'account' => 'required|in:public,private',
-
 
         ];
     }
@@ -43,8 +40,6 @@ class RegisterRequest extends FormRequest
             'email.unique' => 'A user with this email address already exists.',
             'password.required' => 'This password field is required.',
             'password.min' => 'The password must be at least 9 characters.',
-            // 'account.required' => 'This account field is required.',
-
 
         ];
     }

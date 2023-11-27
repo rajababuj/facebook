@@ -42,6 +42,8 @@
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{asset ('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 
 </head>
 
@@ -77,7 +79,7 @@
 
                         <!--Form-->
 
-                        <form class="login-form" action="{{ route('user.register.submit') }}" method="post">
+                        <form  id="registrationForm" class="login-form" action="{{ route('user.register.submit') }}" method="post">
                             @csrf
                             <div class="form-panel">
                                 <div class="columns is-multiline">
@@ -144,8 +146,6 @@
         </div>
 
     </div>
-
-
     <!-- Concatenated js plugins and jQuery -->
     <script src="{{asset ('assets/js/app.js') }}"></script>
     <script src="https://js.stripe.com/v3/"></script>
@@ -175,39 +175,40 @@
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 
+    <script>
+    $(document).ready(function () {
+    // Submit form via AJAX
+    $('#registrationForm').submit(function (e) {
+        e.preventDefault();
 
-    <!-- Landing page js -->
+        var form = $(this);
+        var url = form.attr('action');
+        var method = form.attr('method');
+        var formData = form.serialize();
 
-    <!-- Signup page js -->
+        $.ajax({
+            url: url,
+            type: method,
+            data: formData,
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr) {
+                var errors = xhr.responseJSON.errors;
 
-    <!-- Feed pages js -->
+                // Clear previous error messages
+                form.find('.text-danger').html('');
 
-    <!-- profile js -->
+                $.each(errors, function (key, value) {
+                    // Display validation errors next to the corresponding fields
+                    form.find('[name="' + key + '"]').next('.text-danger').html(value[0]);
+                });
+            }
+        });
+    });
+});
 
-    <!-- stories js -->
+</script>
 
-    <!-- friends js -->
-
-    <!-- questions js -->
-
-    <!-- video js -->
-
-    <!-- events js -->
-
-    <!-- news js -->
-
-    <!-- shop js -->
-
-    <!-- inbox js -->
-
-    <!-- settings js -->
-
-    <!-- map page js -->
-
-    <!-- elements page js -->
 </body>
-
-
-<!-- Mirrored from friendkit.cssninja.io/signup-v2.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 02 Oct 2023 10:46:15 GMT -->
-
 </html>
