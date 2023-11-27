@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -28,11 +29,12 @@ class LoginController extends Controller
             'password' => 'required|min:6',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        // $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
-            return response()->json(['errors' => ['email' => ['The email is not registered. Please sign up.']]], 422);
-        }
+        // if (!$user) {
+        //     return response()->json(['errors' => ['email' => ['The email is not registered. Please sign up.']]], 422);
+        // }
+        
 
 
         $credential = [
@@ -43,7 +45,8 @@ class LoginController extends Controller
         if (Auth::attempt($credential)) {
             return redirect()->route('dashboard');
         } else {
-            return redirect()->route('login')->with('message', 'The email or password is incorrect, please try again.');
+            Log::info('Redirecting to login with message');
+            return redirect()->route('user.login')->with('message', 'The email is not registered. Please sign up.');
         }
     }
 

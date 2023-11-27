@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     {
 
         return [
-            'name' => 'required',
+            'name' => 'required|regex:/^[a-zA-Z ]+$/',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:9',
 
@@ -35,6 +35,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name.required' => 'This name field is required.',
+            'name.regex' => 'The name field should only contain alphabetic characters and spaces.',
             'email.required' => 'This email field is required.',
             'email.email' => 'Please enter a valid email address.',
             'email.unique' => 'A user with this email address already exists.',

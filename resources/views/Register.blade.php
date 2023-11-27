@@ -16,26 +16,6 @@
 
     <!-- <script src="cdn-cgi/apps/head/lmplkzhV3pH6fdNUw6kpmpBQ68Q.js"></script> -->
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-
-    <!-- Google Tag Manager -->
-    <!-- <script>
-        ;
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || []
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            })
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : ''
-            j.async = true
-            j.src = '../www.googletagmanager.com/gtm5445.html?id=' + i + dl
-            f.parentNode.insertBefore(j, f)
-        })(window, document, 'script', 'dataLayer', 'GTM-KQHJPZP')
-    </script> -->
-    <!-- End Google Tag Manager -->
-
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700,800,900" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet" />
@@ -44,6 +24,11 @@
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+    <style>
+        .login-form {
+            color: red;
+        }
+    </style>
 
 </head>
 
@@ -79,7 +64,7 @@
 
                         <!--Form-->
 
-                        <form  id="registrationForm" class="login-form" action="{{ route('user.register.submit') }}" method="post">
+                        <form id="login-form" class="login-form" action="{{ route('user.register.submit') }}" method="post">
                             @csrf
                             <div class="form-panel">
                                 <div class="columns is-multiline">
@@ -91,6 +76,7 @@
                                                 @error('name')
                                                 <span class="text-danger" style="color: red;">{{ $message }}</span>
                                                 @enderror
+
                                             </div>
                                         </div>
                                     </div>
@@ -175,40 +161,39 @@
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 
-    <script>
-    $(document).ready(function () {
-    // Submit form via AJAX
-    $('#registrationForm').submit(function (e) {
-        e.preventDefault();
 
-        var form = $(this);
-        var url = form.attr('action');
-        var method = form.attr('method');
-        var formData = form.serialize();
+    <!-- <script>
+        $(document).ready(function() {
+            $('#login-form').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
 
-        $.ajax({
-            url: url,
-            type: method,
-            data: formData,
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (xhr) {
-                var errors = xhr.responseJSON.errors;
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
 
-                // Clear previous error messages
-                form.find('.text-danger').html('');
+                        if (response.success === false) {
 
-                $.each(errors, function (key, value) {
-                    // Display validation errors next to the corresponding fields
-                    form.find('[name="' + key + '"]').next('.text-danger').html(value[0]);
+                            $.each(response.errors, function(key, value) {
+
+                                $('#' + key + '-error').html(value);
+                            });
+                        } else {
+
+                            console.log(response);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
                 });
-            }
+            });
         });
-    });
-});
+    </script> -->
 
-</script>
 
 </body>
+
 </html>

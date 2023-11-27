@@ -12,7 +12,6 @@ use App\Models\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
-use Illuminate\Support\Facades\Validator;
 
 
 
@@ -88,7 +87,7 @@ class RegisterController extends Controller
         $existingUser = User::where('email', $request->email)->first();
 
         if ($existingUser) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return redirect()->route('user.register')->with('message', 'A user with this email address already exists.');
         }
 
         $password = Hash::make($request->password);
@@ -99,7 +98,7 @@ class RegisterController extends Controller
 
         User::create($data);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('user.login');
     }
     public function follow($following_id)
     {

@@ -28,5 +28,14 @@ class LoginRequest extends FormRequest
             'password' => 'required',
         ];
     }
-
+    public function messages()
+    {
+        return [
+            'email.required' => 'This email field is required.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.exists' => 'The email is not registered. Please sign up.',
+            'password.required' => 'This password field is required.',
+            'password.min' => 'The password must be at least 9 characters.',
+        ];
+    }
 }

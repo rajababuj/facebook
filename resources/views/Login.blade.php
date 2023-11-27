@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <!-- Google Tag Manager -->
-    <script>
+    <!-- <script>
         ;
         (function(w, d, s, l, i) {
             w[l] = w[l] || []
@@ -32,7 +32,7 @@
             j.src = '../www.googletagmanager.com/gtm5445.html?id=' + i + dl
             f.parentNode.insertBefore(j, f)
         })(window, document, 'script', 'dataLayer', 'GTM-KQHJPZP')
-    </script>
+    </script> -->
     <!-- End Google Tag Manager -->
 
     <!-- Fonts -->
@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="{{asset ('assets/css/app.css') }}">
     <link rel="stylesheet" href="{{asset ('assets/css/core.css') }}">
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
 
     <style>
         .login-form {
@@ -80,21 +80,25 @@
                         </h3>
 
                         <!--Form-->
-                        <form class="login-form" method="POST" action="{{ route('user.login') }}" id="loginForm">
+                        <form class="login-form" method="POST" action="{{ route('user.login') }}" id="login-Form">
                             @csrf
                             <div class="form-panel">
                                 <div class="field">
                                     <label>Email</label>
                                     <div class="control">
                                         <input type="text" class="input" name="email" id="email" placeholder="Enter your email address" />
-                                        <span class="validation-error" id="emailError"></span>
+                                        @error('email')
+                                        <span class="text-danger" style="color: red;">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="field">
                                     <label>Password</label>
                                     <div class="control">
                                         <input type="password" class="input" name="password" id="password" placeholder="Enter your password" />
-                                        <span class="validation-error" id="passwordError"></span>
+                                        @error('password')
+                                        <span class="text-danger" style="color: red;">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="field is-flex">
@@ -112,13 +116,14 @@
                             </div>
 
                             <div class="buttons">
-                                <button type="button" class="button is-solid primary-button is-fullwidth raised" id="loginBtn">Login</button>
+                                <button type="submit" class="button is-solid primary-button is-fullwidth raised">Login</button>
                             </div>
 
                             <div class="account-link has-text-centered">
-                                <a href="register">Don't have an account? Sign Up</a>
+                                <a href="{{ route('user.register') }}">Don't have an account? Sign Up</a>
                             </div>
                         </form>
+
 
                     </div>
                 </div>
@@ -155,7 +160,7 @@
     <script src="{{asset ('assets/js/popovers-pages.js') }}"></script>
     <script src="{{asset ('assets/js/lightbox.js') }}"></script>
 
-    <script>
+    <!-- <script>
         $(document).ready(function() {
             $('#loginBtn').on('click', function() {
                 $('.validation-error').text('');
@@ -186,7 +191,7 @@
                 });
             });
         });
-    </script>
+    </script> -->
 
 
 
