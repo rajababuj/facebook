@@ -78,14 +78,14 @@ class PostController extends Controller
     public function commentstore(Request $request)
     {
         $data = $request->all();
-       
+
         Log::info('data successfully', [$data]);
         $result = $this->postRepository->commentstore($data);
         if ($result['status']) {
             return response()->json([
                 'comment' => $data['comment'],
                 'message' => 'comment added successfully!'
-                
+
             ]);
         } else {
             return response()->json([
@@ -109,6 +109,21 @@ class PostController extends Controller
                 'message' => 'Something wrong: ' . ($result['message'] ?? 'Unknown error')
             ]);
         }
-        
+    }
+
+    public function groupstore(Request $request)
+    {
+        $data = $request->all();
+        // dd($data);
+        $result = $this->postRepository->groupstore($data);
+        if ($result['status']) {
+            return response()->json([
+                'message' => 'Group created successfully!',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Something went wrong!',
+            ]);
+        }
     }
 }

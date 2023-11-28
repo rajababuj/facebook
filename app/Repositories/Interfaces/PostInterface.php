@@ -12,6 +12,7 @@ interface PostInterface
     public function storeChat($data);
     public function commentstore($data);
     public function reply($data);
+    public function groupstore($data);
     
 
 }

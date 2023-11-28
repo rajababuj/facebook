@@ -29,14 +29,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
-        // $guards = empty($guards) ? [null] : $guards;
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         return redirect(route('/dashboard'));
-        //     }
-            
-        // }
-        // dd($guard);
     }
 }
 

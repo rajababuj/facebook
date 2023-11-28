@@ -12,15 +12,12 @@ use App\Models\Like;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
+use App\Models\Group;
 
 
 
 class RegisterController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('guest:web')->except('dashboard', 'register');
-    // }
     public function Register()
     {
         return view('Register');
@@ -37,17 +34,13 @@ class RegisterController extends Controller
         $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments.replies')->with('user')->get();
         $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments')->get();
        
+        $titles = Group::all();
         // $comments = Comment::all();
         $messages = Message::all();
         // dd($messages);
-        $followings = Auth::user()->followings;
+        $followings = Auth::user()->followings; 
         $followers = Auth::user()->followers;
-
-
         $like_posts = Like::where('user_id', Auth()->user()->id)->pluck('post_id')->toArray();
-
-
-        // dd($post_likes);
 
         // pending_requests
         $p_follower_id = DB::table('followings')->where('follower_id', auth()->id())
@@ -78,7 +71,7 @@ class RegisterController extends Controller
 
         $not_allowed = $p_follower_id->toArray() + $a_follower_id->toArray() + [Auth::id()] + $aa_follower_id->toArray();
         $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
-        return view('dashboard', compact('posts',  'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts'));
+        return view('dashboard', compact('posts',  'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts', 'titles'));
     }
 
     public function store(RegisterRequest $request)

@@ -48,7 +48,6 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <style>
         .redHeart {
             color: red;
@@ -1512,7 +1511,7 @@
                                         <span id="post_like_count{{$post->id}}">{{$like_post_count}}<span>
 
 
-                                        <!-- <div class="shares-count">
+                                                <!-- <div class="shares-count">
                                             <i data-feather="link-2"></i>
                                             <span>9</span>
                                         </div>
@@ -3170,19 +3169,37 @@
                     <!-- Settings icon dropdown -->
                     <div class="dropdown is-spaced is-neutral is-right dropdown-trigger">
                         <div>
+                            
                             <a class="chat-nav-item is-icon">
-                                <i data-feather="settings"></i>
-                            </a>
+                                <button>Add Member</button><br></br>
+                            </a>  
+                        </div>
+                        <div class="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                @foreach($followings as $data)
+                                <a href="#" class="dropdown-item">
+                                    <div class="media">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div class="media-content">
+                                            <h3>{{$data->name}}</h3>
+                                        </div>
+                                        <button><i class="fa-solid fa-user-plus"></i></button>
+                                    </div>
+                                </a>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
 
                     <div class="chat-search">
                         <div class="control has-icon">
-                            <input type="text" class="input" placeholder="Search messages" />
+                            <input type="text" id="title-{{$following->id}}" class="input" placeholder="Create Group"  name="title"/>
                             <div class="form-icon">
-                                <i data-feather="search"></i>
+                                <!-- <i data-feather="search"></i> -->
                             </div>
                         </div>
+                        <button type="button" onclick="add_group(`title-{{$following->id}}`)">Create Group</button>
+
                     </div>
                     <a class="chat-nav-item is-icon is-hidden-mobile">
                         <i data-feather="at-sign"></i>
@@ -3197,6 +3214,51 @@
                             <a class="chat-nav-item is-icon no-margin">
                                 <i data-feather="more-vertical"></i>
                             </a>
+                        </div>
+                        <div class="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                               @foreach($titles as $data)
+                                <a href="#" class="dropdown-item">
+                                    <div class="media">
+                                        <i class="fa fa-users" aria-hidden="true"></i>
+                                        <div class="media-content">
+                                             <h3>{{$data->title}}</h3>
+                                             
+                                        </div>
+                                        <button><i class="fas fa-comment"></i></button>
+                                    </div>
+                                </a>
+                                @endforeach
+                                <!-- <hr class="dropdown-divider" />
+                                <a class="dropdown-item">
+                                    <div class="media">
+                                        <i data-feather="gift"></i>
+                                        <div class="media-content">
+                                            <h3>Daily bonus</h3>
+                                            <small>Get your daily bonus.</small>
+                                        </div>
+                                    </div>
+                                </a> -->
+                                <!-- <a class="dropdown-item">
+                                    <div class="media">
+                                        <i data-feather="download-cloud"></i>
+                                        <div class="media-content">
+                                            <h3>Downloads</h3>
+                                            <small>See all your downloads.</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <hr class="dropdown-divider" />
+                                <a class="dropdown-item">
+                                    <div class="media">
+                                        <i data-feather="life-buoy"></i>
+                                        <div class="media-content">
+                                            <h3>Support</h3>
+                                            <small>Reach our support team.</small>
+                                        </div>
+                                    </div>
+                                </a> -->
+                            </div>
                         </div>
                     </div>
 
@@ -3434,6 +3496,7 @@
                     },
                 });
             });
+
         });
 
         //dislike post
@@ -3557,8 +3620,6 @@
                     });
                 });
             });
-
-
         }
         //Comment
         $(document).ready(function() {
@@ -3588,9 +3649,6 @@
                 });
             });
         });
-
-
-
         //Chat
         function sendMessageButton($id) {
             var message = $(".message_" + $id).val();
@@ -3669,8 +3727,51 @@
                     }
                 });
             });
+
         });
+
+        // Add group
+        function add_group(id) {
+            
+            var url = "{{ route('group') }}";
+            var title = $("#"+id).val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    title: title
+                },
+                dataType: 'json',
+                success: function(response) {
+                    $(".writeinfo").append(response.message);
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+
+
+        // $(".createGroupButton").click(function() {
+
+        //     $.ajax({
+        //         url: '{{ route("group") }}', 
+        //         type: 'POST',
+        //         data: {
+        //             _token: '{{ csrf_token() }}',
+        //             title: $("#group_title").val()
+        //         },
+        //         dataType: 'JSON',
+
+        //         success: function(data) {
+        //             $(".writeinfo").append(data.message);
+        //         }
+        //     });
+        // });
     </script>
+
 
 
 </body>

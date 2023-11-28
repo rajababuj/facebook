@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Like;
 use App\Models\Message;
 use App\Models\Comment;
+use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\MediaHelper;
 use Illuminate\Support\Facades\DB;
@@ -158,4 +159,24 @@ class PostRepository implements PostInterface
         return ['status' => true];
         
     }
+
+    public function groupstore($data)
+    {
+
+        try {
+            DB::beginTransaction();
+            // dd($data);
+
+            $input['title'] = $data['title'];
+            $group = Group::create($input);
+
+            DB::commit();
+
+            return ['status' => true];
+        } catch (\Exception $e) {
+            DB::rollback();
+            return ['status' => false, 'error' => $e->getMessage()];
+        }
+    }
+
 }
