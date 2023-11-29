@@ -15,9 +15,10 @@ class CreateGroupMembersTable extends Migration
     {
         Schema::create('group_members', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_id')->constrained();
-            $table->foreignId('user_id')->constrained();
-            $table->boolean('is_admin')->default(false);
+            $table->string('title');
+            $table->boolean('is_admin')->nullable();
+            $table->unsignedBigInteger('user_ids')->unsigned();
+            $table->foreign('user_ids')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

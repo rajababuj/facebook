@@ -7,9 +7,9 @@ use App\Models\Post;
 use App\Models\Like;
 use App\Models\Message;
 use App\Models\Comment;
-use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\MediaHelper;
+use App\Models\Group_member;
 use Illuminate\Support\Facades\DB;
 
 
@@ -151,32 +151,37 @@ class PostRepository implements PostInterface
         // dd($data);
         $input['user_id'] = auth()->user()->id;
         $input['comment'] = $data['comment'];
-        $input['post_id'] = $data['post_id']; 
+        $input['post_id'] = $data['post_id'];
         $input['parent_id'] = $data['comment_id'];
-        
+
         $comment = Comment::create($input);
 
         return ['status' => true];
-        
     }
 
     public function groupstore($data)
     {
 
-        try {
-            DB::beginTransaction();
-            // dd($data);
+        $user_id = implode(",", $data['user_ids']);
 
-            $input['title'] = $data['title'];
-            $group = Group::create($input);
+        // try {
+        DB::beginTransaction();
+        $group = new Group_member();
+        $group->title = $data['title'];
+        $group->save();
+        $group->users()->attach($data['user_ids']);
 
-            DB::commit();
 
-            return ['status' => true];
-        } catch (\Exception $e) {
-            DB::rollback();
-            return ['status' => false, 'error' => $e->getMessage()];
-        }
+        // $input['title'] = $data['title'];
+        // $input['user_id'] = $data['user_id'];
+        // $group = Group_members::create($input);
+        // dd($group);
+        // DB::commit();
+
+        // return ['status' => true];
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     return ['status' => false, 'error' => $e->getMessage()];
+        // }
     }
-
 }

@@ -44,7 +44,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:web'], function () {
     Route::post('messages', [PostController::class, 'sendMessage'])->name('sendMessage');
     Route::post('/update-profile-type', [RegisterController::class, 'updateProfileType'])->name('updateProfileType');
 
-    Route::post('/group', [PostController::class, 'groupstore'])->name('group');
+    Route::post('group', [PostController::class, 'groupstore'])->name('group');
    
 
 

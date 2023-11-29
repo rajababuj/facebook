@@ -1838,12 +1838,8 @@
                                 </div>
                                 @endforeach
 
-
-
-
                             </div>
                         </div>
-
                         <!-- Birthday widget -->
                         <!-- /partials/widgets/birthday-widget.html -->
                         <div class="card is-birthday-card has-background-image" data-background="{{asset('assets/img/illustrations/cards/birthday-bg.svg')}}">
@@ -3168,14 +3164,10 @@
                 <div class="nav-end">
                     <!-- Settings icon dropdown -->
                     <div class="dropdown is-spaced is-neutral is-right dropdown-trigger">
-                        <div>
-                            
-                            <a class="chat-nav-item is-icon">
-                                <button>Add Member</button><br></br>
-                            </a>  
-                        </div>
-                        <div class="dropdown-menu" role="menu">
+                        <div class="dropdown-menu" role="menu" id="group_title" style="display:none">
                             <div class="dropdown-content">
+                                <input type="text" id="title-{{$following->id}}" class="input" placeholder="Create Group" name="title"/>
+
                                 @foreach($followings as $data)
                                 <a href="#" class="dropdown-item">
                                     <div class="media">
@@ -3183,23 +3175,18 @@
                                         <div class="media-content">
                                             <h3>{{$data->name}}</h3>
                                         </div>
-                                        <button><i class="fa-solid fa-user-plus"></i></button>
+                                        <input type="checkbox" class="user-checkbox" value="{{$data->id}}">
                                     </div>
+
                                 </a>
                                 @endforeach
+                                <button onclick="add_group(`title-{{$following->id}}`)">Create Group</button>
                             </div>
                         </div>
+
                     </div>
-
                     <div class="chat-search">
-                        <div class="control has-icon">
-                            <input type="text" id="title-{{$following->id}}" class="input" placeholder="Create Group"  name="title"/>
-                            <div class="form-icon">
-                                <!-- <i data-feather="search"></i> -->
-                            </div>
-                        </div>
-                        <button type="button" onclick="add_group(`title-{{$following->id}}`)">Create Group</button>
-
+                        <button type="button" onclick="create_group(`title-{{$following->id}}`)">Create new Group</button>
                     </div>
                     <a class="chat-nav-item is-icon is-hidden-mobile">
                         <i data-feather="at-sign"></i>
@@ -3217,47 +3204,18 @@
                         </div>
                         <div class="dropdown-menu" role="menu">
                             <div class="dropdown-content">
-                               @foreach($titles as $data)
+                                @foreach($titles as $data)
                                 <a href="#" class="dropdown-item">
                                     <div class="media">
                                         <i class="fa fa-users" aria-hidden="true"></i>
                                         <div class="media-content">
-                                             <h3>{{$data->title}}</h3>
-                                             
+                                            <h3>{{$data->title}}</h3>
+
                                         </div>
                                         <button><i class="fas fa-comment"></i></button>
                                     </div>
                                 </a>
                                 @endforeach
-                                <!-- <hr class="dropdown-divider" />
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="gift"></i>
-                                        <div class="media-content">
-                                            <h3>Daily bonus</h3>
-                                            <small>Get your daily bonus.</small>
-                                        </div>
-                                    </div>
-                                </a> -->
-                                <!-- <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="download-cloud"></i>
-                                        <div class="media-content">
-                                            <h3>Downloads</h3>
-                                            <small>See all your downloads.</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <hr class="dropdown-divider" />
-                                <a class="dropdown-item">
-                                    <div class="media">
-                                        <i data-feather="life-buoy"></i>
-                                        <div class="media-content">
-                                            <h3>Support</h3>
-                                            <small>Reach our support team.</small>
-                                        </div>
-                                    </div>
-                                </a> -->
                             </div>
                         </div>
                     </div>
@@ -3732,46 +3690,37 @@
 
         // Add group
         function add_group(id) {
-            
+            $("#group_title").show();
+
             var url = "{{ route('group') }}";
-            var title = $("#"+id).val();
+            var titleInput = $("#" + id);
+            var selectedUserIds = [];
+            $(".user-checkbox:checked").each(function() {
+                selectedUserIds.push($(this).val());
+            });
+            var title = titleInput.val();
+
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    title: title
+                    title: title, 
+                    user_ids: selectedUserIds,
                 },
                 dataType: 'json',
                 success: function(response) {
-                    $(".writeinfo").append(response.message);
+                    toastr.success("Group created successfully!");
+                    titleInput.val("");
                 },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                }
             });
         }
 
 
-
-        // $(".createGroupButton").click(function() {
-
-        //     $.ajax({
-        //         url: '{{ route("group") }}', 
-        //         type: 'POST',
-        //         data: {
-        //             _token: '{{ csrf_token() }}',
-        //             title: $("#group_title").val()
-        //         },
-        //         dataType: 'JSON',
-
-        //         success: function(data) {
-        //             $(".writeinfo").append(data.message);
-        //         }
-        //     });
-        // });
+        function create_group(id) {
+            $("#group_title").show();
+        }
     </script>
-
 
 
 </body>
