@@ -3387,7 +3387,7 @@
                     </div>
                 </div>
             </div>
-            @foreach($groupmessage as $group)
+            @foreach($titles  as $group)
             <div class="chat-body is-opened" style="display: none;width: 100%;" id="chat_body_group_{{$group->id}}">
 
                 <div id="dan-conversation_group_{{$group->id}}" class="chat-body-inner has-slimscroll" style="height: 500px; background-color: white">
@@ -3397,18 +3397,13 @@
                         <span class="date-divider-text">Today</span>
                     </div>
                     @php
-                    $first_chat_messages = $messages->where('from_user_id', auth()->id())->where('group_id', $group->id);
-                    $second_chat_messages = $messages->where('from_user_id', $group->id)->where('group_id', auth()->id());
-                    if($first_chat_messages->count() > 0){
-                    $chat_messages = $first_chat_messages->merge($second_chat_messages)->sortBy('created_at');
-                    }else{
-                    $chat_messages = $second_chat_messages->sortBy('created_at');
-                    }
+                    $chat_messages = $groupmessage->where('group_id', $group->id);
+                   
 
                     @endphp
                     @foreach($chat_messages as $message)
 
-                    @if($group->id == $message->group_id)
+                    @if(auth()->id() != $message->from_user_id)
                     <div class="chat-message is-sent">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
                         <div class="message-block">
