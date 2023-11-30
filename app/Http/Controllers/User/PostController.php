@@ -114,9 +114,9 @@ class PostController extends Controller
     public function groupstore(Request $request)
     {
         $data = $request->all();
-        // dd($data);
         $result = $this->postRepository->groupstore($data);
-        if ($result['status']) {
+    
+        if ($result && isset($result['status'])) {
             return response()->json([
                 'message' => 'Group created successfully!',
             ]);
@@ -126,4 +126,20 @@ class PostController extends Controller
             ]);
         }
     }
+    public function groupsendMessage(Request $request)
+    {
+        $data = $request->all();
+        $result = $this->postRepository->groupsendMessage($data);
+    
+        if (isset($result['status']) && $result['status']) {
+            return response()->json([
+                'message' => 'groupchat added successfully!'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Something wrong!'
+            ]);
+        }
+    }
+    
 }

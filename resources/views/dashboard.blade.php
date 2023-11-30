@@ -3161,21 +3161,34 @@
                         </div>
                     </div>
                 </div>
+                @foreach($titles as $group)
+                <div class="nav-start">
+                    <div class="recipient-block" style="display: none" id="user_chat_group_{{$group->id}}">
+                        <div class="avatar-container">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
+                        </div>
+                        <div class="username">
+                            <span>{{$group->name}}</span>
+                            <span><i data-feather="star"></i> <span>| Online</span></span>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
                 <div class="nav-end">
                     <!-- Settings icon dropdown -->
                     <div class="dropdown is-spaced is-neutral is-right dropdown-trigger">
                         <div class="dropdown-menu" role="menu" id="group_title" style="display:none">
                             <div class="dropdown-content">
-                                <input type="text" id="title-{{$following->id}}" class="input" placeholder="Create Group" name="title"/>
+                                <input type="text" id="title-{{$following->id}}" class="input" placeholder="Create Group" name="title" />
 
-                                @foreach($followings as $data)
+                                @foreach($followings as $group)
                                 <a href="#" class="dropdown-item">
                                     <div class="media">
                                         <i class="fa-solid fa-user"></i>
                                         <div class="media-content">
-                                            <h3>{{$data->name}}</h3>
+                                            <h3>{{$group->name}}</h3>
                                         </div>
-                                        <input type="checkbox" class="user-checkbox" value="{{$data->id}}">
+                                        <input type="checkbox" class="user-checkbox" value="{{$group->id}}">
                                     </div>
 
                                 </a>
@@ -3245,8 +3258,18 @@
                             <div class="user-status is-online"></div>
                         </div>
                     </div>
-
-
+                </div>
+                @endforeach
+                @foreach($titles as $group)
+                <div class="has-slimscroll-xs " onclick="open_group_chat({{$group->id}})">
+                    <li>{{$group->title}}</li>
+                    <!-- User -->
+                    <div class="user-item is-active" data-chat-user="dan" data-full-name="Dan Walker" data-status="Online">
+                        <div class="avatar-container">
+                            <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
+                            <div class="user-status is-online"></div>
+                        </div>
+                    </div>
                 </div>
                 @endforeach
             </div>
@@ -3364,6 +3387,73 @@
                     </div>
                 </div>
             </div>
+            @foreach($groupmessage as $group)
+            <div class="chat-body is-opened" style="display: none;width: 100%;" id="chat_body_group_{{$group->id}}">
+
+                <div id="dan-conversation_group_{{$group->id}}" class="chat-body-inner has-slimscroll" style="height: 500px; background-color: white">
+
+                    <div class="date-divider">
+                        <hr class="date-divider-line" />
+                        <span class="date-divider-text">Today</span>
+                    </div>
+                    @php
+                    $first_chat_messages = $messages->where('from_user_id', auth()->id())->where('group_id', $group->id);
+                    $second_chat_messages = $messages->where('from_user_id', $group->id)->where('group_id', auth()->id());
+                    if($first_chat_messages->count() > 0){
+                    $chat_messages = $first_chat_messages->merge($second_chat_messages)->sortBy('created_at');
+                    }else{
+                    $chat_messages = $second_chat_messages->sortBy('created_at');
+                    }
+
+                    @endphp
+                    @foreach($chat_messages as $message)
+
+                    @if($group->id == $message->group_id)
+                    <div class="chat-message is-sent">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
+                        <div class="message-block">
+                            <span>{{ $message->created_at->format('h:ia') }}</span>
+                            @isset($message->message)
+                            <div class="message-text">{{ $message->message }}</div>
+                            @endisset
+                        </div>
+                    </div>
+                    @else
+
+                    <div class="chat-message is-received">
+                        <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
+                        <div class="message-block">
+                            <span>{{ $message->created_at->format('h:ia') }}</span>
+                            @isset($message->message)
+                            <div class="message-text">{{ $message->message }}</div>
+                            @endisset
+                        </div>
+                    </div>
+                    @endif
+                    @endforeach
+                </div>
+                <!-- Compose message area -->
+                <div class="chat-action">
+                    <div class="chat-action-inner">
+                        <div class="control" style="display: flex;">
+
+                            <textarea class="textarea comment-textarea groupmessage_{{$group->id}}" id="message" rows="1" style="margin-top: 350px;"></textarea>
+                            <button onclick="sendMessage({{ $group->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+            <div id="chat-panel" class="chat-panel is-opened" style="display: none">
+                <div class="panel-inner">
+                    <div class="panel-header">
+                        <h3>Details</h3>
+                        <div class="panel-close">
+                            <i data-feather="x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -3414,6 +3504,14 @@
             $('#chat_body_' + user_id).show();
             $('.chat-body-inner').addClass('is-hidden');
             $('#dan-conversation_' + user_id).removeClass('is-hidden');
+        }
+
+        function open_group_chat(user_id) {
+            $('#user_chat_group_' + user_id).show();
+            $('.chat-body').hide();
+            $('#chat_body_group_' + user_id).show();
+            $('.chat-body-inner').addClass('is-hidden');
+            $('#dan-conversation_group_' + user_id).removeClass('is-hidden');
         }
 
         //Add Post
@@ -3659,7 +3757,7 @@
                 }
             });
         }
-
+    
         //Addprofiletype
         $(document).ready(function() {
             var storedValue = localStorage.getItem('selectedProfileType');
@@ -3690,31 +3788,81 @@
 
         // Add group
         function add_group(id) {
-            $("#group_title").show();
-
-            var url = "{{ route('group') }}";
             var titleInput = $("#" + id);
             var selectedUserIds = [];
             $(".user-checkbox:checked").each(function() {
                 selectedUserIds.push($(this).val());
             });
-            var title = titleInput.val();
 
+            var title = titleInput.val();
+            if (title !== "" && selectedUserIds.length > 0) {
+                var url = "{{ route('group') }}";
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        title: title,
+                        user_ids: selectedUserIds,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        toastr.success("Group created successfully!");
+                        titleInput.val("");
+                        $("#group_title").hide();
+                    },
+                    error: function(error) {
+                        toastr.error("Error creating group. Please try again.");
+                    },
+                });
+            } else {
+                toastr.warning("Please enter a title and select at least one user.");
+            }
+        }
+        function sendMessage($id) {
+            var message = $(".groupmessage_" + $id).val();
+            var formData = new FormData();
+            formData.append("message", message);
+            formData.append("group_id", $id);
+          
             $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    title: title, 
-                    user_ids: selectedUserIds,
-                },
-                dataType: 'json',
+                type: "POST",
+                url: "{{ route('groupsendMessage') }}",
+                data: formData,
+                processData: false,
+                contentType: false,
+
                 success: function(response) {
-                    toastr.success("Group created successfully!");
-                    titleInput.val("");
+                    if (response.message === 'groupchat added successfully!') {
+                        $(".groupmessage_" + $id).val('');
+                        // $("#groupmessage").val('');
+
+                        var currentTime = new Date();
+                        var hours = currentTime.getHours();
+                        var minutes = currentTime.getMinutes();
+                        var time = hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+
+                        var newMessage = '<div class="chat-message is-sent">' +
+                            '<img src="https://via.placeholder.com/300x300" data-demo-src="{{ asset("img/jenna.png") }}" alt=""/>' +
+                            '<div class="message-block">' +
+                            '<span>' + time + '</span>' +
+                            '<div class="message-text">' + message + '</div>' +
+                            '</div>' +
+                            '</div>';
+                            
+                        $("#dan-conversation_group_" + $id).append(newMessage);
+                        // $(".groupmessage_" + $id).val('');
+
+                        
+                    }
                 },
+                error: function(error) {
+                    console.error(error);
+                }
             });
         }
+
 
 
         function create_group(id) {

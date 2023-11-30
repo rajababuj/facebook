@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Message;
 use App\Models\Group;
+use App\Models\GroupChat;
 
 
 
@@ -35,7 +36,8 @@ class RegisterController extends Controller
         $posts = Post::whereIn('user_id', $private_users->pluck('id')->toArray() + $public_users->pluck('id')->toArray())->with('comments')->get();
        
         $titles = Group::all();
-        // $comments = Comment::all();
+        $groupmessage = GroupChat::all();
+
         $messages = Message::all();
         // dd($messages);
         $followings = Auth::user()->followings; 
@@ -71,7 +73,7 @@ class RegisterController extends Controller
 
         $not_allowed = $p_follower_id->toArray() + $a_follower_id->toArray() + [Auth::id()] + $aa_follower_id->toArray();
         $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
-        return view('dashboard', compact('posts',  'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts', 'titles'));
+        return view('dashboard', compact('posts',  'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts', 'titles', 'groupmessage',));
     }
 
     public function store(RegisterRequest $request)

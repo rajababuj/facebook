@@ -61,9 +61,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Message::class);
     }
-
-    public function group_members()
-    {
-        return $this->belongsToMany(Group::class, 'group_members')->withTimestamps();
-    }
 }

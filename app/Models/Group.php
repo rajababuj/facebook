@@ -8,5 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use HasFactory;
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'user_ids'];
+
+    protected $casts = [
+        'user_ids' => 'array',
+    ];
+    
+    public function users()
+    {
+        return $this->hasMany(User::class, 'user_ids');
+    }
 }

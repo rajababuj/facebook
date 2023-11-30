@@ -13,6 +13,7 @@ interface PostInterface
     public function commentstore($data);
     public function reply($data);
     public function groupstore($data);
+    public function groupsendMessage($data);
     
 
 }

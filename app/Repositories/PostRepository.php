@@ -9,7 +9,8 @@ use App\Models\Message;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Helpers\MediaHelper;
-use App\Models\Group_member;
+use App\Models\GroupChat;
+use App\Models\Group;
 use Illuminate\Support\Facades\DB;
 
 
@@ -161,27 +162,36 @@ class PostRepository implements PostInterface
 
     public function groupstore($data)
     {
-
-        $user_id = implode(",", $data['user_ids']);
-
-        // try {
-        DB::beginTransaction();
-        $group = new Group_member();
+        $data['user_ids'] = implode(",", $data['user_ids']);
+     
+        $group = new Group();
         $group->title = $data['title'];
+        $group->user_ids = $data['user_ids'];
         $group->save();
-        $group->users()->attach($data['user_ids']);
-
-
-        // $input['title'] = $data['title'];
-        // $input['user_id'] = $data['user_id'];
-        // $group = Group_members::create($input);
-        // dd($group);
-        // DB::commit();
-
-        // return ['status' => true];
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     return ['status' => false, 'error' => $e->getMessage()];
-        // }
+    
+        
+        return ['status' => true]; 
     }
+    public function groupsendMessage($data)
+    {
+        DB::beginTransaction();
+    
+        try {
+            $groupChat = new GroupChat();
+            $groupChat->message = $data['message'];
+            $groupChat->group_id = $data['group_id'];
+            $groupChat->from_user_id = Auth::id();
+            $groupChat->save();
+    
+            DB::commit();
+    
+            return ['status' => true];
+        } catch (\Exception $e) {
+            DB::rollback();
+    
+            return ['status' => false, 'error' => $e->getMessage()];
+        }
+    }
+    
+    
 }
