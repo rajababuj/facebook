@@ -3161,6 +3161,7 @@
                         </div>
                     </div>
                 </div>
+
                 @foreach($titles as $group)
                 <div class="nav-start">
                     <div class="recipient-block" style="display: none" id="user_chat_group_{{$group->id}}">
@@ -3185,7 +3186,7 @@
                                 <a href="#" class="dropdown-item">
                                     <div class="media">
                                         <i class="fa-solid fa-user"></i>
-                                        <div class="media-content">
+                                        <div class="media-content" style="margin-left: 5px;">
                                             <h3>{{$group->name}}</h3>
                                         </div>
                                         <input type="checkbox" class="user-checkbox" value="{{$group->id}}">
@@ -3252,7 +3253,8 @@
                 <div class="has-slimscroll-xs " onclick="open_user_chat({{$following->id}})">
                     <li>{{ $following->name }}</li>
                     <!-- User -->
-                    <div class="user-item is-active" data-chat-user="dan" data-full-name="Dan Walker" data-status="Online">
+                    <div class="user-item is-active" data-chat-user="{{ $following->name }}" data-full-name="{{ $following->name }} " data-status="Online">
+
                         <div class="avatar-container">
                             <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
                             <div class="user-status is-online"></div>
@@ -3263,13 +3265,13 @@
                 @foreach($titles as $group)
                 <div class="has-slimscroll-xs " onclick="open_group_chat({{$group->id}})">
                     <li>{{$group->title}}</li>
-                    <!-- User -->
-                    <div class="user-item is-active" data-chat-user="dan" data-full-name="Dan Walker" data-status="Online">
+
+                    <div class="user-item is-active" data-chat-user="{{$group->title}}" data-full-name="{{$group->title}}" data-status="Online">
                         <div class="avatar-container">
                             <img class="user-avatar" src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/dan.jpg')}}" alt="" />
-                            <div class="user-status is-online"></div>
                         </div>
                     </div>
+
                 </div>
                 @endforeach
             </div>
@@ -3387,7 +3389,7 @@
                     </div>
                 </div>
             </div>
-            @foreach($titles  as $group)
+            @foreach($titles as $group)
             <div class="chat-body is-opened" style="display: none;width: 100%;" id="chat_body_group_{{$group->id}}">
 
                 <div id="dan-conversation_group_{{$group->id}}" class="chat-body-inner has-slimscroll" style="height: 500px; background-color: white">
@@ -3398,8 +3400,6 @@
                     </div>
                     @php
                     $chat_messages = $groupmessage->where('group_id', $group->id);
-                   
-
                     @endphp
                     @foreach($chat_messages as $message)
 
@@ -3407,7 +3407,48 @@
                     <div class="chat-message is-sent">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
                         <div class="message-block">
-                            <span>{{ $message->created_at->format('h:ia') }}</span>
+                            <div class="dropdown is-spaced is-neutral is-left dropdown-trigger">
+                                <span>{{ $message->created_at->format('h:ia') }}</span>
+                                <i class="fa-solid fa-ellipsis-vertical" style="margin-left: 10px; opacity: 0.5;"></i>
+                                <div class="dropdown-menu" role="menu">
+                                    <div class="dropdown-content">
+                                        <a href="#" class="dropdown-item">
+                                            <ul>
+                                                <li style="margin-bottom: 2px;">
+                                                    <div style="display: flex; align-items: center">
+                                                        <i class="fa fa-edit"></i>
+                                                        <p style="margin-left: 10px;">Edit</p>
+                                                    </div>
+                                                </li>
+                                                <li style="margin-bottom: 2px;">
+                                                    <div style="display: flex; align-items: center">
+                                                        <i class="fa fa-reply"></i>
+                                                        <p style="margin-left: 10px;">Reply</p>
+                                                    </div>
+                                                </li>
+                                                <li style="margin-bottom: 2px;">
+                                                    <div style="display: flex; align-items: center">
+                                                        <i class="fa fa-copy"></i>
+                                                        <p style="margin-left: 10px;">Copy</p>
+                                                    </div>
+                                                </li>
+                                                <li style="margin-bottom: 2px;">
+                                                    <div style="display: flex; align-items: center">
+                                                        <i class="fa fa-forward"></i>
+                                                        <p style="margin-left: 10px;">Forward</p>
+                                                    </div>
+                                                </li>
+                                                <li style="margin-bottom: 2px;">
+                                                    <div style="display: flex; align-items: center">
+                                                        <i class="fa fa-remove"></i>
+                                                        <p style="margin-left: 10px;">Remove</p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                             @isset($message->message)
                             <div class="message-text">{{ $message->message }}</div>
                             @endisset
@@ -3752,7 +3793,7 @@
                 }
             });
         }
-    
+
         //Addprofiletype
         $(document).ready(function() {
             var storedValue = localStorage.getItem('selectedProfileType');
@@ -3815,12 +3856,13 @@
                 toastr.warning("Please enter a title and select at least one user.");
             }
         }
+
         function sendMessage($id) {
             var message = $(".groupmessage_" + $id).val();
             var formData = new FormData();
             formData.append("message", message);
             formData.append("group_id", $id);
-          
+
             $.ajax({
                 type: "POST",
                 url: "{{ route('groupsendMessage') }}",
@@ -3845,11 +3887,11 @@
                             '<div class="message-text">' + message + '</div>' +
                             '</div>' +
                             '</div>';
-                            
+
                         $("#dan-conversation_group_" + $id).append(newMessage);
                         // $(".groupmessage_" + $id).val('');
 
-                        
+
                     }
                 },
                 error: function(error) {

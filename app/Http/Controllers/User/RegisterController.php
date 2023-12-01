@@ -38,6 +38,7 @@ class RegisterController extends Controller
         $titles = Group::all();
         $groupmessage = GroupChat::all();
 
+
         $messages = Message::all();
         // dd($messages);
         $followings = Auth::user()->followings; 
@@ -73,7 +74,7 @@ class RegisterController extends Controller
 
         $not_allowed = $p_follower_id->toArray() + $a_follower_id->toArray() + [Auth::id()] + $aa_follower_id->toArray();
         $users = User::whereNotIn("id", $not_allowed)->withCount(["followings", "followers"])->get();
-        return view('dashboard', compact('posts',  'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts', 'titles', 'groupmessage',));
+        return view('dashboard', compact('posts',  'pending_users', 'users', 'pending_auth_users', 'messages', 'followers', 'followings', 'like_posts', 'titles', 'groupmessage'));
     }
 
     public function store(RegisterRequest $request)
