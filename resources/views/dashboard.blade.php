@@ -240,7 +240,6 @@
                                         </a>
                                     </form>
 
-
                                     <a class="account-item">
                                         <div class="media">
                                             <div class="icon-wrap">
@@ -3412,7 +3411,7 @@
                                 <i class="fa-solid fa-ellipsis-vertical" style="margin-left: 10px; opacity: 0.5;"></i>
                                 <div class="dropdown-menu" role="menu">
                                     <div class="dropdown-content">
-                                        <a href="#" class="dropdown-item">
+                                        <a href="" class="dropdown-item">
                                             <ul>
                                                 <li style="margin-bottom: 2px;">
                                                     <div style="display: flex; align-items: center">
@@ -3420,12 +3419,15 @@
                                                         <p style="margin-left: 10px;">Edit</p>
                                                     </div>
                                                 </li>
-                                                <li style="margin-bottom: 2px;">
-                                                    <div style="display: flex; align-items: center">
-                                                        <i class="fa fa-reply"></i>
-                                                        <p style="margin-left: 10px;">Reply</p>
-                                                    </div>
-                                                </li>
+                                                <a class="dropdown-item" id="message_{{$message->id}}">
+                                                    <li style="margin-bottom: 2px;">
+                                                        <div style="display: flex; align-items: center" >
+                                                            <i class="fa fa-reply"></i>
+                                                            <p style="margin-left: 10px;">Reply</p>
+                                                        </div>
+                                                    </li>
+                                                </a>
+
                                                 <li style="margin-bottom: 2px;">
                                                     <div style="display: flex; align-items: center">
                                                         <i class="fa fa-copy"></i>
@@ -3438,12 +3440,15 @@
                                                         <p style="margin-left: 10px;">Forward</p>
                                                     </div>
                                                 </li>
-                                                <li style="margin-bottom: 2px;">
-                                                    <div style="display: flex; align-items: center">
-                                                        <i class="fa fa-remove"></i>
-                                                        <p style="margin-left: 10px;">Remove</p>
-                                                    </div>
-                                                </li>
+                                                <a href="#" class="dropdown-item remove" data-message-id="{{ $message->id }}">
+                                                    <li style="margin-bottom: 2px;">
+                                                        <div style="display: flex; align-items: center">
+                                                            <i class="fa fa-remove"></i>
+                                                            <p style="margin-left: 10px;">Remove</p>
+                                                        </div>
+                                                    </li>
+                                                </a>
+
                                             </ul>
                                         </a>
                                     </div>
@@ -3856,7 +3861,7 @@
                 toastr.warning("Please enter a title and select at least one user.");
             }
         }
-
+        //sendmessage
         function sendMessage($id) {
             var message = $(".groupmessage_" + $id).val();
             var formData = new FormData();
@@ -3900,11 +3905,54 @@
             });
         }
 
-
-
         function create_group(id) {
             $("#group_title").show();
         }
+        $('.remove').on('click', function(e) {
+            e.preventDefault();
+            var messageId = $(this).data('message-id');
+            var messageElement = $('#message_' + messageId);
+            $.ajax({
+                type: 'DELETE',
+                url: "{{ route('destroymessages', ['id' => ':id']) }}".replace(':id', messageId),
+                success: function(response) {
+                    if (response.success) {
+                        messageElement.remove();
+                        // $('#message_' + messageId).remove();
+                        toastr.success("chatmessage deleted successfully!");
+                    } else {
+                        toastr('An error occurred while processing your request.');
+                    }
+                },
+                error: function() {
+                    toastr.error('An error occurred while processing your request.');
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.fa-reply').on('click', function(e) {
+                e.preventDefault();
+
+
+                var messageId = $(this).parent().attr('id').split('_')[1];
+
+                $.ajax({
+                    url: '/reply-endpoint',
+                    type: 'POST',
+                    data: {
+                        messageId: messageId
+                    },
+                    success: function(response) {
+                        console.log('Reply successful:', response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
     </script>
 
 

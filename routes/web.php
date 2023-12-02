@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\PostController;
-use App\Http\Controllers\User\CommentController;
-use App\Http\Controllers\ChatsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +45,18 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:web'], function () {
 
     Route::post('group', [PostController::class, 'groupstore'])->name('group');
     Route::post('groups', [PostController::class, 'groupsendMessage'])->name('groupsendMessage');
+
+    Route::delete('/destroymessage/{id}', [PostController::class, 'destroymessage'])->name('destroymessages');
+
+    Route::post('/reply-endpoint', [PostController::class, 'messagereply'])->name('message.reply');
+
+  
+
+
+
+
+
+
    
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Interfaces\PostInterface;
 use Illuminate\Support\Facades\Log;
+use App\Models\GroupChat;
 
 class PostController extends Controller
 {
@@ -115,7 +116,7 @@ class PostController extends Controller
     {
         $data = $request->all();
         $result = $this->postRepository->groupstore($data);
-    
+
         if ($result && isset($result['status'])) {
             return response()->json([
                 'message' => 'Group created successfully!',
@@ -130,7 +131,7 @@ class PostController extends Controller
     {
         $data = $request->all();
         $result = $this->postRepository->groupsendMessage($data);
-    
+
         if (isset($result['status']) && $result['status']) {
             return response()->json([
                 'message' => 'groupchat added successfully!'
@@ -141,5 +142,23 @@ class PostController extends Controller
             ]);
         }
     }
-    
+    public function destroymessage($id)
+    {
+        $message = GroupChat::find($id);
+        // dd($message);
+        if ($message) {
+            $message->delete();
+            return response()->json(['success' => 'Record deleted successfully.']);
+        } else {
+            return response()->json(['error' => 'Record not found.'], 404);
+        }
+    }
+
+    public function messagereply(Request $request)
+    {
+       
+        $messageId = $request->input('messageId');
+        return response()->json(['message' => 'Reply successful'], 200);
+    }
 }
+
