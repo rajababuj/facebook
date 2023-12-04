@@ -18,7 +18,7 @@
     <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
     <!-- Google Tag Manager -->
-    <!-- <script>
+    <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || []
             w[l].push({
@@ -32,7 +32,7 @@
             j.src = '../www.googletagmanager.com/gtm5445.html?id=' + i + dl
             f.parentNode.insertBefore(j, f)
         })(window, document, 'script', 'dataLayer', 'GTM-KQHJPZP')
-    </script> -->
+    </script>
     <!-- End Google Tag Manager -->
 
     <!-- Fonts -->
@@ -3378,16 +3378,6 @@
                 </div>
             </div>
             @endforeach
-            <div id="chat-panel" class="chat-panel is-opened" style="display: none">
-                <div class="panel-inner">
-                    <div class="panel-header">
-                        <h3>Details</h3>
-                        <div class="panel-close">
-                            <i data-feather="x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
             @foreach($titles as $group)
             <div class="chat-body is-opened" style="display: none;width: 100%;" id="chat_body_group_{{$group->id}}">
 
@@ -3402,7 +3392,7 @@
                     @endphp
                     @foreach($chat_messages as $message)
 
-                    @if(auth()->id() != $message->from_user_id)
+                    @if(auth()->id() == $message->from_user_id)
                     <div class="chat-message is-sent">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
                         <div class="message-block">
@@ -3419,11 +3409,12 @@
                                                         <p style="margin-left: 10px;">Edit</p>
                                                     </div>
                                                 </li>
-                                                <a class="dropdown-item" id="message_{{$message->id}}">
+                                                <a class="dropdown-item reply-link">
                                                     <li style="margin-bottom: 2px;">
-                                                        <div style="display: flex; align-items: center" >
-                                                            <i class="fa fa-reply"></i>
-                                                            <p style="margin-left: 10px;">Reply</p>
+                                                        <div style="display: flex; align-items: center">
+                                                            <!-- <i class="fa fa-reply"></i> -->
+                                                            <button onclick="replymsg({{$message->id}})"><i class="fa fa-reply" style="margin-left: 10px;"></i></button>
+                                                            <!-- <p style="margin-left: 10px;">Reply</p> -->
                                                         </div>
                                                     </li>
                                                 </a>
@@ -3455,7 +3446,7 @@
                                 </div>
                             </div>
                             @isset($message->message)
-                            <div class="message-text">{{ $message->message }}</div>
+                            <div class="message-text" id="chatmsg{{$message->id}}">{{ $message->message }}</div>
                             @endisset
                         </div>
                     </div>
@@ -3474,27 +3465,22 @@
                     @endforeach
                 </div>
                 <!-- Compose message area -->
+                <div id="replymessage" style="display: none">
+
+                </div>
                 <div class="chat-action">
+
                     <div class="chat-action-inner">
+
                         <div class="control" style="display: flex;">
 
                             <textarea class="textarea comment-textarea groupmessage_{{$group->id}}" id="message" rows="1" style="margin-top: 350px;"></textarea>
-                            <button onclick="sendMessage({{ $group->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;">👉</button>
+                            <button onclick="sendMessage({{ $group->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
-            <div id="chat-panel" class="chat-panel is-opened" style="display: none">
-                <div class="panel-inner">
-                    <div class="panel-header">
-                        <h3>Details</h3>
-                        <div class="panel-close">
-                            <i data-feather="x"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -3863,10 +3849,12 @@
         }
         //sendmessage
         function sendMessage($id) {
+            console.log(msgReply);
             var message = $(".groupmessage_" + $id).val();
             var formData = new FormData();
             formData.append("message", message);
             formData.append("group_id", $id);
+            formdata.append("reply_message", msgReply);
 
             $.ajax({
                 type: "POST",
@@ -3929,33 +3917,19 @@
                 }
             });
         });
+
+        let msgReply = '';
+        function replymsg($id) {
+            
+           var reply_msg = $('#chatmsg' + $id).text();
+           msgReply = reply_msg;
+           $('#replymessage').text(reply_msg);
+            $("#replymessage").show();
+        }
+
+       
+    
     </script>
-    <script>
-        $(document).ready(function() {
-            $('.fa-reply').on('click', function(e) {
-                e.preventDefault();
-
-
-                var messageId = $(this).parent().attr('id').split('_')[1];
-
-                $.ajax({
-                    url: '/reply-endpoint',
-                    type: 'POST',
-                    data: {
-                        messageId: messageId
-                    },
-                    success: function(response) {
-                        console.log('Reply successful:', response);
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-        });
-    </script>
-
-
 </body>
 
 </html>

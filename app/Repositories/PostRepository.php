@@ -174,6 +174,7 @@ class PostRepository implements PostInterface
     }
     public function groupsendMessage($data)
     {
+        dd($data);
         DB::beginTransaction();
     
         try {

@@ -48,7 +48,11 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:web'], function () {
 
     Route::delete('/destroymessage/{id}', [PostController::class, 'destroymessage'])->name('destroymessages');
 
+   
     Route::post('/reply-endpoint', [PostController::class, 'messagereply'])->name('message.reply');
+ 
+
+
 
   
 

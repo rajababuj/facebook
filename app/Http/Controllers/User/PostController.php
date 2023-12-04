@@ -156,7 +156,7 @@ class PostController extends Controller
 
     public function messagereply(Request $request)
     {
-       
+       dd($request);
         $messageId = $request->input('messageId');
         return response()->json(['message' => 'Reply successful'], 200);
     }
