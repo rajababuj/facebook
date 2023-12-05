@@ -3393,7 +3393,7 @@
                     @foreach($chat_messages as $message)
 
                     @if(auth()->id() == $message->from_user_id)
-                    <div class="chat-message is-sent">
+                    <div class="chat-message is-sent" id="message_{{ $message->id }}">
                         <img src="https://via.placeholder.com/300x300" data-demo-src="{{asset('img/jenna.png')}}" alt="" />
                         <div class="message-block">
                             <div class="dropdown is-spaced is-neutral is-left dropdown-trigger">
@@ -3413,24 +3413,31 @@
                                                     <li style="margin-bottom: 2px;">
                                                         <div style="display: flex; align-items: center">
                                                             <!-- <i class="fa fa-reply"></i> -->
-                                                            <button onclick="replymsg({{$message->id}})"><i class="fa fa-reply" style="margin-left: 10px;"></i></button>
+                                                            <button onclick="replymsg({{$message->id}}, {{$message->message_type}})"><i class="fa fa-reply" style="margin-left: 10px;"></i></button>
+
                                                             <!-- <p style="margin-left: 10px;">Reply</p> -->
                                                         </div>
                                                     </li>
                                                 </a>
 
-                                                <li style="margin-bottom: 2px;">
-                                                    <div style="display: flex; align-items: center">
-                                                        <i class="fa fa-copy"></i>
-                                                        <p style="margin-left: 10px;">Copy</p>
-                                                    </div>
-                                                </li>
-                                                <li style="margin-bottom: 2px;">
-                                                    <div style="display: flex; align-items: center">
-                                                        <i class="fa fa-forward"></i>
-                                                        <p style="margin-left: 10px;">Forward</p>
-                                                    </div>
-                                                </li>
+                                                <a>
+                                                    <li class="dropdown-item copy" data-message-id="{{ $message->id }}">
+                                                        <div style="display: flex; align-items: center">
+                                                            <i class="fa fa-copy"></i>
+                                                            <p style="margin-left: 10px;">Copy</p>
+                                                        </div>
+                                                    </li>
+                                                </a>
+
+                                                <a href="#" class="dropdown-item forward" data-message-id="{{ $message->id }}">
+                                                    <li style="margin-bottom: 2px;">
+                                                        <div style="display: flex; align-items: center">
+                                                            <i class="fa fa-forward"></i>
+                                                            <p style="margin-left: 10px;">Forward</p>
+                                                        </div>
+                                                    </li>
+                                                </a>
+
                                                 <a href="#" class="dropdown-item remove" data-message-id="{{ $message->id }}">
                                                     <li style="margin-bottom: 2px;">
                                                         <div style="display: flex; align-items: center">
@@ -3465,15 +3472,12 @@
                     @endforeach
                 </div>
                 <!-- Compose message area -->
-                <div id="replymessage" style="display: none">
 
+                <div id="replymessage" style="display: none; margin-top: 10px; margin-left: 40px;">
                 </div>
                 <div class="chat-action">
-
                     <div class="chat-action-inner">
-
                         <div class="control" style="display: flex;">
-
                             <textarea class="textarea comment-textarea groupmessage_{{$group->id}}" id="message" rows="1" style="margin-top: 350px;"></textarea>
                             <button onclick="sendMessage({{ $group->id }})" type="submit" style="height: 40px; width:auto; margin-top: 150px;"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                         </div>
@@ -3651,29 +3655,28 @@
             });
         }
         //Follow & Unfollow
-        $(document).ready(function() {
-            $('.follow-button').click(function(e) {
-                e.preventDefault();
-                var $button = $(this);
-                var userId = $button.data('user-id');
-                var action = $button.hasClass('btn-danger') ? 'unfollow' : 'follow';
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/user/follow/' + userId,
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        if (action === 'unfollow') {
-                            $button.removeClass('btn-danger').addClass('btn-primary').text('Follow');
-                        } else {
-                            $button.removeClass('btn-primary').addClass('btn-danger').text('Unfollow');
-                        }
-                        $('#following-count-' + userId).text('Following: ' + response.followingsCount);
-                    },
-                    error: function(xhr, status, error) {}
-                });
+        $('.follow-button').click(function(e) {
+            e.preventDefault();
+            var $button = $(this);
+            var userId = $button.data('user-id');
+            var action = $button.hasClass('btn-danger') ? 'unfollow' : 'follow';
+
+            $.ajax({
+                type: 'POST',
+                url: '/user/follow/' + userId,
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (action === 'unfollow') {
+                        $button.removeClass('btn-danger').addClass('btn-primary').text('Follow');
+                    } else {
+                        $button.removeClass('btn-primary').addClass('btn-danger').text('Unfollow');
+                    }
+                    $('#following-count-' + userId).text('Following: ' + response.followingsCount);
+                },
+                error: function(xhr, status, error) {}
             });
         });
 
@@ -3705,33 +3708,33 @@
             });
         }
         //Comment
-        $(document).ready(function() {
-            $('.comment-form').submit(function(event) {
-                event.preventDefault();
 
-                let formData = new FormData(this);
-                formData.append('_token', '{{ csrf_token() }}');
+        $('.comment-form').submit(function(event) {
+            event.preventDefault();
 
-                $.ajax({
-                    type: 'POST',
-                    url: "{{ route('comments.store') }}",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(data) {
-                        if (data.message) {
-                            var message = '<div class="alert alert-success" role="alert">' + data.message + '</div>';
-                            $('.message-container').html(message);
-                        }
-                        $('#comments-container').append('<div class="comment">' + data.newCommentText + '</div>');
-                        $('#comment-text').val('');
-                    },
-                    error: function(error) {
-                        console.log('Error:', error);
+            let formData = new FormData(this);
+            formData.append('_token', '{{ csrf_token() }}');
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('comments.store') }}",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if (data.message) {
+                        var message = '<div class="alert alert-success" role="alert">' + data.message + '</div>';
+                        $('.message-container').html(message);
                     }
-                });
+                    $('#comments-container').append('<div class="comment">' + data.newCommentText + '</div>');
+                    $('#comment-text').val('');
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
             });
         });
+
         //Chat
         function sendMessageButton($id) {
             var message = $(".message_" + $id).val();
@@ -3786,32 +3789,32 @@
         }
 
         //Addprofiletype
-        $(document).ready(function() {
-            var storedValue = localStorage.getItem('selectedProfileType');
-            if (storedValue) {
-                $('#profiletype').val(storedValue);
-            }
 
-            $('#profiletype').on('change', function() {
-                var selectedValue = $(this).val();
-                localStorage.setItem('selectedProfileType', selectedValue);
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route("updateProfileType") }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        profiletype: selectedValue
-                    },
-                    success: function(data) {
-                        console.log('Profile type updated successfully');
-                    },
-                    error: function(error) {
-                        console.error('Error updating profile type:', error);
-                    }
-                });
+        var storedValue = localStorage.getItem('selectedProfileType');
+        if (storedValue) {
+            $('#profiletype').val(storedValue);
+        }
+
+        $('#profiletype').on('change', function() {
+            var selectedValue = $(this).val();
+            localStorage.setItem('selectedProfileType', selectedValue);
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("updateProfileType") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    profiletype: selectedValue
+                },
+                success: function(data) {
+                    console.log('Profile type updated successfully');
+                },
+                error: function(error) {
+                    console.error('Error updating profile type:', error);
+                }
             });
-
         });
+
+
 
         // Add group
         function add_group(id) {
@@ -3849,13 +3852,12 @@
         }
         //sendmessage
         function sendMessage($id) {
-            console.log(msgReply);
+
             var message = $(".groupmessage_" + $id).val();
             var formData = new FormData();
             formData.append("message", message);
             formData.append("group_id", $id);
-            formdata.append("reply_message", msgReply);
-
+            formData.append("reply_message", msgReply);
             $.ajax({
                 type: "POST",
                 url: "{{ route('groupsendMessage') }}",
@@ -3866,25 +3868,20 @@
                 success: function(response) {
                     if (response.message === 'groupchat added successfully!') {
                         $(".groupmessage_" + $id).val('');
-                        // $("#groupmessage").val('');
-
                         var currentTime = new Date();
                         var hours = currentTime.getHours();
                         var minutes = currentTime.getMinutes();
                         var time = hours + ":" + (minutes < 10 ? "0" : "") + minutes;
-
                         var newMessage = '<div class="chat-message is-sent">' +
                             '<img src="https://via.placeholder.com/300x300" data-demo-src="{{ asset("img/jenna.png") }}" alt=""/>' +
                             '<div class="message-block">' +
                             '<span>' + time + '</span>' +
+                            '<div>'+msgReply+'</div>'+
                             '<div class="message-text">' + message + '</div>' +
                             '</div>' +
                             '</div>';
-
-                        $("#dan-conversation_group_" + $id).append(newMessage);
-                        // $(".groupmessage_" + $id).val('');
-
-
+                        $("#dan-conversation_group_"+$id).append(newMessage);
+                        $("#reply_message"+$id).append(newMessage);
                     }
                 },
                 error: function(error) {
@@ -3904,12 +3901,11 @@
                 type: 'DELETE',
                 url: "{{ route('destroymessages', ['id' => ':id']) }}".replace(':id', messageId),
                 success: function(response) {
-                    if (response.success) {
+                    if (response) {
                         messageElement.remove();
-                        // $('#message_' + messageId).remove();
-                        toastr.success("chatmessage deleted successfully!");
+                        toastr.success("Chat message deleted successfully!");
                     } else {
-                        toastr('An error occurred while processing your request.');
+                        toastr.error('An error occurred while processing your request.');
                     }
                 },
                 error: function() {
@@ -3919,16 +3915,16 @@
         });
 
         let msgReply = '';
-        function replymsg($id) {
-            
-           var reply_msg = $('#chatmsg' + $id).text();
-           msgReply = reply_msg;
-           $('#replymessage').text(reply_msg);
+        let msgType = '';
+
+        function replymsg($id, $type) {
+            var reply_msg = $('#chatmsg' + $id).text();
+            msgReply = reply_msg;
+
+            $('#replymessage').text(reply_msg);
             $("#replymessage").show();
         }
 
-       
-    
     </script>
 </body>
 

@@ -130,11 +130,12 @@ class PostController extends Controller
     public function groupsendMessage(Request $request)
     {
         $data = $request->all();
+      //   dd($data);
         $result = $this->postRepository->groupsendMessage($data);
 
         if (isset($result['status']) && $result['status']) {
             return response()->json([
-                'message' => 'groupchat added successfully!'
+                'message' => 'groupchat added successfully!',
             ]);
         } else {
             return response()->json([
@@ -152,13 +153,6 @@ class PostController extends Controller
         } else {
             return response()->json(['error' => 'Record not found.'], 404);
         }
-    }
-
-    public function messagereply(Request $request)
-    {
-       dd($request);
-        $messageId = $request->input('messageId');
-        return response()->json(['message' => 'Reply successful'], 200);
     }
 }
 

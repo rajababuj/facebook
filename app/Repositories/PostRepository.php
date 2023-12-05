@@ -174,14 +174,15 @@ class PostRepository implements PostInterface
     }
     public function groupsendMessage($data)
     {
-        dd($data);
+      
         DB::beginTransaction();
     
         try {
             $groupChat = new GroupChat();
             $groupChat->message = $data['message'];
             $groupChat->group_id = $data['group_id'];
-            $groupChat->from_user_id = Auth::id();
+            $groupChat->reply_message = $data['reply_message'];
+            $groupChat->from_user_id = Auth::id();           
             $groupChat->save();
     
             DB::commit();
