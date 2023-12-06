@@ -14,6 +14,7 @@ class Group extends Model
         'user_ids' => 'array',
     ];
     
+
     public function users()
     {
         return $this->hasMany(User::class, 'user_ids');

@@ -3105,7 +3105,6 @@
                 </div>
             </div>
         </div>
-
         <!-- No Stream modal -->
         <!-- /partials/pages/feed/modals/no-stream-modal.html -->
         <div id="no-stream-modal" class="modal no-stream-modal is-xsmall has-light-bg">
@@ -3214,18 +3213,24 @@
                             <a class="chat-nav-item is-icon no-margin">
                                 <i data-feather="more-vertical"></i>
                             </a>
-                        </div>
+                        </div>  
                         <div class="dropdown-menu" role="menu">
                             <div class="dropdown-content">
                                 @foreach($titles as $data)
+
                                 <a href="#" class="dropdown-item">
                                     <div class="media">
-                                        <i class="fa fa-users" aria-hidden="true"></i>
-                                        <div class="media-content">
-                                            <h3>{{$data->title}}</h3>
-
+                                        @if(Auth::user()->id === $data->is_admin)
+                                        <i class="fa fa-trash-o"></i>
+                                        <div class="media-content" style="margin-left: 5px;">
+                                            <h3>{{ $data->title }}</h3>
                                         </div>
-                                        <button><i class="fas fa-comment"></i></button>
+                                        <button class="delete-group-btn" data-group-id="{{ $data->id }}">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                        @else
+                                        <p>You don't have permission to delete this group.</p>
+                                        @endif
                                     </div>
                                 </a>
                                 @endforeach
@@ -3655,7 +3660,6 @@
             });
         }
         //Follow & Unfollow
-
         $('.follow-button').click(function(e) {
             e.preventDefault();
             var $button = $(this);
@@ -3708,7 +3712,6 @@
             });
         }
         //Comment
-
         $('.comment-form').submit(function(event) {
             event.preventDefault();
 
@@ -3876,12 +3879,12 @@
                             '<img src="https://via.placeholder.com/300x300" data-demo-src="{{ asset("img/jenna.png") }}" alt=""/>' +
                             '<div class="message-block">' +
                             '<span>' + time + '</span>' +
-                            '<div>'+msgReply+'</div>'+
+                            '<div>' + msgReply + '</div>' +
                             '<div class="message-text">' + message + '</div>' +
+
                             '</div>' +
                             '</div>';
-                        $("#dan-conversation_group_"+$id).append(newMessage);
-                        $("#reply_message"+$id).append(newMessage);
+                        $("#dan-conversation_group_" + $id).append(newMessage);
                     }
                 },
                 error: function(error) {
@@ -3925,6 +3928,47 @@
             $("#replymessage").show();
         }
 
+        $('.delete-group-btn').on('click', function(e) {
+            e.preventDefault();
+            var groupId = $(this).data('group-id');
+            // var groupElement = $('#group_' + groupId);
+            $.ajax({
+                type: 'DELETE',
+                url: "{{ route('groups.destroy', ['id' => ':id']) }}".replace(':id', groupId),
+
+                success: function(response) {
+                    if (response) {
+                        // groupElement.remove();
+                        toastr.success("Group deleted successfully!");
+                    } else {
+                        toastr.error('An error occurred while processing your request.');
+                    }
+                },
+                error: function() {
+                    toastr.error('An error occurred while processing your request.');
+                }
+            });
+        });
+
+        $('.copy').on('click', function(e) {
+            e.preventDefault();
+            var messageId = $(this).data('message-id');
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('copy.message', ['messageId' => ':messageId']) }}".replace(':messageId', messageId),
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success("Message copied successfully!");
+                    } else {
+                        toastr.error('An error occurred while copying the message.');
+                    }
+                },
+                error: function() {
+                    toastr.error('An error occurred while processing your request.');
+                }
+            });
+        });
     </script>
 </body>
 

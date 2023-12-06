@@ -14,6 +14,7 @@ interface PostInterface
     public function reply($data);
     public function groupstore($data);
     public function groupsendMessage($data);
+    // public function destroygroup($id);
     
 
 }

@@ -46,17 +46,12 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:web'], function () {
     Route::post('group', [PostController::class, 'groupstore'])->name('group');
     Route::post('groups', [PostController::class, 'groupsendMessage'])->name('groupsendMessage');
 
-    Route::delete('/destroymessage/{id}', [PostController::class, 'destroymessage'])->name('destroymessages');
-
-   
+    Route::delete('/destroymessage/{id}', [PostController::class, 'destroymessage'])->name('destroymessages');   
     Route::post('/reply-endpoint', [PostController::class, 'messagereply'])->name('message.reply');
- 
+    Route::delete('/groups/{id}', [PostController::class, 'destroygroup'])->name('groups.destroy');
 
-
-
-  
-
-
+    Route::post('/copy-message/{messageId}', [PostController::class,'copyMessage'])->name('copy.message');
+    
 
 
 

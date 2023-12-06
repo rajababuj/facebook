@@ -17,7 +17,6 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->string('title');
             $table->json('user_ids');
-            
             $table->timestamps();
         });
     }

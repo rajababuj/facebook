@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Repositories\Interfaces\PostInterface;
 use Illuminate\Support\Facades\Log;
 use App\Models\GroupChat;
+use App\Models\Group;
+
 
 class PostController extends Controller
 {
@@ -130,7 +132,7 @@ class PostController extends Controller
     public function groupsendMessage(Request $request)
     {
         $data = $request->all();
-      //   dd($data);
+        //   dd($data);
         $result = $this->postRepository->groupsendMessage($data);
 
         if (isset($result['status']) && $result['status']) {
@@ -154,5 +156,50 @@ class PostController extends Controller
             return response()->json(['error' => 'Record not found.'], 404);
         }
     }
-}
 
+
+    public function copyMessage($id)
+    {
+        $message = GroupChat::find($id);
+        // dd($message)
+        if ($message) {
+            $message = $message->message;
+
+            return response()->json(['success' => 'Message copied successfully.']);
+        } else {
+            return response()->json(['error' => 'Record not found.'], 404);
+        }
+    }
+
+    
+    public function destroygroup($id)
+    {
+
+        $group = Group::find($id);
+        if ($group) {
+            $group->delete();
+            return response()->json(['success' => 'group deleted successfully.']);
+        } else {
+            return response()->json(['error' => 'group not found.'], 404);
+        }
+    }
+
+
+
+    // public function destroygroup(Request $request)
+    // {
+    //     $data = $request->all;
+    //     $result = $this->postRepository->destroygroup($data);
+
+    //     if ($result && isset($result['status'])) {
+    //         return response()->json([
+    //             'message' => 'Group soft deleted successfully!'
+    //         ]);
+    //     } else {
+    //         return response()->json([
+    //             'message' => 'Group not found!'
+    //         ]);
+    //     }
+    // }
+
+}

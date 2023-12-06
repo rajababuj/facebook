@@ -14,7 +14,7 @@ class AddIsAdminToGroupsTable extends Migration
     public function up()
     {
         Schema::table('groups', function (Blueprint $table) {
-            
+            $table->text("is_admin"); 
         });
     }
 
@@ -26,7 +26,7 @@ class AddIsAdminToGroupsTable extends Migration
     public function down()
     {
         Schema::table('groups', function (Blueprint $table) {
-            //
+            $table->dropColumn('is_admin');
         });
     }
 }

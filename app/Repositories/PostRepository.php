@@ -160,40 +160,54 @@ class PostRepository implements PostInterface
         return ['status' => true];
     }
 
-    public function groupstore($data)
-    {
-        $data['user_ids'] = implode(",", $data['user_ids']);
-     
-        $group = new Group();
-        $group->title = $data['title'];
-        $group->user_ids = $data['user_ids'];
-        $group->save();
-    
-        
-        return ['status' => true]; 
-    }
     public function groupsendMessage($data)
     {
-      
+
         DB::beginTransaction();
-    
+
         try {
             $groupChat = new GroupChat();
             $groupChat->message = $data['message'];
             $groupChat->group_id = $data['group_id'];
             $groupChat->reply_message = $data['reply_message'];
-            $groupChat->from_user_id = Auth::id();           
+            $groupChat->from_user_id = Auth::id();
             $groupChat->save();
-    
+
             DB::commit();
-    
+
             return ['status' => true];
         } catch (\Exception $e) {
             DB::rollback();
-    
+
             return ['status' => false, 'error' => $e->getMessage()];
         }
     }
-    
-    
+
+
+    public function groupstore($data)
+    {
+        $data['user_ids'] = implode(",", $data['user_ids']);
+
+        $group = new Group();
+        $group->title = $data['title'];
+        $group->user_ids = $data['user_ids'];
+
+        $group->is_admin = auth()->user()->id;
+        // $group->is_admin = auth()->user()->id;
+        $group->save();
+
+
+        return ['status' => true];
+    }
+    // public function destroygroup($data)
+    // {
+    //     $group = Group::find($data);
+    //     // dd($group);
+    //     if ($group) {
+    //         $group->Delete();
+    //         return ['status' => true];
+    //     } else {
+    //         return ['status' => false];
+    //     }
+    // }
 }
