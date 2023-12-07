@@ -8,6 +8,8 @@ use App\Repositories\Interfaces\PostInterface;
 use Illuminate\Support\Facades\Log;
 use App\Models\GroupChat;
 use App\Models\Group;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class PostController extends Controller
@@ -171,18 +173,39 @@ class PostController extends Controller
         }
     }
 
-    
+
     public function destroygroup($id)
     {
 
         $group = Group::find($id);
-        if ($group) {
-            $group->delete();
-            return response()->json(['success' => 'group deleted successfully.']);
-        } else {
-            return response()->json(['error' => 'group not found.'], 404);
+
+       
+        if (!$group) {
+            return response()->json(['error' => 'Group not found.'], 404);
         }
+
+       
+        if (Auth::user()->id !== $group->is_admin) {
+            return response()->json(['error' => 'Permission denied.'], 403);
+        }
+
+        $group->delete();
+
+        return response()->json(['success' => 'Group deleted successfully.']);
     }
+
+    public function getMembers($id)
+    {
+        $group = Group::find($id);
+        dd($group);
+        if (!$group) {
+            return response()->json(['error' => 'Group not found.'], 404);
+        }
+        $members = $group->members;
+
+        return response()->json(['members' => $members]);
+    }
+
 
 
 

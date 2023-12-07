@@ -3181,7 +3181,7 @@
                                 <input type="text" id="title-{{$following->id}}" class="input" placeholder="Create Group" name="title" />
 
                                 @foreach($followings as $group)
-                                <a href="#" class="dropdown-item">
+                                <a class="dropdown-item">
                                     <div class="media">
                                         <i class="fa-solid fa-user"></i>
                                         <div class="media-content" style="margin-left: 5px;">
@@ -3213,29 +3213,36 @@
                             <a class="chat-nav-item is-icon no-margin">
                                 <i data-feather="more-vertical"></i>
                             </a>
-                        </div>  
+                        </div>
                         <div class="dropdown-menu" role="menu">
                             <div class="dropdown-content">
                                 @foreach($titles as $data)
-
-                                <a href="#" class="dropdown-item">
+                                <a class="dropdown-item">
                                     <div class="media">
                                         @if(Auth::user()->id === $data->is_admin)
                                         <i class="fa fa-trash-o"></i>
                                         <div class="media-content" style="margin-left: 5px;">
                                             <h3>{{ $data->title }}</h3>
+
                                         </div>
                                         <button class="delete-group-btn" data-group-id="{{ $data->id }}">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                         @else
-                                        <p>You don't have permission to delete this group.</p>
+                                        <i class="fa fa-trash-o"></i>
+                                        <div class="media-content" style="margin-left: 5px;">
+                                            <h3>{{ $data->title }}</h3>
+                                        </div>
+                                        <button class="delete-group-btn non-admin" data-group-id="{{ $data->id }}">
+                                        <i class="fa fa-lock" aria-hidden="true"></i>
+                                        </button>
                                         @endif
                                     </div>
                                 </a>
                                 @endforeach
                             </div>
                         </div>
+
                     </div>
 
                     <a class="chat-nav-item is-icon close-chat">
@@ -3931,14 +3938,17 @@
         $('.delete-group-btn').on('click', function(e) {
             e.preventDefault();
             var groupId = $(this).data('group-id');
-            // var groupElement = $('#group_' + groupId);
+
+            if ($(this).hasClass('non-admin')) {
+                toastr.error("You don't have permission to delete this group.");
+                return;
+            }
             $.ajax({
                 type: 'DELETE',
                 url: "{{ route('groups.destroy', ['id' => ':id']) }}".replace(':id', groupId),
 
                 success: function(response) {
                     if (response) {
-                        // groupElement.remove();
                         toastr.success("Group deleted successfully!");
                     } else {
                         toastr.error('An error occurred while processing your request.');
@@ -3949,6 +3959,7 @@
                 }
             });
         });
+
 
         $('.copy').on('click', function(e) {
             e.preventDefault();
@@ -3969,6 +3980,31 @@
                 }
             });
         });
+        $('.group-item').on('click', function(e) {
+            e.preventDefault();
+            var groupId = $(this).data('group-id');
+
+            $.ajax({
+                type: 'GET',
+                url: "{{ route('groups.members', ['id' => ':id']) }}".replace(':id', groupId),
+
+                success: function(response) {
+                    displayMembers(response);
+                },
+                error: function() {
+                    toastr.error('An error occurred while fetching group members.');
+                }
+            });
+        });
+
+        function displayMembers(members) {
+            var membersList = '<ul>';
+            members.forEach(function(member) {
+                membersList += '<li>' + member.name + '</li>';
+            });
+            membersList += '</ul>';
+            $('#members-list').html(membersList);
+        }
     </script>
 </body>
 

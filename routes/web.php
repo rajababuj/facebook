@@ -51,7 +51,10 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth:web'], function () {
     Route::delete('/groups/{id}', [PostController::class, 'destroygroup'])->name('groups.destroy');
 
     Route::post('/copy-message/{messageId}', [PostController::class,'copyMessage'])->name('copy.message');
-    
+    // routes/web.php
+
+   Route::get('/groups/{id}/members', [PostController::class,'getMembers'])->name('groups.members');
+
 
 
 
